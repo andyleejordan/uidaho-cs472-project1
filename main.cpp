@@ -22,14 +22,13 @@ const float spherical_scale = 100;
 const float schwefel_scale = 10000;
 const int spherical_range = (5.12 + 5.12) * spherical_scale;
 const int schwefel_range = (512.03 + 511.97) * schwefel_scale;
-const int spherical_min = 6100;
-const int spherical_max = 52000;
+const int spherical_min = 0;
+const int spherical_max = 520;
 const int schwefel_min = -6100;
 const int schwefel_max = 6900;
 
 param spherical(array <param, dim> params) {
   param sum = 0;
-
   for (int i = 0; i < dim; i++) {
     sum += pow(params[i], 2);
   }
@@ -38,16 +37,18 @@ param spherical(array <param, dim> params) {
 
 param schwefel(array <param, dim> params) {
   param sum = 0;
-
   for (int i = 0; i < dim; i++) {
     sum += params[i] * sin(sqrt(abs(params[i])));
   }
   return (418.9829 * schwefel_scale) + sum;
 }
 
-int fitness(const param min, const param max, const param sol) {
+float get_fitness(const param min,
+		  const param max,
+		  const param sol,
+		  const float scale) {
   // Scales param [min, max] to int [0, 10]
-  return (10 * (sol - min)) / (min - max);
+  return 10. - (10. * float(sol/scale - min)) / float(max - min);
 }
 
 array <param, dim> gen_sol(const param range) {
