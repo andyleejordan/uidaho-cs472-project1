@@ -59,8 +59,9 @@ array <param, dim> gen_sol(const param range) {
   return sol;
 }
 
-array <param, dim> gen_near(array <param, dim> sol, const int adjust) {
-  int index = rand() % dim;
+array <param, dim> gen_near(array <param, dim> sol, 
+			    const int index, 
+			    const int adjust) {
   sol[index] += adjust;
   return sol;
 }
@@ -78,20 +79,18 @@ void accumulate_schwefel(vector <param> * solutions, const int iterations) {
   }
 }
 
-void print_sol() {
-  array <param, dim> solution = gen_sol(schwefel_range);
-
+void print_solution(array <param, dim> solution, const float scale) {
   for (int i = 0; i < dim; i++) {
-    cout << float(solution[i])/schwefel_scale << ' ';
+    cout << float(solution[i])/scale << ' ';
   }
   cout << '\n';
 }
 
-void print_minmax(void (*accumulate)(vector <param> * solutions,
-				     const int iterations),
-		  const int iterations,
+void print_minmax(const int iterations,
 		  const int scale,
-		  const string kind) {
+		  const string kind,
+ void (*accumulate)(vector <param> * solutions, const int iterations)) {
+
   vector <param> * solutions_ptr = new vector <param>;
 
   accumulate(solutions_ptr, iterations);
