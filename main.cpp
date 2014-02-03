@@ -103,13 +103,53 @@ void print_minmax(const int iterations,
     
 }
 
+pair <array <param, dim>, float> hill_climber(const param min,
+					      const param max,
+					      const param range,
+					      const float scale,
+  param (*function)(array <param, dim> params)) {
+
+  array <param, dim> solution;
+  array <param, dim> neighbor;
+  float fitness = 0;
+  float neighbor_fitness = 0;
+
+  while (fitness < 8.8) {
+    solution = gen_sol(range);
+    fitness = get_fitness(min, max, function(solution), scale);
+    for (int i = 0; i < 2*dim; i++) {
+      int adjust = (i % 2) ? 10 : -10;
+      neighbor = gen_near(solution, i/2, adjust);
+      neighbor_fitness = get_fitness(min, max, function(neighbor), scale);
+      if (neighbor_fitness > fitness) {
+	solution = neighbor;
+	fitness = neighbor_fitness;
+      } else break;
+    }
+  }
+  auto final = make_pair(solution, fitness);
+  return final;
+}
+
 int main(int argc, char *argv[]) {
   srand(time(0));
 
-  void (*accumulate)(vector <param> * solutions,
-		     const int iterations) = &accumulate_spherical;
+  pair <array <param, dim>, float> result = hill_climber(spherical_min,
+							 spherical_max,
+							 spherical_range,
+							 pow(spherical_scale, 2),
+							 &spherical);
 
-  print_minmax(accumulate, 10000, spherical_scale, "Spherical");
- 
+  print_solution(result.first, spherical_scale);
+  cout << "Function value is: " << spherical(result.first) /
+    pow(spherical_scale, 2) << '\n'
+       << "Fitness is: " << result.second << '\n';
+
+  // void (*accumulate)(vector <param> * solutions,
+  // 		     const int iterations) = &accumulate_spherical;
+
+  // print_minmax(1000000, pow(spherical_scale, 2), "Spherical", accumulate);
+
+
   return 0;
 }
