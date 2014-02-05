@@ -39,10 +39,14 @@ includes the following sections:
 f_{Sph}(x) = (\sum_{i=1})^{p} (x_{i})^{2}
 x_{i} \in [-5.12, 5.12]
 x^{\*} = (0, 0, ..., 0); f_{Sph}(x^{\*}) = 0
+
+Use fewer random restarts, more neighbors
 ** Schwefel
 f_{Sch}(x) = 418.9829 \cdot p + (\sum_{i=1})^{p} x_{i }sin(\radic|x_{i}|)
 x_{i} \in [-512.03, 511.97]
 x^{\*} = (-420.9687, ..., -420.9687); f_{Sch}(x^{\*}) = 0
+
+Use more random restarts, fewer neighbors
 * Algorithms
 ** Hill Climbing
 - generate a random solution s_{1}

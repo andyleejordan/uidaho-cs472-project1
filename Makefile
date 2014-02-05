@@ -1,9 +1,4 @@
-ifeq ($(OS),Darwin)
-	CC=g++-4.8
-else
-	CC=g++
-endif
-
+CC=g++-4.8
 CFLAGS=-Wall -std=c++11
 SOURCES=main.cpp
 EXECUTABLE=search
