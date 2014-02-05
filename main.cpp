@@ -2,6 +2,11 @@
  * University of Idaho - CS 472: Evolutionary Computation by Terry Soule
  * Project #1a Hill Climbing and Simulated Annealing
  * This program uses C++11 extensions (array template and auto specifier)
+ * Todo: make Spherical and Schewfel objects
+ *
+ * param = int, scale = 100, cpu = 0.004, schwefel = 3.55
+ * param = int, scale = 100000, cpu = 0.005, schwefel = 3.55145
+ * param = float, scale = 1, cpu = 0.004, schwefel = 0.00457813
  */
 
 #include <algorithm>
@@ -15,98 +20,110 @@
 
 using namespace std;
 
-typedef int param;
+typedef float param;
 
 const int dim = 30;
-const float spherical_scale = 100;
-const float schwefel_scale = 10000;
-const int spherical_range = (5.12 + 5.12) * spherical_scale;
-const int schwefel_range = (512.03 + 511.97) * schwefel_scale;
+const int scale = 100;
+const int spherical_range = 12 * scale;
+const int schwefel_range = 1024 * scale;
 const int spherical_min = 0;
-const int spherical_max = 520;
-const int schwefel_min = -6100;
-const int schwefel_max = 6900;
+const int spherical_max = 768;
+const int schwefel_min = 0;
+const int schwefel_max = 19000;
 
 param spherical(array <param, dim> params) {
-  param sum = 0;
+  float sum = 0;
   for (int i = 0; i < dim; i++) {
     sum += pow(params[i], 2);
   }
   return sum;
 }
 
+void test_spherical(param fill) {
+  array <param, dim> params;
+  params.fill(fill);
+  cout << spherical(params) << '\n';
+}
+
 param schwefel(array <param, dim> params) {
-  param sum = 0;
+  float sum = 0;
   for (int i = 0; i < dim; i++) {
     sum += params[i] * sin(sqrt(abs(params[i])));
   }
-  return (418.9829 * schwefel_scale) + sum;
+  return 418.9829 * dim + sum;
+}
+
+void test_schwefel(param fill) {
+  array <param, dim> params;
+  params.fill(fill);
+  cout << schwefel(params) << '\n';
 }
 
 float get_fitness(const param min,
 		  const param max,
-		  const param sol,
-		  const float scale) {
+		  const param solution) {
   // Scales param [min, max] to int [0, 10]
-  return 10. - (10. * float(sol/scale - min)) / float(max - min);
+  return 10. - (float(solution - min) * (10. / float(max - min)));
 }
 
-array <param, dim> gen_sol(const param range) {
-  array <param, dim> sol;
+array <param, dim> gen_sol(const int range) {
+  array <param, dim> solution;
   for (int i = 0; i < dim; i++) {
-    sol[i] = (rand() % range) - range/2;
+    solution[i] = ((rand() % range) - range/2) / scale;
   }
-  return sol;
+  return solution;
 }
 
-array <param, dim> gen_near(array <param, dim> sol, 
-			    const int index, 
-			    const int adjust) {
-  sol[index] += adjust;
-  return sol;
+array <param, dim> gen_near(array <param, dim> solution, const param delta) {
+  // Adjust all values by some delta
+  // TODO: adjust random subset of values
+  int random = rand() % dim;
+  for (int i = random; i < random + 6; i++ ) {
+    solution[i % dim] += delta;
+  }
+  return solution;
 }
 
 
-void accumulate_spherical(vector<param> * solutions, const int iterations) {
+void accumulate(vector<param> * solutions,
+		const int iterations,
+		const int range,
+		param (*function)(array <param, dim> params)) {
   for (int i = 0; i < iterations; i++) {
-    solutions->push_back(spherical(gen_sol(spherical_range)));
+    solutions->push_back(function(gen_sol(range)));
   }
 }
 
-void accumulate_schwefel(vector <param> * solutions, const int iterations) {
-  for (int i = 0; i < iterations; i++) {
-    solutions->push_back(schwefel(gen_sol(schwefel_range)));
-  }
-}
-
-void print_solution(array <param, dim> solution, const float scale) {
+void print_solution(array <param, dim> solution) {
   for (int i = 0; i < dim; i++) {
-    cout << float(solution[i])/scale << ' ';
+    cout << float(solution[i]) << ' ';
   }
   cout << '\n';
 }
 
-void print_minmax(const int iterations,
-		  const int scale,
+void print_minmax(const int iterations, 
+		  const int range,
 		  const string kind,
- void (*accumulate)(vector <param> * solutions, const int iterations)) {
+		  param (*function)(array <param, dim> params)) {
 
   vector <param> * solutions_ptr = new vector <param>;
 
-  accumulate(solutions_ptr, iterations);
+  accumulate(solutions_ptr, iterations, range, function);
 
   auto minmax = minmax_element(solutions_ptr->begin(),
 			       solutions_ptr->end());
 
-  cout << kind+" min\n" << *minmax.first/scale << '\n'
-       << kind+" max\n" << *minmax.second/scale << '\n';
+  cout << kind+" min\n" << float(*minmax.first) << '\n'
+       << kind+" max\n" << float(*minmax.second) << '\n';
     
 }
 
-pair <array <param, dim>, float> hill_climber(const param min,
+pair <array <param, dim>, float> hill_climber(const float goal,
+					      const param min,
 					      const param max,
 					      const param range,
-					      const float scale,
+					      const int neighbors,
+					      param delta,
   param (*function)(array <param, dim> params)) {
 
   array <param, dim> solution;
@@ -114,42 +131,65 @@ pair <array <param, dim>, float> hill_climber(const param min,
   float fitness = 0;
   float neighbor_fitness = 0;
 
-  while (fitness < 8.8) {
+  while (fitness < goal) {
     solution = gen_sol(range);
-    fitness = get_fitness(min, max, function(solution), scale);
-    for (int i = 0; i < 2*dim; i++) {
-      int adjust = (i % 2) ? 10 : -10;
-      neighbor = gen_near(solution, i/2, adjust);
-      neighbor_fitness = get_fitness(min, max, function(neighbor), scale);
-      if (neighbor_fitness > fitness) {
+    fitness = get_fitness(min, max, function(solution));
+    for (int i = 0; i < neighbors; i++) {
+      delta = (i % 2) ? delta : -delta;
+      neighbor = gen_near(solution, delta);
+      neighbor_fitness = get_fitness(min, max, function(neighbor));
+         if (neighbor_fitness > fitness) {
 	solution = neighbor;
 	fitness = neighbor_fitness;
-      } else break;
+	// cout << "Better neighbor with fitness: " << fitness << '\n';
+      }
     }
+    // cout << "Random restart\n, solution was: ";
+    // print_solution(solution);
+    // cout << '\n';
   }
   auto final = make_pair(solution, fitness);
   return final;
 }
 
+void run_spherical_hillclimber() {
+  pair <array <param, dim>, float> result = hill_climber(9.3,
+							 spherical_min,
+							 spherical_max,
+							 spherical_range,
+							 25,
+							 0.01,
+							 &spherical);
+
+  print_solution(result.first);
+  cout << "Spherical function value is: " << spherical(result.first) << '\n'
+       << "Fitness is: " << result.second << '\n';
+}
+
+void run_schewfel_hillclimber() {
+  pair <array <param, dim>, float> result = hill_climber(9,
+							 schwefel_min,
+							 schwefel_max,
+							 schwefel_range,
+							 25,
+							 1,
+							 &schwefel);
+
+  print_solution(result.first);
+  cout << "Schwefel function value is: " << schwefel(result.first) << '\n'
+       << "Fitness is: " << result.second << '\n';
+}
+
 int main(int argc, char *argv[]) {
   srand(time(0));
 
-  pair <array <param, dim>, float> result = hill_climber(spherical_min,
-							 spherical_max,
-							 spherical_range,
-							 pow(spherical_scale, 2),
-							 &spherical);
+  run_spherical_hillclimber();
+  // run_schewfel_hillclimber();
 
-  print_solution(result.first, spherical_scale);
-  cout << "Function value is: " << spherical(result.first) /
-    pow(spherical_scale, 2) << '\n'
-       << "Fitness is: " << result.second << '\n';
-
-  // void (*accumulate)(vector <param> * solutions,
-  // 		     const int iterations) = &accumulate_spherical;
-
-  // print_minmax(1000000, pow(spherical_scale, 2), "Spherical", accumulate);
-
+  // print_minmax(1000000, spherical_range, "Spherical", &spherical);
+  // print_minmax(10000000, schwefel_range, "Schwefel", &schwefel);
+  // int k = 14;
+  // test_schwefel(pow(k * M_PI_2, 2));
 
   return 0;
 }
