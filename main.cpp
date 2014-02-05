@@ -74,12 +74,15 @@ array <param, dim> gen_sol(const int range) {
   return solution;
 }
 
-array <param, dim> gen_near(array <param, dim> solution, const param delta) {
+array <param, dim> gen_near(array <param, dim> solution,
+			    const param delta,
+			    const int range) {
   // Adjusting all values by delta
   // Adjusting values with probability 0.5 was too slow
   for (int i = 0; i < dim; i++ ) {
-    // if (rand() % 2) solution[i] += delta;
-    solution[i] += delta;
+    if (rand() % 2) continue;
+    float replacement = solution[i] + delta;
+    if (abs(replacement) < (range/scale)/2) solution[i] = replacement;
   }
   return solution;
 }
@@ -137,9 +140,9 @@ pair <array <param, dim>, float> hill_climber(const float goal,
     cout << "Random restart - fitness is: " << fitness << '\n';
       for (int i = 0; i < neighbors; i++) {
 	delta = -delta; // switch between +/-
-	neighbor = gen_near(solution, delta);
+	neighbor = gen_near(solution, delta, range);
 	neighbor_fitness = function(neighbor);
-	if (abs(neighbor_fitness) < fitness) { // Trying to reach 0
+	if (neighbor_fitness < fitness) { // Trying to reach 0
 	  solution = neighbor;
 	  fitness = neighbor_fitness;
 	  // cout << "Better neighbor with fitness: " << fitness << '\n';
@@ -156,8 +159,8 @@ void run_spherical_hillclimber() {
   pair <array <param, dim>, float> result = hill_climber(10,
 							 100,
 							 spherical_range,
-							 1000000000,
-							 0.01,
+							 100000000,
+							 0.1,
 							 &spherical);
 
   print_solution(result.first);
@@ -166,11 +169,11 @@ void run_spherical_hillclimber() {
 }
 
 void run_schewfel_hillclimber() {
-  pair <array <param, dim>, float> result = hill_climber(10,
-							 1000,
+  pair <array <param, dim>, float> result = hill_climber(5000,
+							 10000,
 							 schwefel_range,
-							 25,
-							 5,
+							 10000000,
+							 10,
 							 &schwefel);
 
   print_solution(result.first);
@@ -181,8 +184,8 @@ void run_schewfel_hillclimber() {
 int main(int argc, char *argv[]) {
   srand(time(0));
 
-  run_spherical_hillclimber();
-  // run_schewfel_hillclimber();
+  // run_spherical_hillclimber();
+  run_schewfel_hillclimber();
   
   // print_solution(gen_sol(schwefel_range));
 

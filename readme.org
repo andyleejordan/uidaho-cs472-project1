@@ -79,3 +79,36 @@ Use more random restarts, fewer neighbors
   - if (F_{next} > F_{current best} || P(F_{next}, F_{current best}, T) < T)
     - S_{current best} \gets S_{next}
     - F_{current best} \gets F_{next}
+* Results
+** Spherical
+Random restart - fitness is: 99.1383
+Neighbors exhausted - fitness was: 0.0363001
+0.0599998 -0.0299992 -0.02 -0.0399999 0.04 0.0400003 0.00999989 0.0300003 0.0100001 0.0399996 0.0499996 -0.0300023 0.0600003 -0.0300004 -0.04 1.49012e-08 -0.0600001 0.04 7.45058e-08 -0.01 -0.0400003 0.00999971 -0.00999989 0.0300002 7.45058e-08 0.0399999 0.04 7.45058e-08 -0.0400002 -0.04 
+Spherical function value is: 0.0363001
+Fitness is: 0.0363001
+./search  51.32s user 0.07s system 99% cpu 51.424 total
+
+Random restart - fitness is: 98.4617
+Neighbors exhausted - fitness was: 0.0296999
+0.00999977 -1.49012e-08 -0.02 -0.0299998 -0.0200001 -0.0300002 -0.0500001 -0.00999989 -0.0499999 0.03 -0.0699997 0.0299998 -0.0299996 -0.0100013 0.02 -0.0300008 -0.00999989 0.0100001 0.02 0.05 -0.00999923 0.0299999 -0.03 0.03 -0.0199998 0.02 0.0100001 -0.0300002 0.0599998 -0.04 
+Spherical function value is: 0.0296999
+Fitness is: 0.0296999
+./search  56.61s user 0.06s system 99% cpu 56.695 total
+** Schwefel
+Random restart - fitness is: 9738.02
+Neighbors exhausted - fitness was: 5454.06
+Random restart - fitness is: 9997.56
+Neighbors exhausted - fitness was: 5153.29
+Random restart - fitness is: 9745.92
+Neighbors exhausted - fitness was: 4677.06
+-419.86 -69.17 304.93 303.39 -420.02 127.37 -416.68 -61.39 -63.69 -7.8 -420.22 -422.09 -207.64 -419.19 -426.68 -204.58 -209.62 -422.4 -205.39 -425.55 -62.59 -426.3 23.28 303.66 302.03 -202.06 -206.1 301.68 -204.13 -427.99 
+Schwefel function value is: 4677.06
+Fitness is: 4677.06
+./search  34.95s user 0.05s system 99% cpu 35.014 total
+
+Random restart - fitness is: 9854.36
+Neighbors exhausted - fitness was: 4928.45
+301.63 -1.59 301.09 -417.76 23.6 306.72 -421.32 299.72 -422.56 307.45 -202.5 28.89 310.15 123.67 -204.22 -413.49 -203.01 300.86 -201.67 -202.1 508.68 -204.12 -424.61 28.06 128.7 -419.72 -415.56 301.55 -419.7 131.06 
+Schwefel function value is: 4928.45
+Fitness is: 4928.45
+./search  11.75s user 0.02s system 97% cpu 12.092 total
