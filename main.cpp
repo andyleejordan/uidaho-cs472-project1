@@ -59,27 +59,27 @@ void test_schwefel(param fill) {
   cout << schwefel(params) << '\n';
 }
 
-float get_fitness(const param min,
-		  const param max,
-		  const param solution) {
-  // Scales param [min, max] to int [0, 10]
-  return 10. - (float(solution - min) * (10. / float(max - min)));
-}
+// float get_fitness(const param min,
+// 		  const param max,
+// 		  const param solution) {
+//   // Scales param [min, max] to int [0, 10]
+//   return 10. - (float(solution - min) * (10. / float(max - min)));
+// }
 
 array <param, dim> gen_sol(const int range) {
   array <param, dim> solution;
   for (int i = 0; i < dim; i++) {
-    solution[i] = ((rand() % range) - range/2) / scale;
+    solution[i] = (float(rand() % range) - range/2) / scale;
   }
   return solution;
 }
 
 array <param, dim> gen_near(array <param, dim> solution, const param delta) {
-  // Adjust all values by some delta
-  // TODO: adjust random subset of values
-  int random = rand() % dim;
-  for (int i = random; i < random + 6; i++ ) {
-    solution[i % dim] += delta;
+  // Adjusting all values by delta
+  // Adjusting values with probability 0.5 was too slow
+  for (int i = 0; i < dim; i++ ) {
+    // if (rand() % 2) solution[i] += delta;
+    solution[i] += delta;
   }
   return solution;
 }
@@ -119,8 +119,7 @@ void print_minmax(const int iterations,
 }
 
 pair <array <param, dim>, float> hill_climber(const float goal,
-					      const param min,
-					      const param max,
+					      const float filter,
 					      const param range,
 					      const int neighbors,
 					      param delta,
@@ -128,36 +127,36 @@ pair <array <param, dim>, float> hill_climber(const float goal,
 
   array <param, dim> solution;
   array <param, dim> neighbor;
-  float fitness = 0;
-  float neighbor_fitness = 0;
+  param fitness;
+  param neighbor_fitness;
 
-  while (fitness < goal) {
+  do {
     solution = gen_sol(range);
-    fitness = get_fitness(min, max, function(solution));
-    for (int i = 0; i < neighbors; i++) {
-      delta = (i % 2) ? delta : -delta;
-      neighbor = gen_near(solution, delta);
-      neighbor_fitness = get_fitness(min, max, function(neighbor));
-         if (neighbor_fitness > fitness) {
-	solution = neighbor;
-	fitness = neighbor_fitness;
-	// cout << "Better neighbor with fitness: " << fitness << '\n';
+    fitness = function(solution);
+    if (fitness < filter) {
+    cout << "Random restart - fitness is: " << fitness << '\n';
+      for (int i = 0; i < neighbors; i++) {
+	delta = -delta; // switch between +/-
+	neighbor = gen_near(solution, delta);
+	neighbor_fitness = function(neighbor);
+	if (abs(neighbor_fitness) < fitness) { // Trying to reach 0
+	  solution = neighbor;
+	  fitness = neighbor_fitness;
+	  // cout << "Better neighbor with fitness: " << fitness << '\n';
+	}
       }
+      cout << "Neighbors exhausted - fitness was: " << fitness << '\n';
     }
-    // cout << "Random restart\n, solution was: ";
-    // print_solution(solution);
-    // cout << '\n';
-  }
+  } while (fitness > goal);
   auto final = make_pair(solution, fitness);
   return final;
 }
 
 void run_spherical_hillclimber() {
-  pair <array <param, dim>, float> result = hill_climber(9.3,
-							 spherical_min,
-							 spherical_max,
+  pair <array <param, dim>, float> result = hill_climber(10,
+							 100,
 							 spherical_range,
-							 25,
+							 1000000000,
 							 0.01,
 							 &spherical);
 
@@ -167,12 +166,11 @@ void run_spherical_hillclimber() {
 }
 
 void run_schewfel_hillclimber() {
-  pair <array <param, dim>, float> result = hill_climber(9,
-							 schwefel_min,
-							 schwefel_max,
+  pair <array <param, dim>, float> result = hill_climber(10,
+							 1000,
 							 schwefel_range,
 							 25,
-							 1,
+							 5,
 							 &schwefel);
 
   print_solution(result.first);
@@ -185,11 +183,13 @@ int main(int argc, char *argv[]) {
 
   run_spherical_hillclimber();
   // run_schewfel_hillclimber();
+  
+  // print_solution(gen_sol(schwefel_range));
 
-  // print_minmax(1000000, spherical_range, "Spherical", &spherical);
+  // print_minmax(10000000, spherical_range, "Spherical", &spherical);
   // print_minmax(10000000, schwefel_range, "Schwefel", &schwefel);
-  // int k = 14;
-  // test_schwefel(pow(k * M_PI_2, 2));
+  // test_schwefel(-420.9687);
+  // test_spherical(1);
 
   return 0;
 }
