@@ -257,17 +257,18 @@ void run_schewfel_annealing() {
 int main(int argc, char *argv[]) {
   srand(time(0));
 
-  // run_spherical_hillclimber();
-  // run_schewfel_hillclimber();
-  // run_spherical_annealing();
-  run_schewfel_annealing();
-  
   // print_solution(gen_sol(schwefel_range));
+  // print_solution(gen_sol(spherical_range));
 
   // print_minmax(10000000, spherical_range, "Spherical", &spherical);
   // print_minmax(10000000, schwefel_range, "Schwefel", &schwefel);
   // test_schwefel(-420.9687);
   // test_spherical(1);
 
+  run_spherical_hillclimber();
+  run_schewfel_hillclimber();
+  run_spherical_annealing();
+  run_schewfel_annealing();
+  
   return 0;
 }

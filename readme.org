@@ -1,4 +1,20 @@
-* TODO Project #1a Hill Climbing and Simulated Annealing
+#+TITLE:     Project #1a Hill Climbing and Simulated Annealing
+#+AUTHOR:    Andrew Schwartzmeyer
+#+EMAIL:     schw2620@vandals.uidaho.edu
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+
+#+BEGIN_abstract
+This assignment implemented two common search algorithms
+(hill-climbing and simulated annealing) and tested them against two
+functions (the Spherical function and Schwefel function) in the C++
+programming language.
+#+END_abstract
+
+* Assignment :noexport:
    DEADLINE: <2014-02-05 Wed>
 This is the first subproject of the first project. The goal of this
 project is to write and test a hillclimbing and simulated annealing
@@ -13,7 +29,7 @@ the Rastigin function.)
 Pay careful attention to the ranges of the functions. You will want to
 use those ranges both in creating intial individuals and in
 controlling the generation of neighbors, e.g. you don't want your GA
-'wondering' out of the search space. Note that here the functions are
+'wandering' out of the search space. Note that here the functions are
 all defined with 30 dimensions, e.g. P = 30 in the function
 definitions.
 ** Task
@@ -34,21 +50,22 @@ includes the following sections:
 - Conclusions :: If its not working, why not. And what are then next
                  steps to complete the project.
 
-* Functions
-** Spherical
+* Notes :noexport:
+** Functions
+*** Spherical
 f_{Sph}(x) = (\sum_{i=1})^{p} (x_{i})^{2}
 x_{i} \in [-5.12, 5.12]
 x^{\*} = (0, 0, ..., 0); f_{Sph}(x^{\*}) = 0
 
 Use fewer random restarts, more neighbors
-** Schwefel
+*** Schwefel
 f_{Sch}(x) = 418.9829 \cdot p + (\sum_{i=1})^{p} x_{i }sin(\radic|x_{i}|)
 x_{i} \in [-512.03, 511.97]
 x^{\*} = (-420.9687, ..., -420.9687); f_{Sch}(x^{\*}) = 0
 
 Use more random restarts, fewer neighbors
-* Algorithms
-** Hill Climbing
+** Algorithms
+*** Hill Climbing
 - generate a random solution s_{1}
 - do random restart until a good enough solution is found
   - do until no better neighbor
@@ -57,7 +74,7 @@ Use more random restarts, fewer neighbors
       - s_{1} \gets s_{2}
     - loop
   - loop
-** Simulated Annealing
+*** Simulated Annealing
 - pick a random solution s_{1}
 - for T = 100 to 0 step -.1
   - pick a neighbor of s_{1}, s_{2}
@@ -79,9 +96,9 @@ Use more random restarts, fewer neighbors
   - if (F_{next} > F_{current best} || P(F_{next}, F_{current best}, T) < T)
     - S_{current best} \gets S_{next}
     - F_{current best} \gets F_{next}
-* Results
-** Spherical
-*** Hill-climbing
+** Results
+*** Spherical
+**** Hill-climbing
 With goal = 10, filter = 100, neighbors = 100000000, delta = 0.1:
 
 Random restart - fitness is: 99.1383
@@ -97,7 +114,7 @@ Neighbors exhausted - fitness was: 0.0296999
 Spherical function value is: 0.0296999
 Fitness is: 0.0296999
 ./search  56.61s user 0.06s system 99% cpu 56.695 total
-*** Simulated Annealing
+**** Simulated Annealing
 With goal = 10, filter = 100, steps = 100000, delta = 0.01, c = -1000:
 
 Random restart - fitness is: 99.8699
@@ -113,8 +130,8 @@ Temperature zero - fitness was: 0.00380014
 Spherical function value is: 0.00380014
 Fitness is: 0.00380014
 ./search  13.92s user 0.05s system 97% cpu 14.263 total
-** Schwefel
-*** Hill-climbing
+*** Schwefel
+**** Hill-climbing
 With goal = 5000, filter = 10000, neighbors = 10000000, and delta = 10:
 
 Random restart - fitness is: 8257.8
@@ -130,7 +147,7 @@ Neighbors exhausted - fitness was: 4928.45
 Schwefel function value is: 4928.45
 Fitness is: 4928.45
 ./search  11.75s user 0.02s system 97% cpu 12.092 total
-*** Simulated Annealing
+**** Simulated Annealing
 With goal = 3000, filter = 10000, steps = 10000000, constant = -10,
 and delta = 10:
 
@@ -143,3 +160,300 @@ Fitness is: 2813.62
 Schwefel function value is: 2990.2
 Fitness is: 2990.2
 ./search  87.90s user 0.26s system 99% cpu 1:28.90 total
+
+
+* Algorithms
+
+Initially I did not want to use floating point numbers in my program
+(for perceived performance reasons), and so attempted to scale the
+decimal numbers from the given functions by 100 (two decimal places)
+and store them as integers. This proved to be problematic because of
+the power of two in the Spherical function, and the squareroot and
+cosine in the Schwefel function. Additionally, testing with (unscaled)
+floats showed that, at least with the -O3 compiler option, there was
+no speed improvment to be gained from using ints. The switch was easy
+as I had initially typedef'ed "param" as int, and subsquently changed
+it to float.
+
+The primary data structure used is a C++11 array container, a template
+similar to a vector, but more efficient and requiring a size (the
+given dimension of thirty). Thus it is an array of thirty param
+types. Additionally, an "auto" specifier is used to seamlessly return
+a pair (an array and fitness) from my algorithms to their calling
+wrappers.
+
+There are functions in place to accumulate a vector of fitnesses from
+an arbitrarily large number of random solutions, used to get an idea
+of the range of fitnesses for both functions.
+
+At first I was scaling my fitness by taking the calculated value of
+the functions and normalizing it to the range [0, 10], with 10
+corresponding to a best fitness of zero. However, this made testing
+annoying as the "fitness" was an abstract indicator of the actual
+function values, and so I deprecated this "feature". (I need to not
+over-program, it is perhaps a bad habit.)
+
+Although this project is complete, since we will be building on it, my
+next task is to make it easier to use by moving to an object-oriented
+paradigm (thanks to C++ classes). I did not do this initially simply
+due to inexperience with coding more complex projects in C++, but will
+soon have this remedied.
+
+Note that I refer to fitness as positively, that is, I want a greater
+value for fitnes, but in implementation a "greater" value is actually
+a value closer to zero for both problems. So where I say "less than",
+the code actually checks if it is more than the goal of zero.
+
+** Hill-Climbing
+
+The hill-climbing algorithm is a naive (but sometimes effective) local
+search algorithm that starts with a random potential solution, and
+then iterates over neighbors of that solution while maintaining the
+best known solution. It is bad at finding the global optimum because of
+its inability to "jump" away from local optima (which, conversely, it
+is very good at finding).
+
+*** Random Restart / Filter
+
+To improve the chance of finding the global optimum with the
+hill-climbing algorithm, we wrap it with a "random restart" loop,
+which essentially discards the discovered local optimum if its fitness
+(that is, the value of the fitness function for the particular
+solution) is less than desired (which in my implementation is termed
+the "goal"). At this point it restarts, generating another random
+solution, and re-running the algorithm with new neighbors.
+
+I found that providing a "filter" value to my algorithm immensely
+improved the running time. When doing a random restart, if the fitness
+of the new solution is less than a provided filter level, it is
+immediately rejected and the loop creates a new one. In this way, the
+slow part of the algorithm (generating and comparing neighbors) is
+only executed with values that are already "pretty good" (but not
+perfect).
+
+*** Neighbor Generation
+
+To discover the local optimum (that is, to run the actual
+hill-climbing algorithm), my implementation uses a "for" loop which
+terminates after a provided number of neighbors have been created and
+evaluated. When creating a neighbor, the current solution and a
+provided delta is passed to a function which adds the delta value with
+a 50 percent probability to each parameter. On every iteration of the
+neighbor loop, I switch the sign of my delta so that the solution's
+parameters can converge from both sides. I then obtain the fitness of
+the new neighbor, and replace the current solution with the neighbor
+if it has a better fitness.
+
+For neighbor generation I tried many variations, including changing
+all the parameters by delta (unsuccessful because of the inability to
+keep good values), changing only one random paramters (which proved
+too slow), changing the parameters of a particular random slice (I had
+hoped this would return similar results to the 50 percent probability,
+but be more efficient since it only required a single call to rand(),
+it may still work better, but for simplicity I did not keep it), among
+others that I ought to have documented and cannot remember.
+
+Finally, after an optimum with a sufficient fitness is obtained, my
+algorithm returns it to the calling wrapper, which prints the final
+details.
+
+** Simulated Annealing
+
+The simulated annealing algorithm is (according to WikiPedia) a
+"generic probabilistic metaheuristic" for finding a global optimum. It
+is similar to the hill-climbing algorithm, but instead of iterating
+over a set of neighbors, it descends across a temperature gradient
+which allows for the chance of jumping away from bad local optima,
+and thus makes it capabable of moving around a complex fitness
+topology, and potentially locating the global optimum.
+
+*** Random Restart / Filter
+
+Because this algorithm is so like hill-climbing, wrapping it with a
+random restart loop with a filter is still desirable. Once an okay
+starting point is found, the algorithms diverge.
+
+*** Temperature Schedule / Steps
+
+Instead of solely examing increasingly better neighbors of a
+potential solution, in simulated annealing the iteration is done over
+a decreasing temperature gradient. It is still a for loop that
+generates a neighbor using the same function as the hill-climbing
+algorithm (again switching the sign of the delta back and forth), and
+will always replace the current solution with the neighbor if it has
+a better fitness. However, it will additionally replace the current
+solution with the neighbor, even if it has a worse fitness, based on
+a calculated probability.
+
+This probability is based on both how "bad" the jump away from the
+current solution is, and what the current temperature is. The worse
+the jump and the lower the temperature (that is, the closer to the end
+of the algorithm), the lower the probability, and conversely the
+probability is higher with hotter temperatures and better jumps.
+
+In particular this probability is calculated as $e^{-C(e_{1} -
+e_{2})/T}$, where $e$ is the mathematical constant Euler's number,
+$e_{1}$ is the "energy" (or fitness) of the current solution, $e_{2}$
+is the the energy of the neighbor, $T$ is the current temperature (a
+float of 100 decreasing with an arbitrary step-size), and $C$ is a
+provided scaling constant.
+
+Because of this ability to move around the fitness landscape,
+simulated annealing can be quite successful. When a solution with
+meeting the desired fitness is found, my algorithm returns it to the
+calling wrapper which again prints the final details.
+
+* Results
+
+These tests were run locally on my MacBook Pro with a 2.5 GHz Inel
+Core i5 dual-core (with hyper-threading) processor (but my program is
+currently not threaded). I actually found this to have better
+performance than running it in a VirtualBox Ubuntu 12.04 machine on my
+desktop, with full access to a 3.1 GHz AMD Athlon II X4 quad-core
+processor. Virtual machine performance is supposed to be near 95
+percent efficient now, but alas, this is probably an edge case.
+
+** Hill-Climbing
+*** Spherical Function
+I found the best results with goal = 10, filter = 100, neighbors =
+100000000, and delta = 0.1. Two example solutions:
+
+#+begin_example
+
+Solution:
+
+0.0599998 -0.0299992 -0.02 -0.0399999 0.04 0.0400003 0.00999989
+0.0300003 0.0100001 0.0399996 0.0499996 -0.0300023 0.0600003
+-0.0300004 -0.04 1.49012e-08 -0.0600001 0.04 7.45058e-08 -0.01
+-0.0400003 0.00999971 -0.00999989 0.0300002 7.45058e-08 0.0399999 0.04
+7.45058e-08 -0.0400002 -0.04
+
+Spherical function value is: 0.0363001
+Fitness is: 0.0363001
+./search 51.32s user 0.07s system 99% cpu 51.424 total
+
+Solution:
+
+0.00999977 -1.49012e-08 -0.02 -0.0299998 -0.0200001 -0.0300002
+-0.0500001 -0.00999989 -0.0499999 0.03 -0.0699997 0.0299998 -0.0299996
+-0.0100013 0.02 -0.0300008 -0.00999989 0.0100001 0.02 0.05 -0.00999923
+0.0299999 -0.03 0.03 -0.0199998 0.02 0.0100001 -0.0300002 0.0599998
+-0.04
+
+Spherical function value is: 0.0296999
+Fitness is: 0.0296999
+./search  56.61s user 0.06s system 99% cpu 56.695 total
+
+#+end_example
+
+*** Schwefel Function
+
+With goal = 5000, filter = 10000, neighbors = 10000000, and delta =
+10:
+
+#+begin_example
+
+Solution:
+
+-205.88 -420.96 -420.94 -416.53 -65.72 -205.52 302.99 -424.19 -205.69
+-62.04 -201.71 26.81 -427.71 306.48 -198.3 -421.6 -419.46 -415.42
+-70.59 -420.82 -200.77 -417.81 32.69 -421.01 -423.52 -419.48 502.17
+124.02 -420.36 299.66
+
+Schwefel function value is: 4063.14
+Fitness is: 4063.14
+./search  12.00s user 0.04s system 99% cpu 12.107 total
+
+Solution:
+
+301.63 -1.59 301.09 -417.76 23.6 306.72 -421.32 299.72 -422.56 307.45
+-202.5 28.89 310.15 123.67 -204.22 -413.49 -203.01 300.86 -201.67
+-202.1 508.68 -204.12 -424.61 28.06 128.7 -419.72 -415.56 301.55
+-419.7 131.06
+
+Schwefel function value is: 4928.45
+Fitness is: 4928.45
+./search  11.75s user 0.02s system 97% cpu 12.092 total
+
+#+end_example
+
+
+** Simulated Annealing
+*** Spherical Function
+
+With goal = 10, filter = 100, steps = 100000, delta = 0.01, c = -1000:
+
+#+begin_example
+
+Solution:
+
+-0.0300001 -1.47521e-06 2.83122e-07 0.0200013 0.0100015 0.0100003
+0.0299985 -1.63913e-06 -0.0199928 -0.00999996 0.02 0.0200007
+-0.0200013 0.0199994 -0.02 -0.0100016 4.02331e-07 -0.0299995
+-5.06639e-07 2.68221e-07 9.08971e-07 0.00999814 -0.00999998
+-1.19209e-07 0.0100005 0.00996085 0.00999896 3.8743e-07 1.38581e-06
+-1.38581e-06
+
+Spherical function value is: 0.00639894
+Fitness is: 0.00639894
+./search  5.95s user 0.02s system 99% cpu 5.980 total
+
+Solution:
+
+0.00999994 6.25849e-07 -1.93715e-07 -0.0100016 0.00999998 1.10269e-05
+-0.0200011 -0.00999981 1.19209e-07 -0.0199996 -0.0199988 0.01
+0.0100005 0.0200018 -0.0100003 0.0200018 0.0100003 -0.0199985
+0.0100003 -6.4075e-07 0.0100003 1.49012e-08 -2.5332e-07 -0.00999969
+-0.00999885 1.40071e-06 -0.0100006 2.5779e-06 0.0100015 1.38581e-06
+
+Spherical function value is: 0.00380014
+Fitness is: 0.00380014
+./search  13.92s user 0.05s system 97% cpu 14.263 total
+
+#+end_example
+
+*** Schwefel Function
+
+With goal = 3000, filter = 10000, steps = 10000000, constant = -10,
+and delta = 10:
+
+#+begin_example
+
+Solution:
+
+-201.95 506.49 302.65 294.04 -209.06 308.65 305.98 -416.03 293.45
+-421.27 -417.68 -419.1 125.97 503.21 -413 302.29 -424.58 -422.48
+304.21 -205.77 -423.43 -421.47 298.14 -421.91 300.77 -427.16 303.8
+313.87 -420.16 304.25
+
+Schwefel function value is: 2813.62
+Fitness is: 2813.62
+./search  12.73s user 0.06s system 97% cpu 13.166 total
+
+Solution:
+
+306.71 -418.9 309.1 306.14 303.21 502.45 -420.97 301.53 309.97 304.83
+292.7 305.89 -415.82 -414.75 306.96 306.81 507.15 507.85 304.2 -418.51
+310.43 511.78 300.89 509.13 295.15 302.67 302.44 299.53 -417.17
+-415.57
+
+Schwefel function value is: 2990.2
+Fitness is: 2990.2
+./search  87.90s user 0.26s system 99% cpu 1:28.90 total
+
+#+end_example
+
+* Conclusion
+
+This was quite a fun project, and pretty successful. At the very
+least, the algorithms and math functions are implemented
+correctly. The hill-climbing algorithm solves the Spherical algorithm
+very well (to values around 0.03) in just under a minute, and can
+obtain a solution to the Schwefel function of value in the 3000-5000
+range in 12 seconds, which could be likely be improved with more
+tweaking. The simulated annealing algorithm solves the Spherical
+function to values around 0.005 in 5 to 15 seconds, and obtains
+solutions to the Schwefel function with values 2813 and 2990, in 13
+and 88 seconds respectively. This last bit is notably interesting
+because it shows how much the algorithm can vary thank to its
+probability measures.
