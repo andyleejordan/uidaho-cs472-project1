@@ -81,6 +81,9 @@ Use more random restarts, fewer neighbors
     - F_{current best} \gets F_{next}
 * Results
 ** Spherical
+*** Hill-climbing
+With goal = 10, filter = 100, neighbors = 100000000, delta = 0.1:
+
 Random restart - fitness is: 99.1383
 Neighbors exhausted - fitness was: 0.0363001
 0.0599998 -0.0299992 -0.02 -0.0399999 0.04 0.0400003 0.00999989 0.0300003 0.0100001 0.0399996 0.0499996 -0.0300023 0.0600003 -0.0300004 -0.04 1.49012e-08 -0.0600001 0.04 7.45058e-08 -0.01 -0.0400003 0.00999971 -0.00999989 0.0300002 7.45058e-08 0.0399999 0.04 7.45058e-08 -0.0400002 -0.04 
@@ -94,17 +97,32 @@ Neighbors exhausted - fitness was: 0.0296999
 Spherical function value is: 0.0296999
 Fitness is: 0.0296999
 ./search  56.61s user 0.06s system 99% cpu 56.695 total
+*** Simulated Annealing
+With goal = 10, filter = 100, steps = 100000, delta = 0.01, c = -1000:
+
+Random restart - fitness is: 99.8699
+Temperature zero - fitness was: 0.00639894
+-0.0300001 -1.47521e-06 2.83122e-07 0.0200013 0.0100015 0.0100003 0.0299985 -1.63913e-06 -0.0199928 -0.00999996 0.02 0.0200007 -0.0200013 0.0199994 -0.02 -0.0100016 4.02331e-07 -0.0299995 -5.06639e-07 2.68221e-07 9.08971e-07 0.00999814 -0.00999998 -1.19209e-07 0.0100005 0.00996085 0.00999896 3.8743e-07 1.38581e-06 -1.38581e-06 
+Spherical function value is: 0.00639894
+Fitness is: 0.00639894
+./search  5.95s user 0.02s system 99% cpu 5.980 total
+
+Random restart - fitness is: 71.44
+Temperature zero - fitness was: 0.00380014
+0.00999994 6.25849e-07 -1.93715e-07 -0.0100016 0.00999998 1.10269e-05 -0.0200011 -0.00999981 1.19209e-07 -0.0199996 -0.0199988 0.01 0.0100005 0.0200018 -0.0100003 0.0200018 0.0100003 -0.0199985 0.0100003 -6.4075e-07 0.0100003 1.49012e-08 -2.5332e-07 -0.00999969 -0.00999885 1.40071e-06 -0.0100006 2.5779e-06 0.0100015 1.38581e-06 
+Spherical function value is: 0.00380014
+Fitness is: 0.00380014
+./search  13.92s user 0.05s system 97% cpu 14.263 total
 ** Schwefel
-Random restart - fitness is: 9738.02
-Neighbors exhausted - fitness was: 5454.06
-Random restart - fitness is: 9997.56
-Neighbors exhausted - fitness was: 5153.29
-Random restart - fitness is: 9745.92
-Neighbors exhausted - fitness was: 4677.06
--419.86 -69.17 304.93 303.39 -420.02 127.37 -416.68 -61.39 -63.69 -7.8 -420.22 -422.09 -207.64 -419.19 -426.68 -204.58 -209.62 -422.4 -205.39 -425.55 -62.59 -426.3 23.28 303.66 302.03 -202.06 -206.1 301.68 -204.13 -427.99 
-Schwefel function value is: 4677.06
-Fitness is: 4677.06
-./search  34.95s user 0.05s system 99% cpu 35.014 total
+*** Hill-climbing
+With goal = 5000, filter = 10000, neighbors = 10000000, and delta = 10:
+
+Random restart - fitness is: 8257.8
+Neighbors exhausted - fitness was: 4063.14
+-205.88 -420.96 -420.94 -416.53 -65.72 -205.52 302.99 -424.19 -205.69 -62.04 -201.71 26.81 -427.71 306.48 -198.3 -421.6 -419.46 -415.42 -70.59 -420.82 -200.77 -417.81 32.69 -421.01 -423.52 -419.48 502.17 124.02 -420.36 299.66 
+Schwefel function value is: 4063.14
+Fitness is: 4063.14
+./search  12.00s user 0.04s system 99% cpu 12.107 total
 
 Random restart - fitness is: 9854.36
 Neighbors exhausted - fitness was: 4928.45
@@ -112,3 +130,16 @@ Neighbors exhausted - fitness was: 4928.45
 Schwefel function value is: 4928.45
 Fitness is: 4928.45
 ./search  11.75s user 0.02s system 97% cpu 12.092 total
+*** Simulated Annealing
+With goal = 3000, filter = 10000, steps = 10000000, constant = -10,
+and delta = 10:
+
+-201.95 506.49 302.65 294.04 -209.06 308.65 305.98 -416.03 293.45 -421.27 -417.68 -419.1 125.97 503.21 -413 302.29 -424.58 -422.48 304.21 -205.77 -423.43 -421.47 298.14 -421.91 300.77 -427.16 303.8 313.87 -420.16 304.25 
+Schwefel function value is: 2813.62
+Fitness is: 2813.62
+./search  12.73s user 0.06s system 97% cpu 13.166 total
+
+306.71 -418.9 309.1 306.14 303.21 502.45 -420.97 301.53 309.97 304.83 292.7 305.89 -415.82 -414.75 306.96 306.81 507.15 507.85 304.2 -418.51 310.43 511.78 300.89 509.13 295.15 302.67 302.44 299.53 -417.17 -415.57 
+Schwefel function value is: 2990.2
+Fitness is: 2990.2
+./search  87.90s user 0.26s system 99% cpu 1:28.90 total
