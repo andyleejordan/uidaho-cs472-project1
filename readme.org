@@ -275,7 +275,7 @@ starting point is found, the algorithms diverge.
 
 *** Temperature Schedule / Steps
 
-Instead of solely examing increasingly better neighbors of a
+Instead of solely examining increasingly better neighbors of a
 potential solution, in simulated annealing the iteration is done over
 a decreasing temperature gradient. It is still a for loop that
 generates a neighbor using the same function as the hill-climbing
