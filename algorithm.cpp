@@ -4,10 +4,5 @@
 
 #include "algorithm.hpp"
 
-Algorithm::Algorithm(Problem p) : problem(p) {
-}
-
-Individual Algorithm::solve() const {
-  Individual solution;
-  return solution;
+Algorithm::Algorithm(Problem * p) : problem(p) {
 }

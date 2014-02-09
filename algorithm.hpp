@@ -10,10 +10,10 @@
 
 class Algorithm {
 protected:
-  Problem problem;
+  Problem * problem;
 public:
-  Algorithm(Problem p);
-  Individual solve() const;
+  Algorithm(Problem * p);
+  virtual Individual solve() const =0;
 };
 
 #endif /* _ALGORITHM_H_ */
