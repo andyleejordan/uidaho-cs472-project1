@@ -12,8 +12,8 @@ class Algorithm {
 protected:
   Problem problem;
 public:
-  Algorithm(Problem p) : problem(p) {};
-  Individual solve();
+  Algorithm(Problem p);
+  Individual solve() const;
 };
 
 #endif /* _ALGORITHM_H_ */

@@ -3,5 +3,11 @@
  */
 
 #include "algorithm.hpp"
-#include "problem.hpp"
 
+Algorithm::Algorithm(Problem p) : problem(p) {
+}
+
+Individual Algorithm::solve() const {
+  Individual solution;
+  return solution;
+}
