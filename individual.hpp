@@ -17,7 +17,7 @@ private:
   static const int dimension = 30;
   std::array <parameter, dimension> solution;
 public:
-  Individual(const int r = 1, const int s = 100);
+  Individual(const int r = 1, const int s = 1000000);
   Individual mutate(const double delta) const;
   std::string represent() const;
   void print() const;

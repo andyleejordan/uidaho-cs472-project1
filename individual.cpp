@@ -10,8 +10,9 @@
 typedef double parameter;
 
 Individual::Individual(const int r, const int s) : range(r), scale(s) {
+  int scaled_range = range * scale;
   for (auto & value : solution) {
-     value = (double(std::rand() % range) - range/2)/scale;
+     value = (double(std::rand() % scaled_range) - scaled_range/2)/scale;
   }
 }
 
@@ -46,7 +47,7 @@ std::string Individual::represent() const {
   for (auto value : solution) {
     representation += " (" + std::to_string(value) + ")";
   }
-  return representation;
+  return representation += "\n";
 }
 
 void Individual::print() const {
