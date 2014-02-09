@@ -8,7 +8,6 @@
 #include <array>
 #include <cstdlib>
 #include <string>
-#include <boost/foreach.hpp>
 
 class Individual {
 private:
@@ -19,9 +18,15 @@ private:
   std::array <parameter, dimension> solution;
 public:
   Individual(const int r = 1, const int s = 100);
-  Individual mutate(const double delta);
-  std::string represent();
-  void print();
+  Individual mutate(const double delta) const;
+  std::string represent() const;
+  void print() const;
+
+  // Individual acts like std::array solution iterator
+  std::array <parameter, dimension>::iterator begin();
+  std::array <parameter, dimension>::iterator end();
+  std::array <parameter, dimension>::const_iterator begin() const;
+  std::array <parameter, dimension>::const_iterator end() const;
 };
 
 #endif /* _INDIVIDUAL_H_ */
