@@ -161,6 +161,23 @@ Schwefel function value is: 2990.2
 Fitness is: 2990.2
 ./search  87.90s user 0.26s system 99% cpu 1:28.90 total
 
+** OOD
+*** Classes
+**** Algorithm
+- goal
+- filter
+- iterations
+
+**** Individual
+- solution data structure
+- mutation
+- initial generation
+
+**** Problem
+- fitness function
+- fitness normalization
+- range
+- delta / mututation bounds
 
 * Algorithms
 
