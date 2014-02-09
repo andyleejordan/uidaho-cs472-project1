@@ -1,13 +1,20 @@
 CC=g++-4.8
-CFLAGS=-Wall -std=c++11
-SOURCES=main.cpp
-EXECUTABLE=search
+CFLAGS=-Wall -std=c++11 -O3
+PROGRAM=search
+OBJECTS=main.o algorithm.o hill_climber_algorithm.o spherical_problem.o problem.o individual.o
+SOURCES=main.cpp algorithm.cpp hill_climber_algorithm.cpp spherical_problem.cpp problem.cpp individual.cpp
 
-all: $(SOURCES)
-	$(CC) $(CFLAGS) -O3 $(SOURCES) -o $(EXECUTABLE)
 
-debug: $(SOURCES)
-	$(CC) $(CFLAGS) -ggdb $(SOURCES) -o $(EXECUTABLE)
+all: $(PROGRAM)
 
-push: $(SOURCES)
-	rsync -rl $(SOURCES) Makefile slartibartfast.schwartzmeyer.us:project_1a
+$(PROGRAM): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJECTS)
+
+.cpp.o:
+	$(CC) $(CFLAGS) -c $*.cpp
+
+clean:
+	rm -f $(OBJECTS) $(PROGRAM)
+
+depend:
+	makedepend -- $(CFLAGS) -- $(SOURCES)
