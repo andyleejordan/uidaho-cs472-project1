@@ -19,6 +19,7 @@ public:
   const double goal;
   const double filter;
   double delta;
+  const int constant;
   const long iterations;
 
   Problem(const int r = 1,
@@ -29,6 +30,7 @@ public:
 	  const double g = 100,
 	  const double f = 0.5,
 	  const double delta = 0.1,
+	  const int c = 1,
 	  const long i = 1000000);
   Individual potential() const;
   Individual mutate(Individual potential) const;

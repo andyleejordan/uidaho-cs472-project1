@@ -12,6 +12,7 @@ Problem::Problem(const int r,
 		 const double g,
 		 const double f,
 		 const double d,
+		 const int c,
 		 const long i) : range(r),
 				 scale(s),
 				 min(n),
@@ -20,6 +21,7 @@ Problem::Problem(const int r,
 				 goal(g),
 				 filter(f),
 				 delta(d),
+				 constant(c),
 				 iterations(i) {};
 
 Individual Problem::potential() const {
