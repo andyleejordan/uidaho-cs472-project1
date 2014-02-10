@@ -12,6 +12,7 @@
 #include <ctime>
 #include <iostream>
 #include "spherical_problem.hpp"
+#include "schwefel_problem.hpp"
 #include "hill_climber_algorithm.hpp"
 #include "individual.hpp"
 
@@ -19,12 +20,12 @@ int main(int argc, char *argv[]) {
   // seed random number generator
   std::srand(std::time(0));
 
-  Spherical * spherical_problem = new Spherical;
-  HillClimber hill_climber_algorithm(spherical_problem);
+  Schwefel * schwefel_problem = new Schwefel;
+  HillClimber hill_climber_algorithm(schwefel_problem);
   Individual solution = hill_climber_algorithm.solve();
   std::cout << solution.represent() << "\n"
-	    << spherical_problem->fitness(solution) << "\n"
-	    << spherical_problem->problem(solution) << "\n";
+	    << schwefel_problem->fitness(solution) << "\n"
+	    << schwefel_problem->problem(solution) << "\n";
 
   return 0;
 }
