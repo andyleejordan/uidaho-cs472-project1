@@ -1,5 +1,5 @@
 /* Copyright 2014 Andrew Schwartzmeyer
- * Header file for base problem class
+ * Header file for spherical problem derived class
  */
 
 #ifndef _SPHERICAL_PROBLEM_H_

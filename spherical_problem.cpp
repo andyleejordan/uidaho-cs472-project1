@@ -1,5 +1,5 @@
 /* Copyright 2014 Andrew Schwartzmeyer
- * Header file for base problem class
+ * Source file for spherical problem derived class
  */
 
 #include <cmath>
