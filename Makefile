@@ -29,4 +29,3 @@ hill_climber_algorithm.o: hill_climber_algorithm.cpp hill_climber_algorithm.hpp 
 
 clean:
 	rm -f $(OBJECTS) $(PROGRAM)
-
