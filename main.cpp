@@ -14,18 +14,20 @@
 #include "spherical_problem.hpp"
 #include "schwefel_problem.hpp"
 #include "hill_climbing_algorithm.hpp"
+#include "simulated_annealing_algorithm.hpp"
 #include "individual.hpp"
 
 int main(int argc, char *argv[]) {
   // seed random number generator
   std::srand(std::time(0));
 
-  Schwefel * schwefel_problem = new Schwefel;
-  HillClimbing hill_climbing_algorithm(schwefel_problem);
-  Individual solution = hill_climbing_algorithm.solve();
+  Schwefel * problem = new Schwefel;
+  SimulatedAnnealing algorithm(problem);
+
+  Individual solution = algorithm.solve();
   std::cout << solution.represent() << "\n"
-	    << schwefel_problem->fitness(solution) << "\n"
-	    << schwefel_problem->problem(solution) << "\n";
+	    << problem->fitness(solution) << "\n"
+	    << problem->problem(solution) << "\n";
 
   return 0;
 }
