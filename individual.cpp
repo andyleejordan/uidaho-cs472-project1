@@ -4,15 +4,13 @@
 
 #include <cmath>
 #include <cstdlib>
-#include <iostream>
 #include "individual.hpp"
 
 typedef double parameter;
 
 Individual::Individual(const int r, const int s) : range(r), scale(s) {
-  int scaled_range = range * scale;
   for (auto & value : solution) {
-     value = (double(std::rand() % scaled_range) - scaled_range/2)/scale;
+     value = (double(std::rand() % range) - range/2)/scale;
   }
 }
 
@@ -36,9 +34,11 @@ Individual Individual::mutate(const double delta) const {
   // Returns a copy of original with delta added to each value with
   // a 50% probability
   Individual copy = *this;
-  for (auto & value : copy.solution) {
-    if (rand() % 2) if (abs(value + delta) < (range/scale)/2) value += delta;
-  }
+  for (auto & value : copy.solution)
+    if (std::rand() % 2) // 50% chance
+      // increment only if it would be within the bounds
+      if (std::abs(value + delta) < (double(range)/scale)/2)
+	value += delta;
   return copy;
 }
 
@@ -48,8 +48,4 @@ std::string Individual::represent() const {
     representation += " (" + std::to_string(value) + ")";
   }
   return representation += "\n";
-}
-
-void Individual::print() const {
-  std::cout << represent();
 }

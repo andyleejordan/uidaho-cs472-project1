@@ -17,10 +17,10 @@ private:
   static const int dimension = 30;
   std::array <parameter, dimension> solution;
 public:
-  Individual(const int r = 1, const int s = 1000000);
-  Individual mutate(const double delta) const;
+  // default to values [0, 1] to six decimal places
+  Individual(const int r = 1000000, const int s = 1000000);
   std::string represent() const;
-  void print() const;
+  Individual mutate(const double delta) const;
 
   // Individual acts like std::array solution iterator
   std::array <parameter, dimension>::iterator begin();
