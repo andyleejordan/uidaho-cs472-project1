@@ -1,11 +1,11 @@
 /* Copyright 2014 Andrew Schwartzmeyer
- * Header file for base algorithm class
+ * Source file for derived hill-climbing algorithm class
  */
 
 #include <iostream>
-#include "hill_climber_algorithm.hpp"
+#include "hill_climbing_algorithm.hpp"
 
-Individual HillClimber::solve() const {
+Individual HillClimbing::solve() const {
   Individual potential;
   double fitness;
   do {
@@ -16,7 +16,7 @@ Individual HillClimber::solve() const {
     if (fitness > problem->filter) {
       // work with "lucky" values
       for (long i = 0; i < problem->iterations; i++) {
-	// actual hill-climber algorithm
+	// actual hill-climbing algorithm
 	problem->delta = -problem->delta; // switch delta sign for convergence
 	Individual neighbor = problem->mutate(potential);
 	double neighbor_fitness = problem->fitness(neighbor);

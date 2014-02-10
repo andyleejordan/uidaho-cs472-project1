@@ -13,7 +13,7 @@
 #include <iostream>
 #include "spherical_problem.hpp"
 #include "schwefel_problem.hpp"
-#include "hill_climber_algorithm.hpp"
+#include "hill_climbing_algorithm.hpp"
 #include "individual.hpp"
 
 int main(int argc, char *argv[]) {
@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
   std::srand(std::time(0));
 
   Schwefel * schwefel_problem = new Schwefel;
-  HillClimber hill_climber_algorithm(schwefel_problem);
-  Individual solution = hill_climber_algorithm.solve();
+  HillClimbing hill_climbing_algorithm(schwefel_problem);
+  Individual solution = hill_climbing_algorithm.solve();
   std::cout << solution.represent() << "\n"
 	    << schwefel_problem->fitness(solution) << "\n"
 	    << schwefel_problem->problem(solution) << "\n";
