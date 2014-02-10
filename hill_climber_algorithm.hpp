@@ -4,14 +4,15 @@
 
 #ifndef _HILL_CLIMBER_ALGORITHM_H_
 #define _HILL_CLIMBER_ALGORITHM_H_
+
+#include "algorithm.hpp"
 #include "individual.hpp"
 #include "problem.hpp"
-#include "algorithm.hpp"
 
 class HillClimber: public Algorithm {
 public:
-  HillClimber(Problem p) : Algorithm(p) {};
-  Individual solve();
+  HillClimber(Problem * p) : Algorithm(p) {};
+  Individual solve() const;
 };
 
 #endif /* _HILL_CLIMBER_ALGORITHM_H_ */
