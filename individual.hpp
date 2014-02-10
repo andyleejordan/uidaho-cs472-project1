@@ -21,6 +21,7 @@ public:
   Individual(const int r = 1000000, const int s = 1000000);
   std::string represent() const;
   Individual mutate(const double delta) const;
+  int get_dimension() const;
 
   // Individual acts like std::array solution iterator
   std::array <parameter, dimension>::iterator begin();

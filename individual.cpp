@@ -14,6 +14,10 @@ Individual::Individual(const int r, const int s) : range(r), scale(s) {
   }
 }
 
+int Individual::get_dimension() const {
+  return dimension;
+};
+
 std::array <parameter, Individual::dimension>::iterator Individual::begin() {
   return solution.begin();
 }
