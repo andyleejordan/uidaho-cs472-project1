@@ -11,21 +11,29 @@ class Problem {
 protected:
   const int range;
   const int scale;
+  const double min;
+  const double max;
+  const bool minimize;
+
 public:
-  const int goal;
-  const int filter;
-  const int iterations;
-  const double delta;
+  const double goal;
+  const double filter;
+  double delta;
+  const long iterations;
 
   Problem(const int r = 1,
 	  const int s = 100,
-	  const int g = 100,
-	  const int f = 1000,
-	  const int i = 1000000,
-	  const double delta = 0.1);
-  double fitness(Individual subject);
+	  const double n = 0,
+	  const double x = 10,
+	  const bool z = false,
+	  const double g = 100,
+	  const double f = 0.5,
+	  const double delta = 0.1,
+	  const long i = 1000000);
   Individual potential() const;
   Individual mutate(Individual potential) const;
+  double fitness(Individual subject) const;
+  virtual double problem(Individual subject) const =0;
 };
 
 #endif /* _PROBLEM_H_ */
