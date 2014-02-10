@@ -14,10 +14,6 @@ Individual::Individual(const int r, const int s) : range(r), scale(s) {
   }
 }
 
-int Individual::get_dimension() const {
-  return dimension;
-};
-
 std::array <parameter, Individual::dimension>::iterator Individual::begin() {
   return solution.begin();
 }
@@ -32,6 +28,10 @@ std::array <parameter, Individual::dimension>::const_iterator Individual::begin(
 
 std::array <parameter, Individual::dimension>::const_iterator Individual::end() const {
   return solution.end();
+}
+
+std::array <parameter, Individual::dimension>::size_type Individual::size() {
+  return solution.size();
 }
 
 Individual Individual::mutate(const double delta) const {

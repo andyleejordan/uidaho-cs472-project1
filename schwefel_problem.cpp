@@ -9,5 +9,5 @@ double Schwefel::problem(Individual subject) const {
   double sum = 0;
   for (auto value : subject)
     sum += value * std::sin(std::sqrt(std::abs(value)));
-  return 418.9829 * subject.get_dimension() + sum;
+  return 418.9829 * subject.size() + sum;
 }

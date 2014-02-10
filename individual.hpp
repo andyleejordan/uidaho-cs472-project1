@@ -21,13 +21,13 @@ public:
   Individual(const int r = 1000000, const int s = 1000000);
   std::string represent() const;
   Individual mutate(const double delta) const;
-  int get_dimension() const;
 
   // Individual acts like std::array solution iterator
   std::array <parameter, dimension>::iterator begin();
   std::array <parameter, dimension>::iterator end();
   std::array <parameter, dimension>::const_iterator begin() const;
   std::array <parameter, dimension>::const_iterator end() const;
+  std::array <parameter, dimension>::size_type size();
 };
 
 #endif /* _INDIVIDUAL_H_ */
