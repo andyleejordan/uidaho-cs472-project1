@@ -8,6 +8,8 @@
 
 #include "individual.hpp"
 
+extern const int dimension;
+
 class Problem {
 protected:
   const double domain_min;
@@ -39,8 +41,8 @@ public:
 	  const long i = 1000000);
   double fitness(const Individual * subject) const;
   virtual double problem(const Individual * subject) const =0;
-  const virtual Individual * potential() const;
-  const virtual Individual * mutate(const Individual * subject);
+  virtual Individual * potential() const;
+  std::array <double, dimension> mutate(const Individual * subject);
 };
 
 #endif /* _PROBLEM_H_ */
