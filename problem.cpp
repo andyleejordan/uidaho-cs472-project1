@@ -23,14 +23,14 @@ Problem::Problem(const parameter dn,
 				 range_max(rx),
 				 minimize(z),
 				 range_dis(dn, dx),
-				 delta_dis(-d*(std::abs(dn) + std::abs(dx))/2,
-					   d*(std::abs(dn) + std::abs(dx))/2),
 				 goal(g),
 				 filter(f),
 				 delta(d),
 				 chance(h),
 				 constant(c),
-				 iterations(i) {};
+				 iterations(i),
+				 delta_dis(-d*(std::abs(dn) + std::abs(dx))/2,
+					   d*(std::abs(dn) + std::abs(dx))/2) {};
 
 parameter Problem::fitness(const Individual * subject) const {
   // Scales problem value [min, max] to parameter [0, 1] with 1 being max fitness
