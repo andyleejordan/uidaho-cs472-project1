@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+
 #include "spherical_problem.hpp"
 #include "schwefel_problem.hpp"
 #include "hill_climbing_algorithm.hpp"
@@ -21,11 +22,11 @@ int main(int argc, char *argv[]) {
   // seed random number generator
   std::srand(std::time(0));
 
-  Schwefel * problem = new Schwefel;
-  SimulatedAnnealing algorithm(problem);
+  Spherical * problem = new Spherical;
+  HillClimbing algorithm(problem);
 
-  Individual solution = algorithm.solve();
-  std::cout << solution.represent() << "\n"
+  const Individual * solution = algorithm.solve();
+  std::cout << solution->represent() << "\n"
 	    << problem->fitness(solution) << "\n"
 	    << problem->problem(solution) << "\n";
 
