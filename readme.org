@@ -15,16 +15,16 @@ programming language.
 #+END_abstract
 
 * Assignment :noexport:
-   DEADLINE: <2014-02-05 Wed>
-This is the first subproject of the first project. The goal of this
-project is to write and test a hillclimbing and simulated annealing
-search algorithms for two of the benchmark optimization problems.
+   DEADLINE: <2014-02-12 Wed>
+This is the second subproject. The goal of this project is to write
+part of a genetic algorithm (GA) for one of the benchmark optimization
+problems.
 
-For this subproject you only need to work on the Spherical and
-Schwefel functions, defined [[http://www.cs.cmu.edu/afs/cs/project/jair/pub/volume24/ortizboyer05a-html/node6.html#tabla:DefFunc][here]]. (Note the first function labeled as
-Schwefel on this page is actually the double sum, which we are not
-using. We are using the Schwefel function defined immediately after
-the Rastigin function.)
+For this subproject you only need to work on the Spherical function,
+defined at [[http://www.cs.cmu.edu/afs/cs/project/jair/pub/volume24/ortizboyer05a-html/node6.html#tabla:DefFunc][here]]. (Note the first function labeled as Schwefel on this
+page is actually the double sum, which we are not using. We are using
+the Schwefel function defined immediately after the Rastigin
+function.)
 
 Pay careful attention to the ranges of the functions. You will want to
 use those ranges both in creating intial individuals and in
@@ -32,24 +32,26 @@ controlling the generation of neighbors, e.g. you don't want your GA
 'wandering' out of the search space. Note that here the functions are
 all defined with 30 dimensions, e.g. P = 30 in the function
 definitions.
-** Task
-Write a hill climbing algorithm and a simulated annealing algorithm to
-find the input values (x_{1}, ... ,x_{30}) that minimizes the two test
-function.
-** Write-up
+
+*** Task
+Write a partial GA to find the input values (x_{1}, ... ,x_{30}) that
+minimizes the Spherical function.
+
+The GA should include the following:
+- Fitness function
+- Algorithm type: steady state or generational
+- Selection
+- Mutation
+- Note: you don't need crossover for this part
+*** Write-up
 Write a short paper describing the results of your project that
 includes the following sections:
-
-- Algorithm descriptions :: Description of the two algorithms. Be
-     careful to include all of the details someone would need to
-     replicate your work: how neightbors are generated in hill
-     climbing, what the temperature schedule is for simulated
-     annealing, etc. .
-- Results :: Table showing the results for both algorithms on both
-             test functions.
-- Conclusions :: If its not working, why not. And what are then next
-                 steps to complete the project.
-
+- Algorithm descriptions: Description of the GA so far. Be careful to
+  include all of the details someone would need to replicate your
+  work.
+- Results: Basically, does it seem to be working.
+- Conclusions: If its not working, why not. And what are then next
+  steps to complete the project.
 * Notes :noexport:
 ** Functions
 *** Spherical
