@@ -3,6 +3,8 @@
  * Source file for derived hill-climbing algorithm class
  */
 
+#include <iostream>
+
 #include "hill_climbing_algorithm.hpp"
 
 const Individual HillClimbing::solve() const {
@@ -29,6 +31,7 @@ const Individual HillClimbing::solve() const {
 	  if (fitness > problem->goal) goto finished;
 	}
       }
+      std::cout << "Neighbors exhausted, fitness was: " << fitness << "\n";
     }
   } while (fitness < problem->goal);
  finished:
