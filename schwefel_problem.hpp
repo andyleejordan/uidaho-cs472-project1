@@ -13,13 +13,14 @@ public:
   Schwefel(const parameter dn = -512.03,
 	   const parameter dx = 511.97,
 	   const parameter rn = 0,
-	   const parameter rx = 19000,
+	   const parameter rx = 21000,
 	   const bool z = true,
 	   const parameter g = 0.85,
-	   const parameter f = 0.60,
-	   const parameter d = 10,
-	   const int c = 10000,
-	   const long i = 10000000) : Problem(dn, dx, rn, rx, z, g, f, d, c, i) {};
+	   const parameter f = 0.65,
+	   const parameter d = 0.1,
+	   const parameter h = 0.5,
+	   const int c = 1000,
+	   const long i = 100000000) : Problem(dn, dx, rn, rx, z, g, f, d, h, c, i) {};
   parameter problem(const Individual * subject) const;
 };
 

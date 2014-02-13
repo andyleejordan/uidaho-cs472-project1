@@ -17,8 +17,7 @@ protected:
   const parameter range_min;
   const parameter range_max;
   const bool minimize;
-  std::uniform_real_distribution<> range_dis;
-  std::uniform_real_distribution<> delta_dis;
+  std::uniform_real_distribution<parameter> range_dis;
 
 public:
   const parameter goal;
@@ -27,6 +26,7 @@ public:
   parameter chance;
   const int constant;
   const long iterations;
+  std::uniform_real_distribution<parameter> delta_dis;
 
   Problem(const parameter dn = 0,
 	  const parameter dx = 1,

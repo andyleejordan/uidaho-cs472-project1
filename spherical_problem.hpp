@@ -16,10 +16,10 @@ public:
 	    const parameter rn = 0,
 	    const parameter rx = 786.432,
 	    const bool z = true,
-	    const parameter g = 0.99,
+	    const parameter g = 0.999,
 	    const parameter f = 0.86,
 	    const parameter d = 0.1,
-	    const parameter h = 0.5,
+	    const parameter h = 0.2,
 	    const int c = 100000,
 	    const long i = 100000000) : Problem(dn, dx, rn, rx,
 						z, g, f, d, h, c, i) {};
