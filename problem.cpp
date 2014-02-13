@@ -3,6 +3,8 @@
  * Source file for base problem class
  */
 
+#include <cmath>
+
 #include "problem.hpp"
 
 Problem::Problem(const double dn,
@@ -21,7 +23,8 @@ Problem::Problem(const double dn,
 				 range_max(rx),
 				 minimize(z),
 				 range_dis(dn, dx),
-				 delta_dis(-d, d),
+				 delta_dis(-d*(std::abs(dn) + std::abs(dx))/2,
+					   d*(std::abs(dn) + std::abs(dx))/2),
 				 goal(g),
 				 filter(f),
 				 delta(d),
