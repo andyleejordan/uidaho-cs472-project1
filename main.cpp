@@ -16,14 +16,15 @@
 #include "schwefel_problem.hpp"
 #include "hill_climbing_algorithm.hpp"
 #include "simulated_annealing_algorithm.hpp"
+#include "genetic_algorithm.hpp"
 #include "individual.hpp"
 
 int main() {
   // seed random number generator
   std::srand(std::time(0));
 
-  Spherical * problem = new Spherical;
-  HillClimbing algorithm(problem);
+  Problem * problem = new Schwefel;
+  Genetic algorithm(problem);
 
   const Individual solution = algorithm.solve();
   std::cout << solution.represent() << "\n"
