@@ -3,19 +3,17 @@
  * Source file for derived hill-climbing algorithm class
  */
 
-#include <iostream>
-
 #include "hill_climbing_algorithm.hpp"
 
-const Individual * HillClimbing::solve() const {
-  Individual * potential;
-  Individual * neighbor;
+const Individual HillClimbing::solve() const {
+  Individual potential;
+  Individual neighbor;
   parameter fitness;
   do {
     // random restart
     potential = problem->potential();
     neighbor = potential;
-    fitness = problem->fitness(potential);
+    fitness = problem->fitness(&potential);
     if (fitness > problem->filter) {
       // work with "lucky" values
       // std::cout << "Lucky restart, with: " << potential->represent()

@@ -10,6 +10,14 @@
 #include "individual.hpp"
 #include "problem.hpp"
 
+Individual::Individual() {
+  min = -1;
+  max = 1;
+  std::uniform_real_distribution<parameter> range_dis(min, max);
+  for (parameter & value : solution)
+    value = range_dis(rg->engine);
+}
+
 Individual::Individual(const parameter n,
 		       const parameter x,
 		       std::uniform_real_distribution<parameter> range_dis) : min(n),

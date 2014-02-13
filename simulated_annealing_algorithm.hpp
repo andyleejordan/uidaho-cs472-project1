@@ -17,7 +17,7 @@ private:
 		   const parameter temperature) const;
 public:
   SimulatedAnnealing(Problem * p) : Algorithm(p) {};
-  const Individual * solve() const;
+  const Individual solve() const;
 };
 
 #endif /* _SIMULATED_ANNEALING_ALGORITHM_H_ */

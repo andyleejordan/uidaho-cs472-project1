@@ -15,15 +15,15 @@ bool SimulatedAnnealing::probability(const parameter energy1,
   return (rand() % 100) < chance;
 }
 
-const Individual * SimulatedAnnealing::solve() const {
-  Individual * potential;
-  Individual * neighbor;
+const Individual SimulatedAnnealing::solve() const {
+  Individual potential;
+  Individual neighbor;
   parameter fitness;
   do {
     // random restart
     potential = problem->potential();
     neighbor = potential;
-    fitness = problem->fitness(potential);
+    fitness = problem->fitness(&potential);
     if (fitness > problem->filter) {
       // work with "lucky" values
       std::cout << "Lucky restart, with: " << potential->represent()

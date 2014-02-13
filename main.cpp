@@ -25,8 +25,8 @@ int main() {
   Spherical * problem = new Spherical;
   HillClimbing algorithm(problem);
 
-  const Individual * solution = algorithm.solve();
-  std::cout << solution->represent() << "\n"
-	    << problem->fitness(solution) << "\n"
-	    << problem->problem(solution) << "\n";
+  const Individual solution = algorithm.solve();
+  std::cout << solution.represent() << "\n"
+	    << problem->fitness(&solution) << "\n"
+	    << problem->problem(&solution) << "\n";
 }

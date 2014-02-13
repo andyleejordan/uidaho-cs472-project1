@@ -13,7 +13,7 @@
 class HillClimbing: public Algorithm {
 public:
   HillClimbing(Problem * p) : Algorithm(p) {};
-  const Individual * solve() const;
+  const Individual solve() const;
 };
 
 #endif /* _HILL_CLIMBING_ALGORITHM_H_ */

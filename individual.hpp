@@ -14,19 +14,19 @@
 #include "random_generator.hpp"
 
 extern RandomGenerator * rg;
-
 int const dimension = 30;
 typedef float parameter;
 
 class Individual {
 protected:
-  const parameter min;
-  const parameter max;
+  parameter min;
+  parameter max;
 
 public:
-  Individual(const parameter n = -1,
-	     const parameter x = 1,
-	     std::uniform_real_distribution<> range_dis = std::uniform_real_distribution<>(0, 1));
+  Individual();
+  Individual(const parameter n,
+	     const parameter x,
+	     std::uniform_real_distribution<parameter> range_dis);
 
   std::array <parameter, dimension> solution;
 
