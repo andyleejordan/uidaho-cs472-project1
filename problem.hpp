@@ -1,4 +1,5 @@
 /* Copyright 2014 Andrew Schwartzmeyer
+ *
  * Header file for base problem class
  */
 
@@ -9,33 +10,37 @@
 
 class Problem {
 protected:
-  const int range;
-  const int scale;
-  const double min;
-  const double max;
+  const double domain_min;
+  const double domain_max;
+  const double range_min;
+  const double range_max;
   const bool minimize;
+  std::uniform_real_distribution<> range_dis;
+  std::uniform_real_distribution<> delta_dis;
 
 public:
   const double goal;
   const double filter;
   double delta;
+  double chance;
   const int constant;
   const long iterations;
 
-  Problem(const int r = 1,
-	  const int s = 100,
-	  const double n = 0,
-	  const double x = 10,
+  Problem(const double dn = 0,
+	  const double dx = 1,
+	  const double rn = 0,
+	  const double rx = 10,
 	  const bool z = false,
 	  const double g = 100,
 	  const double f = 0.5,
-	  const double delta = 0.1,
+	  const double d = 0.1,
+	  const double h = 0.5,
 	  const int c = 1,
 	  const long i = 1000000);
-  Individual potential() const;
-  Individual mutate(Individual potential) const;
-  double fitness(Individual subject) const;
-  virtual double problem(Individual subject) const =0;
+  double fitness(const Individual * subject) const;
+  virtual double problem(const Individual * subject) const =0;
+  const virtual Individual * potential() const;
+  const virtual Individual * mutate(const Individual * subject);
 };
 
 #endif /* _PROBLEM_H_ */
