@@ -1,29 +1,32 @@
 /* Copyright 2014 Andrew Schwartzmeyer
+ *
  * Source file for derived hill-climbing algorithm class
  */
 
 #include <iostream>
+
 #include "hill_climbing_algorithm.hpp"
 
-Individual HillClimbing::solve() const {
-  Individual potential;
+const Individual * HillClimbing::solve() const {
+  const Individual * potential;
   double fitness;
   do {
     // random restart
     potential = problem->potential();
     fitness = problem->fitness(potential);
-    // std::cout << "Random restart, fitness is: " << fitness << std::endl;
     if (fitness > problem->filter) {
       // work with "lucky" values
+      // std::cout << "Lucky restart, with: " << potential->represent()
+      // 		<< " and fitness: " << fitness << std::endl;
       for (long i = 0; i < problem->iterations; i++) {
 	// actual hill-climbing algorithm
-	problem->delta = -problem->delta; // switch delta sign for convergence
-	Individual neighbor = problem->mutate(potential);
+	const Individual * neighbor = problem->mutate(potential);
 	double neighbor_fitness = problem->fitness(neighbor);
 	if (neighbor_fitness > fitness) {
 	  // keep track of best potential solution
 	  potential = neighbor;
 	  fitness = neighbor_fitness;
+	  // one of the few legitimate modern uses of goto!
 	  if (fitness > problem->goal) goto finished;
 	}
       }

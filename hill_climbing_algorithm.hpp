@@ -1,4 +1,5 @@
 /* Copyright 2014 Andrew Schwartzmeyer
+ *
  * Header file for derived hill-climbing algorithm class
  */
 
@@ -12,7 +13,7 @@
 class HillClimbing: public Algorithm {
 public:
   HillClimbing(Problem * p) : Algorithm(p) {};
-  Individual solve() const;
+  const Individual * solve() const;
 };
 
 #endif /* _HILL_CLIMBING_ALGORITHM_H_ */
