@@ -15,19 +15,23 @@
 
 extern RandomGenerator * rg;
 
+int const dimension = 30;
+
 class Individual {
 protected:
-  static const int dimension = 30;
   const double min;
   const double max;
-  std::array <double, dimension> solution;
+
 public:
-  // default to values [0, 1] to six decimal places
   Individual(const double n = -1,
 	     const double x = 1,
 	     std::uniform_real_distribution<> range_dis = std::uniform_real_distribution<>(0, 1));
+
+  std::array <double, dimension> solution;
+
   const virtual std::string represent() const;
-  const virtual Individual * mutate(const double delta, const double chance) const;
+  std::array <double, dimension> mutate(const double delta,
+						    const double chance) const;
 
   // Individual acts like std::array solution iterator
   std::array <double, dimension>::iterator begin();

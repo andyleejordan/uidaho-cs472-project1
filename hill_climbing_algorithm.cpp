@@ -8,11 +8,13 @@
 #include "hill_climbing_algorithm.hpp"
 
 const Individual * HillClimbing::solve() const {
-  const Individual * potential;
+  Individual * potential;
+  Individual * neighbor;
   double fitness;
   do {
     // random restart
     potential = problem->potential();
+    neighbor = potential;
     fitness = problem->fitness(potential);
     if (fitness > problem->filter) {
       // work with "lucky" values
@@ -20,7 +22,9 @@ const Individual * HillClimbing::solve() const {
       // 		<< " and fitness: " << fitness << std::endl;
       for (long i = 0; i < problem->iterations; i++) {
 	// actual hill-climbing algorithm
-	const Individual * neighbor = problem->mutate(potential);
+	std::array <double, dimension> mutation =
+	  problem->mutate(potential);
+	neighbor->solution = mutation;
 	double neighbor_fitness = problem->fitness(neighbor);
 	if (neighbor_fitness > fitness) {
 	  // keep track of best potential solution

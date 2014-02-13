@@ -40,13 +40,12 @@ double Problem::fitness(const Individual * subject) const {
   return fitness;
 }
 
-const Individual * Problem::potential() const {
+Individual * Problem::potential() const {
   Individual * potential = new Individual(domain_min, domain_max, range_dis);
   return potential;
 }
 
-const Individual * Problem::mutate(const Individual * subject) {
-  const double delta = delta_dis(rg->gen);
-  const Individual * mutated = subject->mutate(delta, chance);
-  return mutated;
+std::array <double, dimension> Problem::mutate(const Individual * subject) {
+  const double delta = delta_dis(rg->engine);
+  return subject->mutate(delta, chance);
 }
