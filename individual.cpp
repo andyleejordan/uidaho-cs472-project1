@@ -1,55 +1,58 @@
 /* Copyright 2014 Andrew Schwartzmeyer
- * Source file for class which represents an individual potential solution
+ *
+ * Source file for (base) class which represents an individual
+ * potential solution.
  */
 
 #include <cmath>
 #include <cstdlib>
+
 #include "individual.hpp"
 
-typedef double parameter;
-
-Individual::Individual(const int r, const int s) : range(r), scale(s) {
-  for (auto & value : solution) {
-     value = (double(std::rand() % range) - range/2)/scale;
-  }
+Individual::Individual(const double n,
+		       const double x,
+		       std::uniform_real_distribution<> range_dis) : min(n),
+								     max(x) {
+  for (auto & value : solution)
+    value = range_dis(rg->gen);
 }
 
-std::array <parameter, Individual::dimension>::iterator Individual::begin() {
-  return solution.begin();
-}
-
-std::array <parameter, Individual::dimension>::iterator Individual::end() {
-  return solution.end();
-}
-
-std::array <parameter, Individual::dimension>::const_iterator Individual::begin() const {
-  return solution.begin();
-}
-
-std::array <parameter, Individual::dimension>::const_iterator Individual::end() const {
-  return solution.end();
-}
-
-std::array <parameter, Individual::dimension>::size_type Individual::size() {
-  return solution.size();
-}
-
-Individual Individual::mutate(const double delta) const {
-  // Returns a copy of original with delta added to each value with
-  // a 50% probability
-  Individual copy = *this;
-  for (auto & value : copy.solution)
-    if (std::rand() % 2) // 50% chance
-      // increment only if it would be within the bounds
-      if (std::abs(value + delta) < (double(range)/scale)/2)
-	value += delta;
-  return copy;
-}
-
-std::string Individual::represent() const {
+const std::string Individual::represent() const {
   std::string representation = "Solution:";
-  for (auto value : solution) {
+  for (auto value : solution)
     representation += " (" + std::to_string(value) + ")";
-  }
   return representation += "\n";
+}
+
+const Individual * Individual::mutate(const double delta, const double chance) const {
+  // Returns a copy of original 
+  Individual copy = *this;
+  Individual * copy_ptr = &copy;
+  for (auto & value : copy_ptr->solution)
+    if (std::rand() % 100 < int(100 * chance)) { // convert [0, 1] to percent
+      double value_i = value + delta;
+      // increment only if it would be within the bounds
+      if (min < value_i && value_i < max) value += value_i;
+    }
+  return copy_ptr;
+}
+
+std::array <double, Individual::dimension>::iterator Individual::begin() {
+  return solution.begin();
+}
+
+std::array <double, Individual::dimension>::iterator Individual::end() {
+  return solution.end();
+}
+
+std::array <double, Individual::dimension>::const_iterator Individual::begin() const {
+  return solution.begin();
+}
+
+std::array <double, Individual::dimension>::const_iterator Individual::end() const {
+  return solution.end();
+}
+
+std::array <double, Individual::dimension>::size_type Individual::size() const {
+  return solution.size();
 }
