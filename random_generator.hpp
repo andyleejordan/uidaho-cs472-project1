@@ -10,12 +10,11 @@
 
 class RandomGenerator {
 private:
-  typedef std::mt19937 engine;
   std::random_device rd;
 
 public:
   RandomGenerator();
-  engine gen;
+  std::mt19937 engine;
 };
 
 #endif /* _RANDOM_GENERATOR_H_ */

@@ -6,7 +6,7 @@
 #include "random_generator.hpp"
 
 RandomGenerator::RandomGenerator() {
-  gen.seed(rd());
+  engine.seed(rd());
 }
 
 // Singleton RandomGenerator object for shared use
