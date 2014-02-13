@@ -1,40 +1,43 @@
 /* Copyright 2014 Andrew Schwartzmeyer
+ *
  * Source file for simulated annealing derived algorithm class
  */
 
 #include <cmath>
 #include <iostream>
+
 #include "simulated_annealing_algorithm.hpp"
 
-bool SimulatedAnnealing::probability(double energy1,
-				     double energy2,
-				     double temperature) const {
+bool SimulatedAnnealing::probability(const double energy1,
+				     const double energy2,
+				     const double temperature) const {
   double chance = 100 * std::exp(-problem->constant*(energy1 - energy2)/temperature);
   return (rand() % 100) < chance;
 }
 
-Individual SimulatedAnnealing::solve() const {
-  Individual potential;
+const Individual * SimulatedAnnealing::solve() const {
+  const Individual * potential;
   double fitness;
   do {
     // random restart
     potential = problem->potential();
     fitness = problem->fitness(potential);
-    // std::cout << "Random restart, fitness is: " << fitness << std::endl;
     if (fitness > problem->filter) {
       // work with "lucky" values
+      std::cout << "Lucky restart, with: " << potential->represent()
+		<< " and fitness: " << fitness << std::endl;
       for (long T = problem->iterations; T > 0; T--) {
 	// actual simulated-annealing algorithm
-	double temperature = 100. * double(T)/problem->iterations;
-	problem->delta = -problem->delta; // switch delta sign for convergence
-	Individual neighbor = problem->mutate(potential);
-	double neighbor_fitness = problem->fitness(neighbor);
+	const double temperature = 100. * double(T)/problem->iterations;
+	const Individual * neighbor = problem->mutate(potential);
+	const double neighbor_fitness = problem->fitness(neighbor);
 	if (neighbor_fitness > fitness || probability(fitness,
 						      neighbor_fitness,
 						      temperature)) {
 	  // keep track of best potential solution
 	  potential = neighbor;
 	  fitness = neighbor_fitness;
+	  // one of the few legitimate modern uses of goto!
 	  if (fitness > problem->goal) goto finished;
 	}
       }
