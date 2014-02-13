@@ -16,29 +16,30 @@
 extern RandomGenerator * rg;
 
 int const dimension = 30;
+typedef float parameter;
 
 class Individual {
 protected:
-  const double min;
-  const double max;
+  const parameter min;
+  const parameter max;
 
 public:
-  Individual(const double n = -1,
-	     const double x = 1,
+  Individual(const parameter n = -1,
+	     const parameter x = 1,
 	     std::uniform_real_distribution<> range_dis = std::uniform_real_distribution<>(0, 1));
 
-  std::array <double, dimension> solution;
+  std::array <parameter, dimension> solution;
 
   const virtual std::string represent() const;
-  std::array <double, dimension> mutate(const double delta,
-						    const double chance) const;
+  std::array <parameter, dimension> mutate(const parameter delta,
+						    const parameter chance) const;
 
   // Individual acts like std::array solution iterator
-  std::array <double, dimension>::iterator begin();
-  std::array <double, dimension>::iterator end();
-  std::array <double, dimension>::const_iterator begin() const;
-  std::array <double, dimension>::const_iterator end() const;
-  std::array <double, dimension>::size_type size() const;
+  std::array <parameter, dimension>::iterator begin();
+  std::array <parameter, dimension>::iterator end();
+  std::array <parameter, dimension>::const_iterator begin() const;
+  std::array <parameter, dimension>::const_iterator end() const;
+  std::array <parameter, dimension>::size_type size() const;
 };
 
 #endif /* _INDIVIDUAL_H_ */

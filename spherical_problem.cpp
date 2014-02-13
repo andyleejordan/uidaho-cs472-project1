@@ -7,8 +7,8 @@
 
 #include "spherical_problem.hpp"
 
-double Spherical::problem(const Individual * subject) const {
-  double sum = 0;
+parameter Spherical::problem(const Individual * subject) const {
+  parameter sum = 0;
   for (const auto value : *subject) sum += std::pow(value, 2);
   return sum;
 }

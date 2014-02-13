@@ -10,7 +10,7 @@
 const Individual * HillClimbing::solve() const {
   Individual * potential;
   Individual * neighbor;
-  double fitness;
+  parameter fitness;
   do {
     // random restart
     potential = problem->potential();
@@ -22,10 +22,10 @@ const Individual * HillClimbing::solve() const {
       // 		<< " and fitness: " << fitness << std::endl;
       for (long i = 0; i < problem->iterations; i++) {
 	// actual hill-climbing algorithm
-	std::array <double, dimension> mutation =
+	std::array <parameter, dimension> mutation =
 	  problem->mutate(potential);
 	neighbor->solution = mutation;
-	double neighbor_fitness = problem->fitness(neighbor);
+	parameter neighbor_fitness = problem->fitness(neighbor);
 	if (neighbor_fitness > fitness) {
 	  // keep track of best potential solution
 	  potential = neighbor;

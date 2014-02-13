@@ -12,9 +12,9 @@
 
 class SimulatedAnnealing: public Algorithm {
 private:
-  bool probability(const double energy1,
-		   const double energy2,
-		   const double temperature) const;
+  bool probability(const parameter energy1,
+		   const parameter energy2,
+		   const parameter temperature) const;
 public:
   SimulatedAnnealing(Problem * p) : Algorithm(p) {};
   const Individual * solve() const;

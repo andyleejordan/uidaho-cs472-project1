@@ -7,15 +7,15 @@
 
 #include "problem.hpp"
 
-Problem::Problem(const double dn,
-		 const double dx,
-		 const double rn,
-		 const double rx,
+Problem::Problem(const parameter dn,
+		 const parameter dx,
+		 const parameter rn,
+		 const parameter rx,
 		 const bool z,
-		 const double g,
-		 const double f,
-		 const double d,
-		 const double h,
+		 const parameter g,
+		 const parameter f,
+		 const parameter d,
+		 const parameter h,
 		 const int c,
 		 const long i) : domain_min(dn),
 				 domain_max(dx),
@@ -32,10 +32,10 @@ Problem::Problem(const double dn,
 				 constant(c),
 				 iterations(i) {};
 
-double Problem::fitness(const Individual * subject) const {
-  // Scales problem value [min, max] to double [0, 1] with 1 being max fitness
-  double sum = this->problem(subject);
-  double fitness = ((sum - range_min) / (range_max - range_min)); // normalize
+parameter Problem::fitness(const Individual * subject) const {
+  // Scales problem value [min, max] to parameter [0, 1] with 1 being max fitness
+  parameter sum = this->problem(subject);
+  parameter fitness = ((sum - range_min) / (range_max - range_min)); // normalize
   if (minimize) fitness = 1. - fitness; // inverse if trying to minimize
   return fitness;
 }
@@ -45,7 +45,7 @@ Individual * Problem::potential() const {
   return potential;
 }
 
-std::array <double, dimension> Problem::mutate(const Individual * subject) {
-  const double delta = delta_dis(rg->engine);
+std::array <parameter, dimension> Problem::mutate(const Individual * subject) {
+  const parameter delta = delta_dis(rg->engine);
   return subject->mutate(delta, chance);
 }

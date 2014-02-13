@@ -8,17 +8,17 @@
 
 #include "simulated_annealing_algorithm.hpp"
 
-bool SimulatedAnnealing::probability(const double energy1,
-				     const double energy2,
-				     const double temperature) const {
-  double chance = 100 * std::exp(-problem->constant*(energy1 - energy2)/temperature);
+bool SimulatedAnnealing::probability(const parameter energy1,
+				     const parameter energy2,
+				     const parameter temperature) const {
+  parameter chance = 100 * std::exp(-problem->constant*(energy1 - energy2)/temperature);
   return (rand() % 100) < chance;
 }
 
 const Individual * SimulatedAnnealing::solve() const {
   Individual * potential;
   Individual * neighbor;
-  double fitness;
+  parameter fitness;
   do {
     // random restart
     potential = problem->potential();
@@ -30,11 +30,11 @@ const Individual * SimulatedAnnealing::solve() const {
 		<< " and fitness: " << fitness << std::endl;
       for (long T = problem->iterations; T > 0; T--) {
 	// actual simulated-annealing algorithm
-	const double temperature = 100. * double(T)/problem->iterations;
-	std::array <double, dimension> mutation =
+	const parameter temperature = 100. * parameter(T)/problem->iterations;
+	std::array <parameter, dimension> mutation =
 	  problem->mutate(potential);
 	neighbor->solution = mutation;
-	const double neighbor_fitness = problem->fitness(neighbor);
+	const parameter neighbor_fitness = problem->fitness(neighbor);
 	if (neighbor_fitness > fitness || probability(fitness,
 						      neighbor_fitness,
 						      temperature)) {
