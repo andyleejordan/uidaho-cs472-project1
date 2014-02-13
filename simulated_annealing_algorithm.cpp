@@ -31,10 +31,9 @@ const Individual * SimulatedAnnealing::solve() const {
       for (long T = problem->iterations; T > 0; T--) {
 	// actual simulated-annealing algorithm
 	const parameter temperature = 100. * parameter(T)/problem->iterations;
-	std::array <parameter, dimension> mutation =
-	  problem->mutate(potential);
-	neighbor->solution = mutation;
-	const parameter neighbor_fitness = problem->fitness(neighbor);
+	std::array <parameter, dimension> mutation = mutate(&potential);
+	neighbor.solution = mutation;
+	const parameter neighbor_fitness = problem->fitness(&neighbor);
 	if (neighbor_fitness > fitness || probability(fitness,
 						      neighbor_fitness,
 						      temperature)) {

@@ -44,8 +44,3 @@ Individual * Problem::potential() const {
   Individual * potential = new Individual(domain_min, domain_max, range_dis);
   return potential;
 }
-
-std::array <parameter, dimension> Problem::mutate(const Individual * subject) {
-  const parameter delta = delta_dis(rg->engine);
-  return subject->mutate(delta, chance);
-}

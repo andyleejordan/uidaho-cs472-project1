@@ -15,6 +15,7 @@ protected:
 public:
   Algorithm(Problem * p);
   const virtual Individual * solve() const =0;
+  virtual std::array <parameter, dimension> mutate(const Individual * subject) const;
 };
 
 #endif /* _ALGORITHM_H_ */

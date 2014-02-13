@@ -31,8 +31,7 @@ public:
   std::array <parameter, dimension> solution;
 
   const virtual std::string represent() const;
-  std::array <parameter, dimension> mutate(const parameter delta,
-						    const parameter chance) const;
+  void mutate(parameter & value, const parameter value_i) const;
 
   // Individual acts like std::array solution iterator
   std::array <parameter, dimension>::iterator begin();

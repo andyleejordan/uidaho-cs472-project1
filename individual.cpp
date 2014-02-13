@@ -25,18 +25,13 @@ const std::string Individual::represent() const {
   return representation += "\n";
 }
 
-std::array <parameter, dimension> Individual::mutate(const parameter delta,
-						  const parameter chance) const {
-  // Returns a copy of original 
-  std::array <parameter, dimension> mutation = this->solution;
-  std::uniform_int_distribution<> percent(1, 100);
-  for (auto & value : mutation)
-    if (percent(rg->engine) < int(100 * chance)) { // convert [0, 1] to percent
-      parameter value_i = value + delta;
-      // increment only if it would be within the bounds
-      if (min <= value_i && value_i <= max) value += value_i;
-    }
-  return mutation;
+void Individual::mutate(parameter & value, const parameter delta) const {
+  // clip if out of bounds
+  parameter value_i = value + delta;
+  if (value_i < min) value = min;
+  else if (value_i > max) value = max;
+  // increment only if it would be within the bounds
+  else value = value_i;
 }
 
 std::array <parameter, dimension>::iterator Individual::begin() {

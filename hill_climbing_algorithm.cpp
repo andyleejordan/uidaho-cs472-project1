@@ -22,10 +22,9 @@ const Individual * HillClimbing::solve() const {
       // 		<< " and fitness: " << fitness << std::endl;
       for (long i = 0; i < problem->iterations; i++) {
 	// actual hill-climbing algorithm
-	std::array <parameter, dimension> mutation =
-	  problem->mutate(potential);
-	neighbor->solution = mutation;
-	parameter neighbor_fitness = problem->fitness(neighbor);
+	std::array <parameter, dimension> mutation = mutate(&potential);
+	neighbor.solution = mutation;
+	parameter neighbor_fitness = problem->fitness(&neighbor);
 	if (neighbor_fitness > fitness) {
 	  // keep track of best potential solution
 	  potential = neighbor;

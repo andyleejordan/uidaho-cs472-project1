@@ -42,7 +42,6 @@ public:
   parameter fitness(const Individual * subject) const;
   virtual parameter problem(const Individual * subject) const =0;
   virtual Individual * potential() const;
-  std::array <parameter, dimension> mutate(const Individual * subject);
 };
 
 #endif /* _PROBLEM_H_ */
