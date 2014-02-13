@@ -12,15 +12,15 @@
 
 Individual::Individual(const parameter n,
 		       const parameter x,
-		       std::uniform_real_distribution<> range_dis) : min(n),
-								     max(x) {
-  for (auto & value : solution)
+		       std::uniform_real_distribution<parameter> range_dis) : min(n),
+									      max(x) {
+  for (parameter & value : solution)
     value = range_dis(rg->engine);
 }
 
 const std::string Individual::represent() const {
   std::string representation = "Solution:";
-  for (auto value : solution)
+  for (parameter value : solution)
     representation += " (" + std::to_string(value) + ")";
   return representation += "\n";
 }
