@@ -16,8 +16,6 @@ const Individual HillClimbing::solve() const {
     fitness = problem->fitness(&potential);
     if (fitness > problem->filter) {
       // work with "lucky" values
-      // std::cout << "Lucky restart, with: " << potential->represent()
-      // 		<< " and fitness: " << fitness << std::endl;
       for (long i = 0; i < problem->iterations; i++) {
 	// actual hill-climbing algorithm
 	std::array <parameter, dimension> mutation = mutate(&potential);
@@ -31,7 +29,6 @@ const Individual HillClimbing::solve() const {
 	  if (fitness > problem->goal) goto finished;
 	}
       }
-      std::cout << "Neighbors exhausted, fitness was: " << fitness << "\n";
     }
   } while (fitness < problem->goal);
  finished:

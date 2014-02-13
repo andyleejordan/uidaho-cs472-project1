@@ -26,8 +26,6 @@ const Individual SimulatedAnnealing::solve() const {
     fitness = problem->fitness(&potential);
     if (fitness > problem->filter) {
       // work with "lucky" values
-      std::cout << "Lucky restart, with: " << potential->represent()
-		<< " and fitness: " << fitness << std::endl;
       for (long T = problem->iterations; T > 0; T--) {
 	// actual simulated-annealing algorithm
 	const parameter temperature = 100. * parameter(T)/problem->iterations;
