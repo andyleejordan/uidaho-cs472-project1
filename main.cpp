@@ -18,7 +18,7 @@
 #include "simulated_annealing_algorithm.hpp"
 #include "individual.hpp"
 
-int main(int argc, char *argv[]) {
+int main() {
   // seed random number generator
   std::srand(std::time(0));
 
@@ -29,6 +29,4 @@ int main(int argc, char *argv[]) {
   std::cout << solution->represent() << "\n"
 	    << problem->fitness(solution) << "\n"
 	    << problem->problem(solution) << "\n";
-
-  return 0;
 }
