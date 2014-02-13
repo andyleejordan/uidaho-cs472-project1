@@ -1,5 +1,6 @@
 /* Copyright 2014 Andrew Schwartzmeyer
- * Source file for base algorithm class
+ *
+ * Source file for abstract base algorithm class
  */
 
 #include "algorithm.hpp"

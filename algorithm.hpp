@@ -1,5 +1,6 @@
 /* Copyright 2014 Andrew Schwartzmeyer
- * Header file for base algorithm class
+ *
+ * Header file for abstract base algorithm class
  */
 
 #ifndef _ALGORITHM_H_
@@ -13,7 +14,7 @@ protected:
   Problem * problem;
 public:
   Algorithm(Problem * p);
-  virtual Individual solve() const =0;
+  const virtual Individual * solve() const =0;
 };
 
 #endif /* _ALGORITHM_H_ */
