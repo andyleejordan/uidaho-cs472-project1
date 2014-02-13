@@ -4,8 +4,8 @@
  *
  * Project #1a Hill Climbing and Simulated Annealing
  *
- * This program uses C++11 extensions (array template, auto specifier,
- * range-based for loop)
+ * This program uses C++11 extensions (array template, range-based for
+ * loop, random library)
  */
 
 #include <cstdlib>
