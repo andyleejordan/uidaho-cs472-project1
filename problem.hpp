@@ -26,7 +26,6 @@ public:
   parameter chance;
   const int constant;
   const long iterations;
-  std::uniform_real_distribution<parameter> delta_dis;
 
   Problem(const parameter dn = 0,
 	  const parameter dx = 1,

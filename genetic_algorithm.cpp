@@ -10,17 +10,13 @@
 #include "genetic_algorithm.hpp"
 #include "random_generator.hpp"
 
-std::array <parameter, dimension> Genetic::mutate(const Individual * subject) const {
+void Genetic::mutate(Individual & subject) const {
   // unit Gaussian distribution for delta
-  std::normal_distribution<parameter> delta(mean, stddev);
-  std::array <parameter, dimension> mutation = subject->solution;
-  for (parameter & value : mutation) {
-    parameter d = delta(rg->engine);
-    // std::cout << d << ' ';
-    subject->mutate(value, d);
+  std::normal_distribution<parameter> delta_dis(mean, stddev);
+  for (parameter & value : subject) {
+    parameter delta = delta_dis(rg.engine);
+    subject.mutate(value, value * delta);
   }
-  // std::cout << '\n';
-  return mutation;
 }
 
 const Individual Genetic::solve() const {

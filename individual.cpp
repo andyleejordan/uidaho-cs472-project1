@@ -33,9 +33,8 @@ const std::string Individual::represent() const {
   return representation += "\n";
 }
 
-void Individual::mutate(parameter & value, const parameter delta) const {
+void Individual::mutate(parameter & value, const parameter value_i) const {
   // clip if out of bounds
-  parameter value_i = value + delta;
   if (value_i < min) value = min;
   else if (value_i > max) value = max;
   // increment only if it would be within the bounds
