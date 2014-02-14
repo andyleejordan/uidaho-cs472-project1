@@ -12,18 +12,18 @@ extern const int dimension;
 
 class Problem {
 protected:
-  const parameter domain_min;
-  const parameter domain_max;
   const parameter range_min;
   const parameter range_max;
   const bool minimize;
   std::uniform_real_distribution<parameter> range_dis;
 
 public:
+  const parameter domain_min;
+  const parameter domain_max;
   const parameter goal;
   const parameter filter;
-  parameter delta;
-  parameter chance;
+  const parameter delta;
+  const parameter chance;
   const int constant;
   const long iterations;
 
