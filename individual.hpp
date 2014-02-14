@@ -21,17 +21,17 @@ namespace Parameters {
 using namespace Parameters;
 
 class Individual {
-protected:
+private:
   parameter min;
   parameter max;
+  static int const dimension = 30;
+  std::array <parameter, dimension> solution;
 
 public:
   Individual();
   Individual(const parameter n,
 	     const parameter x,
 	     std::uniform_real_distribution<parameter> range_dis);
-
-  std::array <parameter, dimension> solution;
 
   const virtual std::string represent() const;
   void mutate(parameter & value, const parameter value_i) const;
