@@ -12,10 +12,13 @@
 #include <string>
 
 #include "random_generator.hpp"
-
 extern RandomGenerator * rg;
-int const dimension = 30;
-typedef float parameter;
+
+namespace Parameters {
+  typedef float parameter;
+}
+
+using namespace Parameters;
 
 class Individual {
 protected:
