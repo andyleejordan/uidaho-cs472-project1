@@ -21,7 +21,7 @@ public:
 	   const parameter h = 0.5,
 	   const int c = 1000,
 	   const long i = 100000000) : Problem(dn, dx, rn, rx, z, g, f, d, h, c, i) {};
-  parameter problem(const Individual * subject) const;
+  parameter problem(const Individual & subject) const;
 };
 
 #endif /* _SCHWEFEL_PROBLEM_H_ */

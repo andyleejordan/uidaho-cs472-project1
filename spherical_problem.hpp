@@ -23,7 +23,7 @@ public:
 	    const int c = 10000,
 	    const long i = 100000000) : Problem(dn, dx, rn, rx,
 						z, g, f, d, h, c, i) {};
-  parameter problem(const Individual * subject) const;
+  parameter problem(const Individual & subject) const;
 };
 
 #endif /* _SPHERICAL_PROBLEM_H_ */

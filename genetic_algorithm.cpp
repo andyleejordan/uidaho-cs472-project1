@@ -26,34 +26,34 @@ std::array <parameter, dimension> Genetic::mutate(const Individual * subject) co
 const Individual Genetic::solve() const {
   // create initial population
   std::array<Individual, pop_size> population;
-  population.fill(problem->potential());
+  population.fill(problem.potential());
   Individual best;
 
-  for (long i = 0; i < problem->iterations; i++) {
+  for (long i = 0; i < problem.iterations; i++) {
     std::array<Individual, pop_size> mating_pool;
     mating_pool = population;
 
     // calculate fitnesses of individuals in population
     std::array<parameter, pop_size> weights;
     for (int i = 0; i < pop_size; i++)
-      weights[i] = problem->fitness(&population[i]);
+      weights[i] = problem.fitness(population[i]);
 
+    // need location of best fitness to get corresponding population member
     int max = std::distance(weights.begin(),
 			    std::max_element(weights.begin(), weights.end()));
     best = population[max];
-    if (problem->fitness(&best) > problem->goal) goto finished;
-    // std::cout << problem->fitness(&best) << '\n';
+    if (weights[max] > problem.goal) goto finished;
+    // std::cout << weights[max] << '\n';
 
     // setup roulette wheel selection
     std::discrete_distribution<> mate(weights.begin(), weights.end());
 
     // selection and mutation stage
-    for (Individual & individual : mating_pool) {
+    for (Individual & member : mating_pool) {
       // select
-      individual = population[mate(rg->engine)];
-      // mutate
-      std::array <parameter, dimension> mutation = mutate(&individual);
-      individual.solution = mutation;
+      member = population[mate(rg.engine)];
+      // mutate (GA mutate function receives by reference)
+      mutate(member);
     }
     population = mating_pool;
   }

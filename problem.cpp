@@ -32,7 +32,7 @@ Problem::Problem(const parameter dn,
 				 delta_dis(-d*(std::abs(dn) + std::abs(dx))/2,
 					   d*(std::abs(dn) + std::abs(dx))/2) {};
 
-parameter Problem::fitness(const Individual * subject) const {
+parameter Problem::fitness(const Individual & subject) const {
   // Scales problem value [min, max] to parameter [0, 1] with 1 being max fitness
   parameter sum = this->problem(subject);
   parameter fitness = ((sum - range_min) / (range_max - range_min)); // normalize

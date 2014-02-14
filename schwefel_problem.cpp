@@ -7,9 +7,9 @@
 
 #include "schwefel_problem.hpp"
 
-parameter Schwefel::problem(const Individual * subject) const {
+parameter Schwefel::problem(const Individual & subject) const {
   parameter sum = 0;
-  for (const parameter value : * subject)
+  for (const parameter value : subject)
     sum += value * std::sin(std::sqrt(std::abs(value)));
-  return 418.9829 * subject->size() + sum;
+  return 418.9829 * subject.size() + sum;
 }

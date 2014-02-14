@@ -17,9 +17,9 @@ private:
   static const int stddev = 2;
 
 public:
-  Genetic(Problem * p) : Algorithm(p) {};
+  Genetic(const Problem & p) : Algorithm(p) {};
   const Individual solve() const;
-  std::array <parameter, dimension> mutate(const Individual * subject) const;
+  void mutate(Individual & subject) const;
 };
 
 #endif /* _GENETIC_ALGORITHM_H_ */

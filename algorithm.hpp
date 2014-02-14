@@ -11,11 +11,11 @@
 
 class Algorithm {
 protected:
-  Problem * problem;
+  const Problem & problem;
 public:
-  Algorithm(Problem * p);
+  Algorithm(const Problem & p);
   const virtual Individual solve() const =0;
-  virtual std::array <parameter, dimension> mutate(const Individual * subject) const;
+  const virtual Individual mutate(const Individual & subject) const;
 };
 
 #endif /* _ALGORITHM_H_ */

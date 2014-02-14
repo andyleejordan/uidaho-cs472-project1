@@ -23,11 +23,11 @@ int main() {
   // seed random number generator
   std::srand(std::time(0));
 
-  Problem * problem = new Schwefel;
+  Spherical problem;
   Genetic algorithm(problem);
 
   const Individual solution = algorithm.solve();
   std::cout << solution.represent() << "\n"
-	    << problem->fitness(&solution) << "\n"
-	    << problem->problem(&solution) << "\n";
+	    << problem.fitness(solution) << "\n"
+	    << problem.problem(solution) << "\n";
 }

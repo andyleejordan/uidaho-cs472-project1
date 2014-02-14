@@ -16,7 +16,7 @@ private:
 		   const parameter energy2,
 		   const parameter temperature) const;
 public:
-  SimulatedAnnealing(Problem * p) : Algorithm(p) {};
+  SimulatedAnnealing(const Problem & p) : Algorithm(p) {};
   const Individual solve() const;
 };
 
