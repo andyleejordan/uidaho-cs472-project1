@@ -41,22 +41,22 @@ void Individual::mutate(parameter & value, const parameter value_i) const {
   else value = value_i;
 }
 
-std::array <parameter, dimension>::iterator Individual::begin() {
+std::array <parameter, Individual::dimension>::iterator Individual::begin() {
   return solution.begin();
 }
 
-std::array <parameter, dimension>::iterator Individual::end() {
+std::array <parameter, Individual::dimension>::iterator Individual::end() {
   return solution.end();
 }
 
-std::array <parameter, dimension>::const_iterator Individual::begin() const {
+std::array <parameter, Individual::dimension>::const_iterator Individual::begin() const {
   return solution.begin();
 }
 
-std::array <parameter, dimension>::const_iterator Individual::end() const {
+std::array <parameter, Individual::dimension>::const_iterator Individual::end() const {
   return solution.end();
 }
 
-std::array <parameter, dimension>::size_type Individual::size() const {
+std::array <parameter, Individual::dimension>::size_type Individual::size() const {
   return solution.size();
 }
