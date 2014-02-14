@@ -10,4 +10,4 @@ RandomGenerator::RandomGenerator() {
 }
 
 // Singleton RandomGenerator object for shared use
-RandomGenerator * rg = new RandomGenerator;
+RandomGenerator rg;

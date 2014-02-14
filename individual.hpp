@@ -12,7 +12,7 @@
 #include <string>
 
 #include "random_generator.hpp"
-extern RandomGenerator * rg;
+extern RandomGenerator rg;
 
 namespace Parameters {
   typedef float parameter;

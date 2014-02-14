@@ -20,9 +20,6 @@
 #include "individual.hpp"
 
 int main() {
-  // seed random number generator
-  std::srand(std::time(0));
-
   Spherical problem;
   Genetic algorithm(problem);
 
