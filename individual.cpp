@@ -40,22 +40,22 @@ void Individual::mutate(parameter & value, const parameter value_i) const {
   else value = value_i;
 }
 
-std::array <parameter, Individual::dimension>::iterator Individual::begin() {
+Individual::genome::iterator Individual::begin() {
   return solution.begin();
 }
 
-std::array <parameter, Individual::dimension>::iterator Individual::end() {
+Individual::genome::iterator Individual::end() {
   return solution.end();
 }
 
-std::array <parameter, Individual::dimension>::const_iterator Individual::begin() const {
+Individual::genome::const_iterator Individual::begin() const {
   return solution.begin();
 }
 
-std::array <parameter, Individual::dimension>::const_iterator Individual::end() const {
+Individual::genome::const_iterator Individual::end() const {
   return solution.end();
 }
 
-std::array <parameter, Individual::dimension>::size_type Individual::size() const {
+Individual::genome::size_type Individual::size() const {
   return solution.size();
 }
