@@ -38,7 +38,7 @@ parameter Problem::fitness(const Individual & subject) const {
   return fitness;
 }
 
-Individual Problem::potential() const {
+const Individual Problem::potential() const {
   Individual potential = Individual(domain_min, domain_max, range_dist);
   potential.fitness = fitness(potential);
   return potential;

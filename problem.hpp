@@ -39,7 +39,7 @@ public:
 	  const parameter h = 0.5,
 	  const int c = 1);
 
-  Individual potential() const;
+  const Individual potential() const;
   parameter fitness(const Individual & subject) const;
   virtual parameter problem(const Individual & subject) const =0;
 };
