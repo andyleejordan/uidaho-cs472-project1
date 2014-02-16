@@ -10,10 +10,10 @@
 #include "individual.hpp"
 #include "problem.hpp"
 
-Individual::Individual(): min(-1), max(1), fitness(0) {
-  real_dist range_dist(min, max);
+Individual::Individual(): min(0), max(0), fitness(0) {
+  // zeroed individual represents error
   for (parameter & value : solution)
-    value = range_dist(rg.engine);
+    value = 0;
 }
 
 Individual::Individual(const parameter n,

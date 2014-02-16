@@ -25,22 +25,19 @@ using namespace Parameters;
 
 class Individual {
 private:
-  parameter min;
-  parameter max;
-  static int const dimension = 30;
+  static const int dimension = 30;
   typedef std::array <parameter, dimension> genome;
   genome solution;
-
+  parameter min;
+  parameter max;
 public:
   Individual();
-  Individual(const parameter n,
-	     const parameter x,
-	     real_dist range_dis);
-
+  Individual(const parameter n, const parameter x, real_dist range_dis);
+  // construction wrappers (e.g. potential() / mutate()) set fitness
   parameter fitness;
-  void mutate(parameter & value, const parameter value_i) const;
+  // mutate will change gene with bounds-checking
+  void mutate(parameter & gene, const parameter gene_i) const;
   const virtual std::string represent() const;
-
   // Individual acts like std::array solution iterator
   genome::iterator begin();
   genome::iterator end();
