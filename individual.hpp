@@ -37,8 +37,9 @@ public:
 	     const parameter x,
 	     real_dist range_dis);
 
-  const virtual std::string represent() const;
+  parameter fitness;
   void mutate(parameter & value, const parameter value_i) const;
+  const virtual std::string represent() const;
 
   // Individual acts like std::array solution iterator
   genome::iterator begin();

@@ -10,9 +10,7 @@
 #include "individual.hpp"
 #include "problem.hpp"
 
-Individual::Individual() {
-  min = -1;
-  max = 1;
+Individual::Individual(): min(-1), max(1), fitness(0) {
   real_dist range_dist(min, max);
   for (parameter & value : solution)
     value = range_dist(rg.engine);
