@@ -12,7 +12,8 @@ bool SimulatedAnnealing::probability(const parameter energy1,
 				     const parameter energy2,
 				     const parameter temperature) const {
   int_dist percent(1, 100);
-  parameter chance = 100 * std::exp(-problem.constant*(energy1 - energy2)/temperature);
+  parameter chance = 100 *
+    std::exp(-problem.constant * (energy1 - energy2) / temperature);
   return percent(rg.engine) < chance;
 }
 
@@ -33,7 +34,7 @@ const Individual SimulatedAnnealing::solve() const {
 	  if (best.fitness > problem.goal) return best;
 	}
       }
-      std::cout << "Neighbors exhausted, fitness was: " << best.fitness << "\n";
+      std::cout << "Exhausted fitness: " << best.fitness << "\n";
     }
   }
 }

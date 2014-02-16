@@ -22,7 +22,7 @@ const Individual HillClimbing::solve() const {
 	  if (best.fitness > problem.goal) return best;
 	}
       }
-      std::cout << "Neighbors exhausted, fitness was: " << best.fitness << "\n";
+      std::cout << "Exhausted fitness: " << best.fitness << "\n";
     }
   }
 }
