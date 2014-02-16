@@ -44,6 +44,9 @@ public:
   genome::const_iterator begin() const;
   genome::const_iterator end() const;
   genome::size_type size() const;
+  // Individual can be compared by fitness
+  friend bool operator< (const Individual & left, const Individual & right);
+  friend bool operator> (const Individual & left, const Individual & right);
 };
 
 #endif /* _INDIVIDUAL_H_ */

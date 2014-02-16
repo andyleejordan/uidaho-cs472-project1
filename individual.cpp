@@ -59,3 +59,11 @@ Individual::genome::const_iterator Individual::end() const {
 Individual::genome::size_type Individual::size() const {
   return solution.size();
 }
+
+bool operator< (const Individual & left, const Individual & right) {
+  return left.fitness < right.fitness;
+}
+
+bool operator> (const Individual & left, const Individual & right) {
+  return left.fitness > right.fitness;
+}
