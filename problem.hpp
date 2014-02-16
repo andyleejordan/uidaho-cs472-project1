@@ -32,12 +32,13 @@ public:
 	  const parameter rn = 0,
 	  const parameter rx = 10,
 	  const bool z = false,
-	  const parameter g = 100,
+	  const long i = 1000000,
+	  const parameter g = 0.9,
 	  const parameter f = 0.5,
 	  const parameter d = 0.1,
 	  const parameter h = 0.5,
-	  const int c = 1,
-	  const long i = 1000000);
+	  const int c = 1);
+
   Individual potential() const;
   parameter fitness(const Individual & subject) const;
   virtual parameter problem(const Individual & subject) const =0;

@@ -10,17 +10,15 @@
 
 class Schwefel: public Problem {
 public:
-  Schwefel(const parameter dn = -512.03,
-	   const parameter dx = 511.97,
-	   const parameter rn = 0,
-	   const parameter rx = 21000,
-	   const bool z = true,
-	   const parameter g = 0.85,
+  Schwefel(const long i = 100000000,
+	   const parameter g = 0.90,
 	   const parameter f = 0.65,
 	   const parameter d = 0.1,
-	   const parameter h = 0.5,
-	   const int c = 1000,
-	   const long i = 100000000) : Problem(dn, dx, rn, rx, z, g, f, d, h, c, i) {};
+	   const parameter h = 0.50,
+	   const int c = 10000): Problem(-512.03, 511.97,
+					 0, 21000, true,
+					 i, g, f, d, h, c) {};
+
   parameter problem(const Individual & subject) const;
 };
 
