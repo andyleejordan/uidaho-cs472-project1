@@ -11,8 +11,9 @@
 bool SimulatedAnnealing::probability(const parameter energy1,
 				     const parameter energy2,
 				     const parameter temperature) const {
+  int_dist percent(1, 100);
   parameter chance = 100 * std::exp(-problem.constant*(energy1 - energy2)/temperature);
-  return (rand() % 100) < chance;
+  return percent(rg.engine) < chance;
 }
 
 const Individual SimulatedAnnealing::solve() const {
