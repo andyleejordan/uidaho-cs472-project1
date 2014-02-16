@@ -15,7 +15,7 @@ protected:
   const parameter range_min;
   const parameter range_max;
   const bool minimize;
-  std::uniform_real_distribution<parameter> range_dis;
+  real_dist range_dist;
 
 public:
   const parameter domain_min;

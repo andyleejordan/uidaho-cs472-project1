@@ -16,6 +16,9 @@ extern RandomGenerator rg;
 
 namespace Parameters {
   typedef float parameter;
+  typedef std::uniform_real_distribution<parameter> real_dist;
+  typedef std::uniform_int_distribution<> int_dist;
+  typedef std::normal_distribution<parameter> normal_dist;
 }
 
 using namespace Parameters;
@@ -25,23 +28,24 @@ private:
   parameter min;
   parameter max;
   static int const dimension = 30;
-  std::array <parameter, dimension> solution;
+  typedef std::array <parameter, dimension> genome;
+  genome solution;
 
 public:
   Individual();
   Individual(const parameter n,
 	     const parameter x,
-	     std::uniform_real_distribution<parameter> range_dis);
+	     real_dist range_dis);
 
   const virtual std::string represent() const;
   void mutate(parameter & value, const parameter value_i) const;
 
   // Individual acts like std::array solution iterator
-  std::array <parameter, dimension>::iterator begin();
-  std::array <parameter, dimension>::iterator end();
-  std::array <parameter, dimension>::const_iterator begin() const;
-  std::array <parameter, dimension>::const_iterator end() const;
-  std::array <parameter, dimension>::size_type size() const;
+  genome::iterator begin();
+  genome::iterator end();
+  genome::const_iterator begin() const;
+  genome::const_iterator end() const;
+  genome::size_type size() const;
 };
 
 #endif /* _INDIVIDUAL_H_ */

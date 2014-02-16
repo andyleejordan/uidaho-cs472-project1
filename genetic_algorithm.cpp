@@ -12,9 +12,9 @@
 
 void Genetic::mutate(Individual & subject) const {
   // unit Gaussian distribution for delta
-  std::normal_distribution<parameter> delta_dis(mean, stddev);
+  normal_dist delta_dist(mean, stddev);
   for (parameter & value : subject) {
-    parameter delta = delta_dis(rg.engine);
+    parameter delta = delta_dist(rg.engine);
     subject.mutate(value, value * delta);
   }
 }

@@ -20,7 +20,6 @@ Problem::Problem(const parameter dn,
 		 const long i) : range_min(rn),
 				 range_max(rx),
 				 minimize(z),
-				 range_dis(dn, dx),
 				 domain_min(dn),
 				 domain_max(dx),
 				 goal(g),
@@ -29,6 +28,7 @@ Problem::Problem(const parameter dn,
 				 chance(h),
 				 constant(c),
 				 iterations(i) {};
+			       range_dist(dn, dx),
 
 parameter Problem::fitness(const Individual & subject) const {
   // Scales problem value [min, max] to parameter [0, 1] with 1 being max fitness

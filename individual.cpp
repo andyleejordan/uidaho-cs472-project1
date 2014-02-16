@@ -13,17 +13,18 @@
 Individual::Individual() {
   min = -1;
   max = 1;
-  std::uniform_real_distribution<parameter> range_dis(min, max);
+  real_dist range_dist(min, max);
   for (parameter & value : solution)
-    value = range_dis(rg.engine);
+    value = range_dist(rg.engine);
 }
 
 Individual::Individual(const parameter n,
 		       const parameter x,
-		       std::uniform_real_distribution<parameter> range_dis) : min(n),
-									      max(x) {
+		       real_dist range_dist): min(n),
+					      max(x), 
+					      fitness(0) {
   for (parameter & value : solution)
-    value = range_dis(rg.engine);
+    value = range_dist(rg.engine);
 }
 
 const std::string Individual::represent() const {
