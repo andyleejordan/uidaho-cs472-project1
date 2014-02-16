@@ -12,7 +12,7 @@
 
 class HillClimbing: public Algorithm {
 public:
-  HillClimbing(const Problem & p) : Algorithm(p) {};
+  HillClimbing(const Problem & p): Algorithm(p) {};
   const Individual solve() const;
 };
 

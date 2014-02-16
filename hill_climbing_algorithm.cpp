@@ -19,6 +19,7 @@ const Individual HillClimbing::solve() const {
 	// keep track of best best solution
 	if (neighbor.fitness > best.fitness) {
 	  best = neighbor;  // swap for better neighbor
+	  // terminating condition
 	  if (best.fitness > problem.goal) return best;
 	}
       }

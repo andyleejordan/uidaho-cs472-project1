@@ -31,6 +31,7 @@ const Individual SimulatedAnnealing::solve() const {
 	if (neighbor.fitness > best.fitness ||
 	    probability(best.fitness, neighbor.fitness, temperature)) {
 	  best = neighbor; // swap for better neighbor
+	  // terminating condition
 	  if (best.fitness > problem.goal) return best;
 	}
       }
