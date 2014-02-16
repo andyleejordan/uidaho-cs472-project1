@@ -19,5 +19,6 @@ const Individual Algorithm::mutate(const Individual & subject) const {
   for (parameter & value : mutation)
     if (problem.chance || percent(rg.engine) < int(100 * problem.chance))
       mutation.mutate(value, value + delta_dist(rg.engine));
+  mutation.fitness = problem.fitness(mutation);
   return mutation;
 }

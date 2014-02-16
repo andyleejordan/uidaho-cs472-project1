@@ -17,34 +17,23 @@ bool SimulatedAnnealing::probability(const parameter energy1,
 }
 
 const Individual SimulatedAnnealing::solve() const {
-  Individual potential;
-  Individual neighbor;
-  parameter fitness;
-  do {
+  while(true) {
     // random restart
-    potential = problem.potential();
-    neighbor = potential;
-    fitness = problem.fitness(potential);
-    if (fitness > problem.filter) {
+    Individual best = problem.potential();
+    if (best.fitness > problem.filter) {
       // work with "lucky" values
       for (long T = problem.iterations; T > 0; T--) {
 	// actual simulated-annealing algorithm
-	const parameter temperature = 100. * parameter(T)/problem.iterations;
-        Individual neighbor = mutate(potential);
-	const parameter neighbor_fitness = problem.fitness(neighbor);
-	if (neighbor_fitness > fitness || probability(fitness,
-						      neighbor_fitness,
-						      temperature)) {
-	  // keep track of best potential solution
-	  potential = neighbor;
-	  fitness = neighbor_fitness;
-	  // one of the few legitimate modern uses of goto!
-	  if (fitness > problem.goal) goto finished;
+	parameter temperature = 100. * parameter(T)/problem.iterations;
+        Individual neighbor = mutate(best);
+	// keep track of best best solution
+	if (neighbor.fitness > best.fitness ||
+	    probability(best.fitness, neighbor.fitness, temperature)) {
+	  best = neighbor; // swap for better neighbor
+	  if (best.fitness > problem.goal) return best;
 	}
       }
-      std::cout << "Neighbors exhausted, fitness was: " << fitness << "\n";
+      std::cout << "Neighbors exhausted, fitness was: " << best.fitness << "\n";
     }
-  } while (fitness < problem.goal);
- finished:
-  return potential;
+  }
 }
