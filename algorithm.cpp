@@ -16,9 +16,9 @@ const Individual Algorithm::mutate(const Individual & subject) const {
 					 std::abs(problem.domain_max)) / 2,
 		       problem.delta * (std::abs(problem.domain_min) +
 					std::abs(problem.domain_max)) / 2);
-  for (parameter & value : mutation)
+  for (parameter & gene : mutation)
     if (problem.chance || percent(rg.engine) < int(100 * problem.chance))
-      mutation.mutate(value, value + delta_dist(rg.engine));
+      mutation.mutate(gene, gene + delta_dist(rg.engine));
   mutation.fitness = problem.fitness(mutation);
   return mutation;
 }

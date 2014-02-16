@@ -12,10 +12,10 @@
 class Algorithm {
 protected:
   const Problem & problem;
+  const virtual Individual mutate(const Individual & subject) const;
 public:
   Algorithm(const Problem & p);
   const virtual Individual solve() const =0;
-  const virtual Individual mutate(const Individual & subject) const;
 };
 
 #endif /* _ALGORITHM_H_ */
