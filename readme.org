@@ -15,171 +15,104 @@ selection. It faired decently, but has much room for improvement.
 #+END_abstract
 
 * Assignment :noexport:
-   DEADLINE: <2014-02-12 Wed>
-This is the second subproject. The goal of this project is to write
-part of a genetic algorithm (GA) for one of the benchmark optimization
-problems.
+   DEADLINE: <2014-02-21 Fri>
+The goal of this project is to write a genetic algorithm (GA) for a
+series of benchmark optimization problems. In each case the problem is
+to optimize, i.e. find the (global) minimum, of a real valued
+function.
 
-For this subproject you only need to work on the Spherical function,
-defined at [[http://www.cs.cmu.edu/afs/cs/project/jair/pub/volume24/ortizboyer05a-html/node6.html#tabla:DefFunc][here]]. (Note the first function labeled as Schwefel on this
-page is actually the double sum, which we are not using. We are using
-the Schwefel function defined immediately after the Rastigin
-function.)
+To test the GA we'll use 6 standard, benchmark, real-valued functions:
+
+1. Spherical
+2. Rosenbrock
+3. Rastrigin
+4. Schwefel
+5. Ackley
+6. Griewangk
+
+Each of these functions is defined at [[http://www.cs.cmu.edu/afs/cs/project/jair/pub/volume24/ortizboyer05a-html/node6.html#tabla:DefFunc][here]]. (Note the first function
+labeled as Schwefel on this page is actually the double sum, which we
+are not using. We are using the Schwefel function defined immediately
+after the Rastigin function.)
 
 Pay careful attention to the ranges of the functions. You will want to
-use those ranges both in creating initial individuals and in
+use those ranges both in creating intial individuals and in
 controlling the generation of neighbors, e.g. you don't want your GA
-'wandering' out of the search space. Note that here the functions are
+'wondering' out of the search space. Note that here the functions are
 all defined with 30 dimensions, e.g. P = 30 in the function
 definitions.
 
-*** Task
-Write a partial GA to find the input values (x_{1}, ... ,x_{30}) that
-minimizes the Spherical function.
+** Task
+Write a GA to find the input values (x_{1}, ... ,x_{30}) that minimizes each
+of the six benchmark problems.
 
-The GA should include the following:
+You need to pick the details of the GA, including:
+- Representation
 - Fitness function
-- Algorithm type: steady state or generational
-- Selection
-- Mutation
-- Note: you don't need crossover for this part
-*** Write-up
-Write a short paper describing the results of your project that
-includes the following sections:
-- Algorithm descriptions: Description of the GA so far. Be careful to
-  include all of the details someone would need to replicate your
-  work.
-- Results: Basically, does it seem to be working.
-- Conclusions: If its not working, why not. And what are then next
-  steps to complete the project.
+- Algorithm type: Steady state or generational
+- Crossover type: 1-point, 2-point, uniform, arithmetic, etc.
+- Mutation rate
+- etc.
+
+** Write-up
+You must write a short paper describing the results of your project
+that includes the following sections:
+
+- Abstract - a short (~200 words) summary of what you did and what the
+  results were.
+- Algorithm descriptions - clear, complete descriptions of your GA. Be
+  careful to include all of the details someone would need to
+  replicate your work.
+- Examples of necessary details include (there are others):
+  - How fitness is measured
+  - Exactly how initial random solutions are generated
+  - Mutation rates
+  - etc.
+- Basically every time you make a decision about how the algorithm
+  works (what type of crossover it will use, how mutaiton is
+  performed, etc.) you should make a note of it.
+- Results - you should include graphs and/or tables to make it easy to
+  understand the results. Make sure that the graphs and table are
+  clearly labeled.
+- Conclusions - based on your results draw some specific conclusions
+  about how well the algorithm performed.
+
 * Notes :noexport:
 ** Functions
 *** Spherical
-f_{Sph}(x) = (\sum_{i=1})^{p} (x_{i})^{2}
-x_{i} \in [-5.12, 5.12]
-x^{\*} = (0, 0, ..., 0); f_{Sph}(x^{\*}) = 0
+- f_{Sph}(x) = (\sum_{i=1})^{p} (x_{i})^{2}
+- x_{i} \in [-5.12, 5.12]
+- x^{\*} = (0, 0, ..., 0); f_{Sph}(x^{\*}) = 0
 
 Use fewer random restarts, more neighbors
+
+*** Rosenbrock
+- f_{Ros}(x) = (\sum_{i=1})^{p-1}[100(x_{i+1} - (x_{i})^{2})^{2} + (x_{i} - 1)^{2}]
+- x_{i} \in [-2.048, 2.048]
+- x^{\*} = (1, 1, ..., 1); f_{Ros}(x^{\*}) = 0
+
+*** Rastrigin
+- f_{Ras}(x) = 10p + (\sum_{i=1})^{p} ((x_{i})^{2} - 10cos(2(\pi)x_{i}))
+- x_{i} \in [-5.12, 5.12]
+- x^{\*} = (0, 0, ..., 0); f_{Ras}(x^{\*}) = 0
+
 *** Schwefel
 f_{Sch}(x) = 418.9829 \cdot p + (\sum_{i=1})^{p} x_{i }sin(\radic|x_{i}|)
 x_{i} \in [-512.03, 511.97]
 x^{\*} = (-420.9687, ..., -420.9687); f_{Sch}(x^{\*}) = 0
 
 Use more random restarts, fewer neighbors
-** Algorithms
-*** Hill Climbing
-- generate a random solution s_{1}
-- do random restart until a good enough solution is found
-  - do until no better neighbor
-    - pick a neighbor solution s_{2}
-    - if s_{2} is better than s_{1}
-      - s_{1} \gets s_{2}
-    - loop
-  - loop
-*** Simulated Annealing
-- pick a random solution s_{1}
-- for T = 100 to 0 step -.1
-  - pick a neighbor of s_{1}, s_{2}
-  - if s_{2} is better than s_{1}
-    - s_{1} \gets s_{2}
-  - else
-    - with probability P(e_{1}, e_{2}, T)
-    - s_{1} \gets s_{2} anyway
-    - where e_{1} is the fitness/energy of s, e_{2} of 2
 
-- P(e_{1}, e_{2} T) = e^{-c(e_{1} - e_{2})/T} = 1/e^{(e_{1} - e_{2})/T}
-- Scaling constant c to adjust probabilites
 
-- S_{current best}
-- F_{current best} = f(S_{current best})
-- For temperature ...
-  - generate S_{next}
-  - F_{next} = f(S_{next})
-  - if (F_{next} > F_{current best} || P(F_{next}, F_{current best}, T) < T)
-    - S_{current best} \gets S_{next}
-    - F_{current best} \gets F_{next}
-** Results
-*** Spherical
-**** Hill-climbing
-With goal = 10, filter = 100, neighbors = 100000000, delta = 0.1:
+*** Ackley
+- f_{Ack}(x) = 20 + e - 20exp(-0.2\radic((1/p)(\sum_{i=1})^{p}(x_{i})^{2})) - exp((1/p)(\sum_{i=1})^{p}cos(2(\pi)x_{i}))
+- x_{i} \in [-30, 30]
+- x^{\*} = (0, 0, ..., 0); f_{Ack}(x^{\*}) = 0
 
-Random restart - fitness is: 99.1383
-Neighbors exhausted - fitness was: 0.0363001
-0.0599998 -0.0299992 -0.02 -0.0399999 0.04 0.0400003 0.00999989 0.0300003 0.0100001 0.0399996 0.0499996 -0.0300023 0.0600003 -0.0300004 -0.04 1.49012e-08 -0.0600001 0.04 7.45058e-08 -0.01 -0.0400003 0.00999971 -0.00999989 0.0300002 7.45058e-08 0.0399999 0.04 7.45058e-08 -0.0400002 -0.04 
-Spherical function value is: 0.0363001
-Fitness is: 0.0363001
-./search  51.32s user 0.07s system 99% cpu 51.424 total
-
-Random restart - fitness is: 98.4617
-Neighbors exhausted - fitness was: 0.0296999
-0.00999977 -1.49012e-08 -0.02 -0.0299998 -0.0200001 -0.0300002 -0.0500001 -0.00999989 -0.0499999 0.03 -0.0699997 0.0299998 -0.0299996 -0.0100013 0.02 -0.0300008 -0.00999989 0.0100001 0.02 0.05 -0.00999923 0.0299999 -0.03 0.03 -0.0199998 0.02 0.0100001 -0.0300002 0.0599998 -0.04 
-Spherical function value is: 0.0296999
-Fitness is: 0.0296999
-./search  56.61s user 0.06s system 99% cpu 56.695 total
-**** Simulated Annealing
-With goal = 10, filter = 100, steps = 100000, delta = 0.01, c = -1000:
-
-Random restart - fitness is: 99.8699
-Temperature zero - fitness was: 0.00639894
--0.0300001 -1.47521e-06 2.83122e-07 0.0200013 0.0100015 0.0100003 0.0299985 -1.63913e-06 -0.0199928 -0.00999996 0.02 0.0200007 -0.0200013 0.0199994 -0.02 -0.0100016 4.02331e-07 -0.0299995 -5.06639e-07 2.68221e-07 9.08971e-07 0.00999814 -0.00999998 -1.19209e-07 0.0100005 0.00996085 0.00999896 3.8743e-07 1.38581e-06 -1.38581e-06 
-Spherical function value is: 0.00639894
-Fitness is: 0.00639894
-./search  5.95s user 0.02s system 99% cpu 5.980 total
-
-Random restart - fitness is: 71.44
-Temperature zero - fitness was: 0.00380014
-0.00999994 6.25849e-07 -1.93715e-07 -0.0100016 0.00999998 1.10269e-05 -0.0200011 -0.00999981 1.19209e-07 -0.0199996 -0.0199988 0.01 0.0100005 0.0200018 -0.0100003 0.0200018 0.0100003 -0.0199985 0.0100003 -6.4075e-07 0.0100003 1.49012e-08 -2.5332e-07 -0.00999969 -0.00999885 1.40071e-06 -0.0100006 2.5779e-06 0.0100015 1.38581e-06 
-Spherical function value is: 0.00380014
-Fitness is: 0.00380014
-./search  13.92s user 0.05s system 97% cpu 14.263 total
-*** Schwefel
-**** Hill-climbing
-With goal = 5000, filter = 10000, neighbors = 10000000, and delta = 10:
-
-Random restart - fitness is: 8257.8
-Neighbors exhausted - fitness was: 4063.14
--205.88 -420.96 -420.94 -416.53 -65.72 -205.52 302.99 -424.19 -205.69 -62.04 -201.71 26.81 -427.71 306.48 -198.3 -421.6 -419.46 -415.42 -70.59 -420.82 -200.77 -417.81 32.69 -421.01 -423.52 -419.48 502.17 124.02 -420.36 299.66 
-Schwefel function value is: 4063.14
-Fitness is: 4063.14
-./search  12.00s user 0.04s system 99% cpu 12.107 total
-
-Random restart - fitness is: 9854.36
-Neighbors exhausted - fitness was: 4928.45
-301.63 -1.59 301.09 -417.76 23.6 306.72 -421.32 299.72 -422.56 307.45 -202.5 28.89 310.15 123.67 -204.22 -413.49 -203.01 300.86 -201.67 -202.1 508.68 -204.12 -424.61 28.06 128.7 -419.72 -415.56 301.55 -419.7 131.06 
-Schwefel function value is: 4928.45
-Fitness is: 4928.45
-./search  11.75s user 0.02s system 97% cpu 12.092 total
-**** Simulated Annealing
-With goal = 3000, filter = 10000, steps = 10000000, constant = -10,
-and delta = 10:
-
--201.95 506.49 302.65 294.04 -209.06 308.65 305.98 -416.03 293.45 -421.27 -417.68 -419.1 125.97 503.21 -413 302.29 -424.58 -422.48 304.21 -205.77 -423.43 -421.47 298.14 -421.91 300.77 -427.16 303.8 313.87 -420.16 304.25 
-Schwefel function value is: 2813.62
-Fitness is: 2813.62
-./search  12.73s user 0.06s system 97% cpu 13.166 total
-
-306.71 -418.9 309.1 306.14 303.21 502.45 -420.97 301.53 309.97 304.83 292.7 305.89 -415.82 -414.75 306.96 306.81 507.15 507.85 304.2 -418.51 310.43 511.78 300.89 509.13 295.15 302.67 302.44 299.53 -417.17 -415.57 
-Schwefel function value is: 2990.2
-Fitness is: 2990.2
-./search  87.90s user 0.26s system 99% cpu 1:28.90 total
-
-** OOD
-*** Classes
-**** Algorithm
-- goal
-- filter
-- iterations
-
-**** Individual
-- solution data structure
-- mutation
-- initial generation
-
-**** Problem
-- fitness function
-- fitness normalization
-- range
-- delta / mututation bounds
+*** Griewangk
+- f_{Gri}(x) = 1 + (\sum_{i=1})^{p}(x_{i})^{2}/4000 - (\prod_{i=1})^{p}cos(x_{i}/\radic(i))
+- x_{i} \in [-600, 600]
+- x^{\*} = (0, 0, ..., 0); f_{Gri}(x^{\*}) = 0
 
 * Algorithms
 
@@ -308,63 +241,4 @@ with the selection and mutation stages complete, the population is
 replaced by the mating pool, and a new generation is born.
 
 * Results
-
-These tests were run locally on my MacBook Pro with a 2.5 GHz Intel
-Core i5 dual-core (with hyper-threading) processor (but my program is
-still currently not threaded, but adding it will be much easier
-now).
-
-** Spherical function with goal of 80 percent fitness
-
-#+begin_src text
-
-Solution: (2.053216) (2.106364) (-1.660929) (1.938859) (-3.798331)
-(0.101222) (2.431569) (0.500247) (2.192358) (2.543889) (-3.176968)
-(-1.752458) (1.753757) (-0.507645) (0.539759) (-1.772312) (2.144157)
-(1.421921) (-0.569897) (-0.031749) (-0.084445) (0.830070) (1.885461)
-(1.051780) (4.992011) (0.338744) (1.932746) (-2.021140) (0.969577)
-(-3.679924)
-
-Normalized fitness: 0.838997
-Raw fitness: 126.618
-./search  0.09s user 0.01s system 93% cpu 0.107 total
-
-#+end_src
-
-** Spherical function with goal of 90 percent fitness
-
-#+begin_src text
-
-Solution: (2.769581) (-2.244913) (2.959431) (1.858116) (2.365768)
-(-2.634073) (-1.108779) (0.429853) (1.673679) (-3.076112) (-0.024376)
-(0.712671) (-0.564488) (-1.398184) (-1.040214) (-0.426188) (-1.158640)
-(-1.848089) (0.893606) (0.420501) (-2.804287) (0.192525) (0.205753)
-(-1.332913) (-0.712808) (-1.455644) (-0.313966) (0.926402) (-1.144152)
-(-0.842888)
-
-Normalized fitness: 0.90306
-Raw fitness: 76.2364
-./search  506.27s user 0.64s system 99% cpu 8:27.35 total
-#+end_src
-
 * Conclusion
-
-The Genetic Algorithm is far from complete. An 80 percent fitness is
-easy to get, taking a mere 0.107 seconds, but an increase of 10
-percent fitness to 90 percent took a whopping 8 minutes, 27.35
-seconds. There are many improvements to be made, such as having the
-standard deviation attached to each individual and allowing it to
-evolve, adding a cross-over, improving the roulette wheel with
-windowing or sigma scaling, or even replacing the roulette with a better
-selection technique. I find this surprising actually, I expected the
-Genetic Algorithm to perform much better than hill-climbing or
-simulated annealing; however, those two have been very well tweaked,
-while this one has not.
-
-I was up way too late working on this. I certainly did not need to
-be, as the implementation of the Genetic Algorithm (without crossover)
-took the least bit of my time. It was the object-oriented
-re-factoring and integration of =std::random= that took my time, but
-I feel it was worth it. The code is available on GitHub at
-=https://github.com/andschwa/uidaho-cs472-project=. This course is
-making me fall in love with C++, which is a very good thing.
