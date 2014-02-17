@@ -15,6 +15,8 @@ private:
   static const int population_size = 256;
   static const int tournament_size = 4;
   static const int crossover_size = 2; // binary crossover
+  const parameter crossover_chance = 0.8;
+  static const int elitism = 2;
   typedef std::vector<Individual> population;
   // settings for Gaussian distribution
   static const int mean = 0;
