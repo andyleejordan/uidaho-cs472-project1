@@ -12,12 +12,15 @@
 
 const Individual Genetic::mutate(const Individual & subject) const {
   // unit Gaussian distribution for delta
-  Individual mutation = subject;
+  Individual mutant = subject;
+  int_dist percent(1, 100);
   normal_dist delta_dist(mean, stddev);
-  for (parameter & gene : mutation)
-    mutation.mutate(gene, gene * delta_dist(rg.engine));
-  mutation.fitness = problem.fitness(mutation);
-  return mutation;
+  for (parameter & gene : mutant)
+    if (problem.chance || percent(rg.engine) < int(100 * problem.chance))
+      mutant.mutate(gene, gene * delta_dist(rg.engine));
+  // update fitness
+  mutant.fitness = problem.fitness(mutant);
+  return mutant;
 }
 
 const Individual Genetic::selection(const Genetic::population & contestants) const {
