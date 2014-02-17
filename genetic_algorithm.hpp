@@ -22,7 +22,7 @@ private:
   static const int mean = 0;
   static const int stddev = 2;
   const Individual mutate(const Individual & subject) const;
-  const Individual selection(const population & contestants) const;
+  const population selection(const population & generation) const;
   const population crossover(const population & mates) const;
 public:
   Genetic(const Problem & p): Algorithm(p) {};

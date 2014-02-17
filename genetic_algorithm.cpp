@@ -23,9 +23,19 @@ const Individual Genetic::mutate(const Individual & subject) const {
   return mutant;
 }
 
-const Individual Genetic::selection(const Genetic::population & contestants) const {
+const Genetic::population Genetic::selection(const Genetic::population & generation) const {
+  population parents;
+  int_dist population_dist(0, population_size - 1); // closed interval, so (-1)
+  for (int i = 0; i < crossover_size; ++i) {
+    population contestants;
+    // create tournament of random members drawn from generation
+    for (int i = 0; i < tournament_size; ++i)
+      contestants.emplace_back(generation[population_dist(rg.engine)]);
+    // select best member from each tournament
+    parents.emplace_back(*std::max_element(contestants.begin(), contestants.end()));
+  }
   // return best Individual from a set of contestants
-  return *std::max_element(contestants.begin(), contestants.end());
+  return parents;
 }
 
 const Genetic::population Genetic::crossover(const Genetic::population & parents) const {
@@ -56,8 +66,8 @@ const Individual Genetic::solve() const {
       generation.emplace_back(problem.potential());
     // generations loop
     for (long i = 0; i < problem.iterations; ++i) {
-      // find generation's best member (general form of selection)
-      const Individual best = selection(generation);
+      // find generation's best member
+      const Individual best = *std::max_element(generation.begin(), generation.end());
       // terminating condition
       if (best.fitness > problem.goal) return best;
       // std::cout << best.fitness << '\n';
@@ -65,16 +75,7 @@ const Individual Genetic::solve() const {
       population offspring;
       while(offspring.size() != population_size) {
 	// tournament selection of parents
-	population parents;
-	for (int i = 0; i < crossover_size; ++i) {
-	  population contestants;
-	  int_dist population_dist(0, population_size-1); // closed interval
-	  // create tournament of random members drawn from generation
-	  for (int i = 0; i < tournament_size; ++i)
-	    contestants.emplace_back(generation[population_dist(rg.engine)]);
-	  // select best member from each tournament
-	  parents.emplace_back(selection(contestants));
-	}
+	population parents = selection(generation);
 	// crossover
 	population children = crossover(parents);
 	// add mutated children to offspring
