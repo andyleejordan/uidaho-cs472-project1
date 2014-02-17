@@ -10,7 +10,7 @@
 #include "individual.hpp"
 #include "problem.hpp"
 
-class SimulatedAnnealing: public Algorithm {
+class SimulatedAnnealing: private Algorithm {
 private:
   bool probability(const parameter energy1,
 		   const parameter energy2,

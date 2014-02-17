@@ -10,7 +10,7 @@
 #include "individual.hpp"
 #include "problem.hpp"
 
-class Genetic: public Algorithm {
+class Genetic: private Algorithm {
 private:
   static const int population_size = 4096;
   static const int tournament_size = 2; // binary tournament selection

@@ -10,7 +10,7 @@
 #include "individual.hpp"
 #include "problem.hpp"
 
-class HillClimbing: public Algorithm {
+class HillClimbing: private Algorithm {
 public:
   HillClimbing(const Problem & p): Algorithm(p) {};
   const Individual solve() const;
