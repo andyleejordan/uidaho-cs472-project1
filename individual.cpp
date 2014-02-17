@@ -60,6 +60,14 @@ Individual::genome::size_type Individual::size() const {
   return solution.size();
 }
 
+parameter & Individual::operator[] (size_t pos) {
+  return solution[pos];
+}
+
+const parameter & Individual::operator[] (size_t pos) const {
+  return solution[pos];
+}
+
 bool operator< (const Individual & left, const Individual & right) {
   return left.fitness < right.fitness;
 }

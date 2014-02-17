@@ -38,12 +38,14 @@ public:
   // mutate will change gene with bounds-checking
   void mutate(parameter & gene, const parameter gene_i) const;
   const virtual std::string represent() const;
-  // Individual acts like std::array solution iterator
+  // Individual acts like genome iterator
   genome::iterator begin();
   genome::iterator end();
   genome::const_iterator begin() const;
   genome::const_iterator end() const;
   genome::size_type size() const;
+  parameter & operator[] (size_t pos);
+  const parameter & operator[] (size_t pos) const;
   // Individual can be compared by fitness
   friend bool operator< (const Individual & left, const Individual & right);
   friend bool operator> (const Individual & left, const Individual & right);
