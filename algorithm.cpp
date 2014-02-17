@@ -10,15 +10,15 @@ Algorithm::Algorithm(const Problem & p) : problem(p) {
 
 const Individual Algorithm::mutate(const Individual & subject) const {
   // basic mutation by delta distribution and chance
-  Individual mutation = subject;
+  Individual mutant = subject;
   int_dist percent(1, 100);
   real_dist delta_dist(-problem.delta * (std::abs(problem.domain_min) +
 					 std::abs(problem.domain_max)) / 2,
 		       problem.delta * (std::abs(problem.domain_min) +
 					std::abs(problem.domain_max)) / 2);
-  for (parameter & gene : mutation)
+  for (parameter & gene : mutant)
     if (problem.chance || percent(rg.engine) < int(100 * problem.chance))
-      mutation.mutate(gene, gene + delta_dist(rg.engine));
-  mutation.fitness = problem.fitness(mutation);
-  return mutation;
+      mutant.mutate(gene, gene + delta_dist(rg.engine));
+  mutant.fitness = problem.fitness(mutant);
+  return mutant;
 }
