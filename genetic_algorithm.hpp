@@ -12,8 +12,8 @@
 
 class Genetic: private Algorithm {
 private:
-  static const int population_size = 4096;
-  static const int tournament_size = 2; // binary tournament selection
+  static const int population_size = 256;
+  static const int tournament_size = 4;
   static const int crossover_size = 2; // binary crossover
   typedef std::vector<Individual> population;
   // settings for Gaussian distribution
