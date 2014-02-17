@@ -13,8 +13,8 @@
 const Individual Genetic::mutate(const Individual & subject) const {
   // unit Gaussian distribution for delta
   Individual mutant = subject;
-  int_dist percent(1, 100);
   normal_dist delta_dist(mean, stddev);
+  int_dist percent(0, 100);
   for (parameter & gene : mutant)
     if (problem.chance || percent(rg.engine) < int(100 * problem.chance))
       mutant.mutate(gene, gene * delta_dist(rg.engine));
@@ -30,6 +30,7 @@ const Individual Genetic::selection(const Genetic::population & contestants) con
 
 const Genetic::population Genetic::crossover(const Genetic::population & parents) const {
   population children = parents;
+  int_dist percent(0, 100);
   // arithmetic binary crossover
   if (crossover_size == 2) {
     real_dist alpha_dist(-0.1, 1.1);

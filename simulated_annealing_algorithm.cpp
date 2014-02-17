@@ -11,8 +11,9 @@
 bool SimulatedAnnealing::probability(const parameter energy1,
 				     const parameter energy2,
 				     const parameter temperature) const {
-  int_dist percent(1, 100);
-  parameter chance = 100 *
+  int_dist percent(0, 100);
+  // mutation probability P(e1, e2, T) = e^(-c(e1 - e2)/T)
+  parameter chance = 100 * // [0, 1] -> [0, 100]
     std::exp(-problem.constant * (energy1 - energy2) / temperature);
   return percent(rg.engine) < chance;
 }
