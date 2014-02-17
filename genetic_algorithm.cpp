@@ -44,10 +44,13 @@ const Genetic::population Genetic::crossover(const Genetic::population & parents
   // arithmetic binary crossover
   if (crossover_size == 2) {
     real_dist alpha_dist(-0.1, 1.1);
-    parameter alpha = alpha_dist(rg.engine);
     for (unsigned long i = 0; i < parents[0].size(); ++i) {
-      children[0][i] = alpha * parents[0][i] + (1 - alpha) * parents[1][i];
-      children[1][i] = (1 - alpha) * parents[0][i] + alpha * parents[1][i];
+      parameter alpha = alpha_dist(rg.engine);
+      // recombine each child with crossover_chance probability
+      if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
+	children[0][i] = alpha * parents[0][i] + (1 - alpha) * parents[1][i];
+      if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
+	children[1][i] = (1 - alpha) * parents[0][i] + alpha * parents[1][i];
     }
   }
   else {
