@@ -41,6 +41,7 @@ public:
 
   const Individual potential() const;
   parameter fitness(const Individual & subject) const;
+  const Individual maximum() const;
   virtual parameter problem(const Individual & subject) const =0;
 };
 

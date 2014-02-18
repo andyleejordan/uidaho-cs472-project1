@@ -38,6 +38,15 @@ parameter Problem::fitness(const Individual & subject) const {
   return fitness;
 }
 
+const Individual Problem::maximum() const {
+  Individual worst = this->potential();
+  for (int i = 0; i < iterations; ++i) {
+    const Individual subject = this->potential();
+    if (subject.fitness < worst.fitness) worst = subject;
+  }
+  return worst;
+}
+
 const Individual Problem::potential() const {
   Individual potential = Individual(domain_min, domain_max, range_dist);
   potential.fitness = fitness(potential);
