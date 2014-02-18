@@ -1,4 +1,4 @@
-#+TITLE:     Project #1b Genetic Algorithm
+#+TITLE:     Project #1 Genetic Algorithm
 #+AUTHOR:    Andrew Schwartzmeyer
 #+EMAIL:     schw2620@vandals.uidaho.edu
 #+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
@@ -38,7 +38,7 @@ after the Rastigin function.)
 Pay careful attention to the ranges of the functions. You will want to
 use those ranges both in creating intial individuals and in
 controlling the generation of neighbors, e.g. you don't want your GA
-'wondering' out of the search space. Note that here the functions are
+'wandering' out of the search space. Note that here the functions are
 all defined with 30 dimensions, e.g. P = 30 in the function
 definitions.
 
@@ -69,7 +69,7 @@ that includes the following sections:
   - Mutation rates
   - etc.
 - Basically every time you make a decision about how the algorithm
-  works (what type of crossover it will use, how mutaiton is
+  works (what type of crossover it will use, how mutation is
   performed, etc.) you should make a note of it.
 - Results - you should include graphs and/or tables to make it easy to
   understand the results. Make sure that the graphs and table are

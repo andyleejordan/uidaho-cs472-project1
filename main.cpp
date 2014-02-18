@@ -29,14 +29,7 @@
 #include "spherical_problem.hpp"
 
 int main() {
-  Griewangk problem;
-
-  const Individual worst = problem.maximum();
-  // Individual worst(600);
-  std::cout << "Worst raw fitness: " << problem.problem(worst)
-	    << '\n' << worst.represent() << '\n';
-  return 0;
-
+  Spherical problem;
   Genetic algorithm(problem);
 
   const Individual solution = algorithm.solve();
