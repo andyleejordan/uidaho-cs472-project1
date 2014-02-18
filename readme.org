@@ -79,31 +79,6 @@ that includes the following sections:
 
 * Notes :noexport:
 ** Functions
-*** Spherical
-- f_{Sph}(x) = (\sum_{i=1})^{p} (x_{i})^{2}
-- x_{i} \in [-5.12, 5.12]
-- x^{\*} = (0, 0, ..., 0); f_{Sph}(x^{\*}) = 0
-
-Use fewer random restarts, more neighbors
-
-*** Rosenbrock
-- f_{Ros}(x) = (\sum_{i=1})^{p-1}[100(x_{i+1} - (x_{i})^{2})^{2} + (x_{i} - 1)^{2}]
-- x_{i} \in [-2.048, 2.048]
-- x^{\*} = (1, 1, ..., 1); f_{Ros}(x^{\*}) = 0
-
-*** Rastrigin
-- f_{Ras}(x) = 10p + (\sum_{i=1})^{p} ((x_{i})^{2} - 10cos(2(\pi)x_{i}))
-- x_{i} \in [-5.12, 5.12]
-- x^{\*} = (0, 0, ..., 0); f_{Ras}(x^{\*}) = 0
-
-*** Schwefel
-f_{Sch}(x) = 418.9829 \cdot p + (\sum_{i=1})^{p} x_{i }sin(\radic|x_{i}|)
-x_{i} \in [-512.03, 511.97]
-x^{\*} = (-420.9687, ..., -420.9687); f_{Sch}(x^{\*}) = 0
-
-Use more random restarts, fewer neighbors
-
-
 *** Ackley
 - f_{Ack}(x) = 20 + e - 20exp(-0.2\radic((1/p)(\sum_{i=1})^{p}(x_{i})^{2})) - exp((1/p)(\sum_{i=1})^{p}cos(2(\pi)x_{i}))
 - x_{i} \in [-30, 30]
@@ -113,6 +88,30 @@ Use more random restarts, fewer neighbors
 - f_{Gri}(x) = 1 + (\sum_{i=1})^{p}(x_{i})^{2}/4000 - (\prod_{i=1})^{p}cos(x_{i}/\radic(i))
 - x_{i} \in [-600, 600]
 - x^{\*} = (0, 0, ..., 0); f_{Gri}(x^{\*}) = 0
+
+*** Rastrigin
+- f_{Ras}(x) = 10p + (\sum_{i=1})^{p} ((x_{i})^{2} - 10cos(2(\pi)x_{i}))
+- x_{i} \in [-5.12, 5.12]
+- x^{\*} = (0, 0, ..., 0); f_{Ras}(x^{\*}) = 0
+
+*** Rosenbrock
+- f_{Ros}(x) = (\sum_{i=1})^{p-1}[100(x_{i+1} - (x_{i})^{2})^{2} + (x_{i} - 1)^{2}]
+- x_{i} \in [-2.048, 2.048]
+- x^{\*} = (1, 1, ..., 1); f_{Ros}(x^{\*}) = 0
+
+*** Schwefel
+f_{Sch}(x) = 418.9829 \cdot p + (\sum_{i=1})^{p} x_{i }sin(\radic|x_{i}|)
+x_{i} \in [-512.03, 511.97]
+x^{\*} = (-420.9687, ..., -420.9687); f_{Sch}(x^{\*}) = 0
+
+Use more random restarts, fewer neighbors
+
+*** Spherical
+- f_{Sph}(x) = (\sum_{i=1})^{p} (x_{i})^{2}
+- x_{i} \in [-5.12, 5.12]
+- x^{\*} = (0, 0, ..., 0); f_{Sph}(x^{\*}) = 0
+
+Use fewer random restarts, more neighbors
 
 * Algorithms
 
