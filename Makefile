@@ -2,14 +2,14 @@ CC=g++-4.8
 LFLAGS=-Wall -std=c++11 -O3
 CFLAGS=$(LFLAGS) -c
 PROGRAM=search
-OBJECTS=main.o random_generator.o individual.o problem.o spherical_problem.o schwefel_problem.o algorithm.o hill_climbing_algorithm.o simulated_annealing_algorithm.o genetic_algorithm.o
+OBJECTS=main.o random_generator.o individual.o problem.o spherical_problem.o rosenbrock_problem.o schwefel_problem.o algorithm.o hill_climbing_algorithm.o simulated_annealing_algorithm.o genetic_algorithm.o
 
 all: $(PROGRAM)
 
 $(PROGRAM): $(OBJECTS)
 	$(CC) $(LFLAGS) -o $(PROGRAM) $(OBJECTS)
 
-main.o: main.cpp random_generator.hpp spherical_problem.hpp schwefel_problem.hpp problem.hpp hill_climbing_algorithm.hpp simulated_annealing_algorithm.hpp genetic_algorithm.hpp algorithm.hpp individual.hpp
+main.o: main.cpp random_generator.hpp spherical_problem.hpp rosenbrock_problem.hpp schwefel_problem.hpp problem.hpp hill_climbing_algorithm.hpp simulated_annealing_algorithm.hpp genetic_algorithm.hpp algorithm.hpp individual.hpp
 	$(CC) $(CFLAGS) main.cpp
 
 random_generator.o: random_generator.hpp random_generator.cpp
@@ -23,6 +23,9 @@ problem.o: problem.cpp problem.hpp individual.hpp
 
 spherical_problem.o: spherical_problem.cpp spherical_problem.hpp problem.hpp individual.hpp
 	$(CC) $(CFLAGS) spherical_problem.cpp
+
+rosenbrock_problem.o: rosenbrock_problem.cpp rosenbrock_problem.hpp problem.hpp individual.hpp
+	$(CC) $(CFLAGS) rosenbrock_problem.cpp
 
 schwefel_problem.o: schwefel_problem.cpp schwefel_problem.hpp problem.hpp individual.hpp
 	$(CC) $(CFLAGS) schwefel_problem.cpp
