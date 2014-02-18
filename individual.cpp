@@ -12,8 +12,7 @@
 
 Individual::Individual(): min(0), max(0), fitness(0) {
   // zeroed individual represents error
-  for (parameter & value : solution)
-    value = 0;
+  for (parameter & value : solution) value = 0;
 }
 
 Individual::Individual(const parameter n,
