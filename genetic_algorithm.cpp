@@ -79,9 +79,9 @@ const Individual Genetic::solve() const {
       population offspring;
       while(offspring.size() != population_size) {
 	// tournament selection of parents
-	population parents = selection(generation);
+	const population parents = selection(generation);
 	// crossover
-	population children = crossover(parents);
+	const population children = crossover(parents);
 	// add mutated children to offspring
 	for (const Individual child : children) offspring.emplace_back(mutate(child));
       }
