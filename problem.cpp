@@ -38,7 +38,7 @@ parameter Problem::fitness(const Individual & subject) const {
   return fitness;
 }
 
-const Individual Problem::maximum() const {
+const Individual Problem::worst() const {
   Individual worst = this->potential();
   for (int i = 0; i < iterations; ++i) {
     const Individual subject = this->potential();
