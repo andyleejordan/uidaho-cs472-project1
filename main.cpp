@@ -2,7 +2,7 @@
  *
  * University of Idaho - CS 472: Evolutionary Computation by Terry Soule
  *
- * Project #1a Hill Climbing and Simulated Annealing
+ * Project #1 Genetic Algorithm
  *
  * This program uses C++11 extensions (array template, range-based for
  * loop, random library)
@@ -29,11 +29,18 @@
 #include "spherical_problem.hpp"
 
 int main() {
-  Spherical problem;
+  Griewangk problem;
+
+  const Individual worst = problem.maximum();
+  // Individual worst(600);
+  std::cout << "Worst raw fitness: " << problem.problem(worst)
+	    << '\n' << worst.represent() << '\n';
+  return 0;
+
   Genetic algorithm(problem);
 
   const Individual solution = algorithm.solve();
-  std::cout << solution.represent() << "\n"
-	    << problem.fitness(solution) << "\n"
-	    << problem.problem(solution) << "\n";
+  std::cout << solution.represent() << '\n'
+	    << problem.fitness(solution) << '\n'
+	    << problem.problem(solution) << '\n';
 }
