@@ -13,7 +13,7 @@ bool SimulatedAnnealing::probability(const parameter energy1,
 				     const parameter temperature) const {
   int_dist percent(0, 100);
   // mutation probability P(e1, e2, T) = e^(-c(e1 - e2)/T)
-  parameter chance = 100 * // [0, 1] -> [0, 100]
+  const parameter chance = 100 * // [0, 1] -> [0, 100]
     std::exp(-problem.constant * (energy1 - energy2) / temperature);
   return percent(rg.engine) < chance;
 }
@@ -22,16 +22,19 @@ const Individual SimulatedAnnealing::solve() const {
   while(true) {
     // random restart
     Individual best = problem.potential();
+    // work with "lucky" values
     if (best.fitness > problem.filter) {
-      // work with "lucky" values
-      for (long T = problem.iterations; T > 0; T--) {
-	// actual simulated-annealing algorithm
-	parameter temperature = 100. * parameter(T)/problem.iterations;
-        Individual neighbor = mutate(best);
-	// keep track of best best solution
-	if (neighbor.fitness > best.fitness ||
-	    probability(best.fitness, neighbor.fitness, temperature)) {
-	  best = neighbor; // swap for better neighbor
+      // actual simulated-annealing algorithm
+      for (long T = problem.iterations; T > 0; --T) {
+	// convert temperature to [0, 100]
+	const parameter temperature = 100. * parameter(T) / problem.iterations;
+	// get neighbor
+        const Individual neighbor = mutate(best);
+	// keep track of best solution
+	if (neighbor.fitness > best.fitness
+	    // SA swaps in bad solutions with this probability
+	    || probability(best.fitness, neighbor.fitness, temperature)) {
+	  best = neighbor;
 	  // terminating condition
 	  if (best.fitness > problem.goal) return best;
 	}

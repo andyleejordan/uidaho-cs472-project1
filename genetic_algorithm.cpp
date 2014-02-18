@@ -5,12 +5,12 @@
 
 #include <algorithm>
 #include <iostream>
-#include <iterator>
 
 #include "genetic_algorithm.hpp"
 #include "random_generator.hpp"
 
 const Individual Genetic::mutate(const Individual & subject) const {
+  // GA mutation sequence using a normal distribution
   Individual mutant = subject; // non-const copy to mutate
   int_dist percent(0, 100);
   normal_dist delta_dist(mean, stddev); // unit Gaussian distribution for delta
@@ -24,6 +24,7 @@ const Individual Genetic::mutate(const Individual & subject) const {
 }
 
 const Genetic::population Genetic::selection(const Genetic::population & generation) const {
+  // implements tournament selection, returning desired number of best parents
   population parents;
   int_dist population_dist(0, population_size - 1); // closed interval, so (-1)
   for (int i = 0; i < crossover_size; ++i) {

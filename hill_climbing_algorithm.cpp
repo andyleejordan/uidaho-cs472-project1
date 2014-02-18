@@ -11,14 +11,14 @@ const Individual HillClimbing::solve() const {
   while(true) {
     // random restart
     Individual best = problem.potential();
+    // work with "lucky" values
     if (best.fitness > problem.filter) {
-      // work with "lucky" values
-      for (long i = 0; i < problem.iterations; i++) {
-	// actual hill-climbing algorithm
-	Individual neighbor = mutate(best);
-	// keep track of best best solution
+      // actual hill-climbing algorithm
+      for (long i = 0; i < problem.iterations; ++i) {
+	const Individual neighbor = mutate(best);
+	// keep track of best solution
 	if (neighbor.fitness > best.fitness) {
-	  best = neighbor;  // swap for better neighbor
+	  best = neighbor;
 	  // terminating condition
 	  if (best.fitness > problem.goal) return best;
 	}
