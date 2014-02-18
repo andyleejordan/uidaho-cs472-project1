@@ -32,7 +32,8 @@ private:
   parameter max;
 public:
   Individual();
-  Individual(const parameter n, const parameter x, real_dist range_dis);
+  Individual(const parameter & gene);
+  Individual(const parameter & n, const parameter & x, real_dist range_dis);
   // construction wrappers (e.g. potential() / mutate()) set fitness
   parameter fitness;
   // mutate will change gene with bounds-checking
@@ -44,11 +45,11 @@ public:
   genome::const_iterator begin() const;
   genome::const_iterator end() const;
   genome::size_type size() const;
-  parameter & operator[] (size_t pos);
-  const parameter & operator[] (size_t pos) const;
+  parameter & operator[](size_t pos);
+  const parameter & operator[](size_t pos) const;
   // Individual can be compared by fitness
-  friend bool operator< (const Individual & left, const Individual & right);
-  friend bool operator> (const Individual & left, const Individual & right);
+  friend bool operator<(const Individual & left, const Individual & right);
+  friend bool operator>(const Individual & left, const Individual & right);
 };
 
 #endif /* _INDIVIDUAL_H_ */

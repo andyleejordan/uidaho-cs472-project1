@@ -11,17 +11,20 @@
 #include "problem.hpp"
 
 Individual::Individual(): min(0), max(0), fitness(0) {
-  // zeroed individual represents error
+  // zeroed Individual represents error
   for (parameter & value : solution) value = 0;
 }
 
-Individual::Individual(const parameter n,
-		       const parameter x,
-		       real_dist range_dist): min(n),
-					      max(x), 
-					      fitness(0) {
-  for (parameter & value : solution)
-    value = range_dist(rg.engine);
+Individual::Individual(const parameter & gene): min(0), max(0), fitness(0) {
+  // sets up Individual with fill of particular gene
+  solution.fill(gene);
+}
+
+Individual::Individual(const parameter & n,
+		       const parameter & x,
+		       real_dist range_dist): min(n), max(x), fitness(0) {
+  // sets up random Individual for a particular problem
+  for (parameter & value : solution) value = range_dist(rg.engine);
 }
 
 const std::string Individual::represent() const {
@@ -59,18 +62,18 @@ Individual::genome::size_type Individual::size() const {
   return solution.size();
 }
 
-parameter & Individual::operator[] (size_t pos) {
+parameter & Individual::operator[](size_t pos) {
   return solution[pos];
 }
 
-const parameter & Individual::operator[] (size_t pos) const {
+const parameter & Individual::operator[](size_t pos) const {
   return solution[pos];
 }
 
-bool operator< (const Individual & left, const Individual & right) {
+bool operator<(const Individual & left, const Individual & right) {
   return left.fitness < right.fitness;
 }
 
-bool operator> (const Individual & left, const Individual & right) {
+bool operator>(const Individual & left, const Individual & right) {
   return left.fitness > right.fitness;
 }
