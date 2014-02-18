@@ -7,7 +7,7 @@
 
 #include "schwefel_problem.hpp"
 
-parameter Schwefel::problem(const Individual & subject) const {
+parameter Schwefel::fitness(const Individual & subject) const {
   parameter sum = 0;
   for (const parameter & gene : subject)
     sum += gene * std::sin(std::sqrt(std::abs(gene)));

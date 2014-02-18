@@ -18,7 +18,7 @@ public:
 	    const int c = 10000): Problem(-600, 600,
 					  0, 1700, true,
 					  i, g, f, d, h, c) {};
-  parameter problem(const Individual & subject) const;
+  parameter fitness(const Individual & subject) const;
 };
 
 #endif /* _GRIEWANGK_PROBLEM_H_ */

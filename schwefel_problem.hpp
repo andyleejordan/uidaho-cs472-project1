@@ -18,7 +18,7 @@ public:
 	   const int c = 10000): Problem(-512.03, 511.97,
 					 0, 21000, true,
 					 i, g, f, d, h, c) {};
-  parameter problem(const Individual & subject) const;
+  parameter fitness(const Individual & subject) const;
 };
 
 #endif /* _SCHWEFEL_PROBLEM_H_ */

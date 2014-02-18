@@ -18,7 +18,7 @@ public:
 	 const int c = 10000): Problem(-30, 30,
 				       0, 22, true,
 				       i, g, f, d, h, c) {};
-  parameter problem(const Individual & subject) const;
+  parameter fitness(const Individual & subject) const;
 };
 
 #endif /* _ACKLEY_PROBLEM_H_ */

@@ -31,19 +31,18 @@ Problem::Problem(const parameter dn,
 			       constant(c),
 			       iterations(i) {};
 
-parameter Problem::fitness(const Individual & subject) const {
+parameter Problem::normal(const Individual & subject) const {
   // Scales problem value [min, max] to parameter [0, 1] with 1 being max fitness
-  parameter raw = this->problem(subject);
-  parameter fitness = (raw - range_min) / (range_max - range_min); // normalize
+  parameter normal = (subject.fitness - range_min) / (range_max - range_min);
   if (minimize) {
-    if (fitness > 1) fitness = 1; // truncate worst end of fitnesses to 1
-    assert(fitness >= 0); // fail if best fitness is < 0
-    fitness = 1. - fitness; // inverse if trying to minimize
+    if (normal > 1) normal = 1; // truncate worst end of fitnesses to 1
+    assert(normal >= 0); // fail if best fitness is < 0
+    normal = 1. - normal; // inverse if trying to minimize
   } else {
-    if (fitness < 0) fitness = 0; // truncate worst end of fitnesses to 0
-    assert(fitness <= 1); // fail if best fitness is > 1
+    if (normal < 0) normal = 0; // truncate worst end of fitnesses to 0
+    assert(normal <= 1); // fail if best fitness is > 1
   }
-  return fitness;
+  return normal;
 }
 
 const Individual Problem::worst() const {

@@ -7,7 +7,7 @@
 
 #include "ackley_problem.hpp"
 
-parameter Ackley::problem(const Individual & subject) const {
+parameter Ackley::fitness(const Individual & subject) const {
   parameter p_inverse = 1. / subject.size();
   parameter sum_pow = 0;
   parameter sum_cos = 0;

@@ -35,7 +35,7 @@ public:
   Individual(const parameter & gene);
   Individual(const parameter & n, const parameter & x, real_dist range_dis);
   // construction wrappers (e.g. potential() / mutate()) set fitness
-  parameter fitness;
+  parameter fitness; // raw, not normalized
   // mutate will change gene with bounds-checking
   void mutate(parameter & gene, const parameter gene_i) const;
   const virtual std::string represent() const;

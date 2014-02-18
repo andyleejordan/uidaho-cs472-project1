@@ -36,9 +36,9 @@ public:
 	  const parameter h = 0.5,
 	  const int c = 1);
   const Individual potential() const;
-  parameter fitness(const Individual & subject) const;
+  parameter normal(const Individual & subject) const;
   const Individual worst() const;
-  virtual parameter problem(const Individual & subject) const =0;
+  virtual parameter fitness(const Individual & subject) const =0;
 };
 
 #endif /* _PROBLEM_H_ */

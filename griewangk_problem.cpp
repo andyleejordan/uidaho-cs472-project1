@@ -7,7 +7,7 @@
 
 #include "griewangk_problem.hpp"
 
-parameter Griewangk::problem(const Individual & subject) const {
+parameter Griewangk::fitness(const Individual & subject) const {
   parameter sum = 0;
   parameter product = 1;
   for (unsigned long i = 0; i < subject.size(); ++i) {

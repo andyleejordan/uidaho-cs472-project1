@@ -19,7 +19,7 @@ public:
 	    const int c = 10000): Problem(-5.12, 5.12,
 					  0, 500, true,
 					  i, g, f, d, h, c) {};
-  parameter problem(const Individual & subject) const;
+  parameter fitness(const Individual & subject) const;
 };
 
 #endif /* _SPHERICAL_PROBLEM_H_ */
