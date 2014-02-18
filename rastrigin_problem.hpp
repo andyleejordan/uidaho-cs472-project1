@@ -19,7 +19,6 @@ public:
 	    const int c = 10000): Problem(-5.12, 5.12,
 					  0, 900, true,
 					  i, g, f, d, h, c) {};
-
   parameter problem(const Individual & subject) const;
 };
 
