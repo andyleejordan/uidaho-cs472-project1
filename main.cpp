@@ -12,12 +12,21 @@
 #include <ctime>
 #include <iostream>
 
-#include "spherical_problem.hpp"
-#include "schwefel_problem.hpp"
+// individual
+#include "individual.hpp"
+
+// algorithms
+#include "genetic_algorithm.hpp"
 #include "hill_climbing_algorithm.hpp"
 #include "simulated_annealing_algorithm.hpp"
-#include "genetic_algorithm.hpp"
-#include "individual.hpp"
+
+// problems
+#include "ackley_problem.hpp"
+#include "griewangk_problem.hpp"
+#include "rastrigin_problem.hpp"
+#include "rosenbrock_problem.hpp"
+#include "schwefel_problem.hpp"
+#include "spherical_problem.hpp"
 
 int main() {
   Spherical problem;
