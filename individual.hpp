@@ -26,7 +26,7 @@ using namespace Parameters;
 class Individual {
 private:
   static const int dimension = 30;
-  typedef std::array <parameter, dimension> genome;
+  typedef std::array<parameter, dimension> genome;
   genome solution;
   parameter min;
   parameter max;
