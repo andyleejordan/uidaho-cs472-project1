@@ -58,9 +58,21 @@ const Genetic::population Genetic::selection(const Genetic::population & generat
   return parents;
 }
 
+
+void Genetic::arithmetic_crossover(const Genetic::population & mates,
+				   Genetic::population & children,
+				   int_dist & percent) const {
+  // arithmetic crossover
+  real_dist alpha_dist(-0.1, 1.1);
+  for (unsigned long i = 0; i < children[0].size(); ++i) {
+    parameter alpha = alpha_dist(rg.engine);
+    // recombine each child with crossover_chance probability
+    if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
+      children[0][i] = alpha * mates[0][i] + (1 - alpha) * mates[1][i];
+    if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
+      children[1][i] = (1 - alpha) * mates[0][i] + alpha * mates[1][i];
   }
-  else {
-    // implement uniform crossover
+}
 
 const Genetic::population Genetic::crossover(const Genetic::population & mates) const {
   population children = mates;
