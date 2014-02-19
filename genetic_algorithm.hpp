@@ -12,12 +12,12 @@
 
 class Genetic: private Algorithm {
 private:
-  static const int population_size = 256;
+  static const int population_size = 512;
   static const int tournament_size = 4;
   static const int crossover_size = 2; // binary crossover
-  static const int elitism = 8;
+  static const int elitism = 2;
   const parameter crossover_chance = 0.8;
-  const parameter jumping_mutation_rate = 0.05;
+  const parameter jumping_mutation_rate = 0.025;
   char mutation_type = 'j';
   char crossover_type = 't';
   typedef std::vector<Individual> population;
