@@ -116,6 +116,7 @@ const Individual Genetic::solve() const {
     // create initial population
     population generation;
     Individual best;
+    int_dist population_dist(0, population_size - 1); // closed interval, so (-1)
     for (int i = 0; i < population_size; ++i)
       generation.emplace_back(problem.potential());
     // generations loop
@@ -137,7 +138,6 @@ const Individual Genetic::solve() const {
       // replace generation with offspring
       generation.swap(offspring);
       // elitism replacement of random individuals
-      int_dist population_dist(0, population_size - 1); // closed interval, so (-1)
       for (int i = 0; i < elitism; ++i)
 	generation[population_dist(rg.engine)] = best;
     }
