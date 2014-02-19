@@ -58,23 +58,23 @@ const Genetic::population Genetic::selection(const Genetic::population & generat
   return parents;
 }
 
-const Genetic::population Genetic::crossover(const Genetic::population & parents) const {
-  population children = parents;
-  int_dist percent(0, 100);
-  // arithmetic binary crossover
-  if (crossover_size == 2) {
-    real_dist alpha_dist(-0.1, 1.1);
-    for (unsigned long i = 0; i < parents[0].size(); ++i) {
-      parameter alpha = alpha_dist(rg.engine);
-      // recombine each child with crossover_chance probability
-      if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
-	children[0][i] = alpha * parents[0][i] + (1 - alpha) * parents[1][i];
-      if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
-	children[1][i] = (1 - alpha) * parents[0][i] + alpha * parents[1][i];
-    }
   }
   else {
     // implement uniform crossover
+
+const Genetic::population Genetic::crossover(const Genetic::population & mates) const {
+  population children = mates;
+  int_dist percent(0, 100);
+  switch(crossover_type) {
+  case 'u':
+    uniform_crossover(children, percent);
+    break;
+  case 'a':
+    arithmetic_crossover(mates, children, percent);
+    break;
+  case 't':
+    two_point_crossover(children, percent);
+    break;
   }
   // update fitnesses
   for (Individual & child : children) child.fitness = problem.fitness(child);
