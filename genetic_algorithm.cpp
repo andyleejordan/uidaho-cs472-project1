@@ -9,15 +9,15 @@
 #include "genetic_algorithm.hpp"
 #include "random_generator.hpp"
 
-const Individual Genetic::mutate(const Individual & subject) const {
+void Genetic::gaussian_mutate(Individual & mutant, int_dist & percent) const {
   // GA mutation sequence using a normal distribution
-  Individual mutant = subject; // non-const copy to mutate
-  int_dist percent(0, 100);
   normal_dist delta_dist(mean, stddev); // unit Gaussian distribution for delta
   for (parameter & gene : mutant)
     // short circuit for problem.chance == 1
     if (problem.chance || percent(rg.engine) < int(100 * problem.chance))
       mutant.mutate(gene, gene * delta_dist(rg.engine));
+}
+
 
 const Individual Genetic::mutate(const Individual & subject) const {
   Individual mutant = subject; // non-const copy to mutate
