@@ -58,6 +58,12 @@ const Genetic::population Genetic::selection(const Genetic::population & generat
   return parents;
 }
 
+void Genetic::uniform_crossover(Genetic::population & children, int_dist & percent) const {
+  // uniform crossover
+  for (unsigned long i = 0; i < children[0].size(); ++i)
+    if (percent(rg.engine) < int(100 * 0.5))
+      std::swap(children[0][i], children[1][i]);
+}
 
 void Genetic::arithmetic_crossover(const Genetic::population & mates,
 				   Genetic::population & children,
