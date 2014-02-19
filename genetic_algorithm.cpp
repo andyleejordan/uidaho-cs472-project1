@@ -18,6 +18,18 @@ const Individual Genetic::mutate(const Individual & subject) const {
     // short circuit for problem.chance == 1
     if (problem.chance || percent(rg.engine) < int(100 * problem.chance))
       mutant.mutate(gene, gene * delta_dist(rg.engine));
+
+const Individual Genetic::mutate(const Individual & subject) const {
+  Individual mutant = subject; // non-const copy to mutate
+  int_dist percent(0, 100);
+  switch(mutation_type) {
+  case 'g':
+    gaussian_mutate(mutant, percent);
+    break;
+  case 'j':
+    jumping_mutate(mutant, percent);
+    break;
+  }
   // update fitness
   mutant.fitness = problem.fitness(mutant);
   return mutant;
