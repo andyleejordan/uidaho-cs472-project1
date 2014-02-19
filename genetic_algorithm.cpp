@@ -80,6 +80,18 @@ void Genetic::arithmetic_crossover(const Genetic::population & mates,
   }
 }
 
+void Genetic::two_point_crossover(Genetic::population & children, int_dist & percent) const {
+    // two-point crossover
+    int_dist gene_dist(0, children[0].size() - 1);
+    int start = gene_dist(rg.engine);
+    int length = gene_dist(rg.engine);
+    for (Individual & child : children)
+      std::rotate(child.begin(), child.begin() + start, child.end());
+    for (int i = 0; i < length; i++)
+      if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
+	std::swap(children[0][i], children[1][i]);
+}
+
 const Genetic::population Genetic::crossover(const Genetic::population & mates) const {
   population children = mates;
   int_dist percent(0, 100);
