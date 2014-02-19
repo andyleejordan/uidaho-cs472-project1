@@ -18,6 +18,13 @@ void Genetic::gaussian_mutate(Individual & mutant, int_dist & percent) const {
       mutant.mutate(gene, gene * delta_dist(rg.engine));
 }
 
+void Genetic::jumping_mutate(Individual & mutant, int_dist & percent) const {
+  // jumping sequence like snewt's
+  real_dist delta_dist(problem.domain_min, problem.domain_max);
+  for (parameter & gene : mutant)
+    if (percent(rg.engine) < int(100 * jumping_mutation_rate))
+      mutant.mutate(gene, delta_dist(rg.engine));
+}
 
 const Individual Genetic::mutate(const Individual & subject) const {
   Individual mutant = subject; // non-const copy to mutate
