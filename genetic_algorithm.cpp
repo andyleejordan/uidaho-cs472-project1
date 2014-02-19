@@ -65,10 +65,9 @@ void Genetic::uniform_crossover(Genetic::population & children, int_dist & perce
       std::swap(children[0][i], children[1][i]);
 }
 
-void Genetic::arithmetic_crossover(const Genetic::population & mates,
-				   Genetic::population & children,
-				   int_dist & percent) const {
+void Genetic::arithmetic_crossover(Genetic::population & children, int_dist & percent) const {
   // arithmetic crossover
+  const population mates = children;
   real_dist alpha_dist(-0.1, 1.1);
   for (unsigned long i = 0; i < children[0].size(); ++i) {
     parameter alpha = alpha_dist(rg.engine);
@@ -100,7 +99,7 @@ const Genetic::population Genetic::crossover(const Genetic::population & mates) 
     uniform_crossover(children, percent);
     break;
   case 'a':
-    arithmetic_crossover(mates, children, percent);
+    arithmetic_crossover(children, percent);
     break;
   case 't':
     two_point_crossover(children, percent);
@@ -125,6 +124,7 @@ const Individual Genetic::solve() const {
       best = *std::max_element(generation.begin(), generation.end());
       // terminating condition
       if (best.fitness > problem.goal) return best;
+      std::cout << problem.problem(best) << '\n';
       // selection and mutation stage
       population offspring;
       while(offspring.size() != population_size) {

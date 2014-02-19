@@ -29,9 +29,7 @@ private:
   const Individual mutate(const Individual & subject) const;
   const population selection(const population & generation) const;
   void uniform_crossover(population & children, int_dist & percent) const;
-  void arithmetic_crossover(const Genetic::population & mates,
-			    Genetic::population & children,
-			    int_dist & percent) const;
+  void arithmetic_crossover(population & children, int_dist & percent) const;
   void two_point_crossover(population & children, int_dist & percent) const;
   const population crossover(const population & mates) const;
 public:
