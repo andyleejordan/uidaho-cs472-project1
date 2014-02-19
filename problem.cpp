@@ -34,7 +34,7 @@ Problem::Problem(const parameter dn,
 parameter Problem::fitness(const Individual & subject) const {
   // Scales problem value [min, max] to parameter [0, 1] with 1 being max fitness
   parameter raw = this->problem(subject);
-  parameter fitness = (raw - range_min) / (range_max - range_min); // normalize
+  parameter fitness = std::abs(raw - range_min) / (range_max - range_min); // normalize
   if (minimize) {
     if (fitness > 1) fitness = 1; // truncate worst end of fitnesses to 1
     assert(fitness >= 0); // fail if best fitness is < 0
