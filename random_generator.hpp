@@ -14,7 +14,7 @@ private:
 
 public:
   RandomGenerator();
-  std::mt19937 engine;
+  std::mt19937_64 engine;
 };
 
 #endif /* _RANDOM_GENERATOR_H_ */
