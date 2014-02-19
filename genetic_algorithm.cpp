@@ -115,15 +115,15 @@ const Individual Genetic::solve() const {
   while(true) {
     // create initial population
     population generation;
+    Individual best;
     for (int i = 0; i < population_size; ++i)
       generation.emplace_back(problem.potential());
     // generations loop
     for (long i = 0; i < problem.iterations; ++i) {
       // find generation's best member
-      const Individual best = *std::max_element(generation.begin(), generation.end());
+      best = *std::max_element(generation.begin(), generation.end());
       // terminating condition
       if (best.fitness > problem.goal) return best;
-      // std::cout << best.fitness << '\n';
       // selection and mutation stage
       population offspring;
       while(offspring.size() != population_size) {
@@ -141,6 +141,6 @@ const Individual Genetic::solve() const {
       for (int i = 0; i < elitism; ++i)
 	generation[population_dist(rg.engine)] = best;
     }
-    std::cout << "Exhausted generations!\n";
+    return best;
   }
 }
