@@ -33,7 +33,8 @@ const Individual SimulatedAnnealing::solve() const {
 	// keep track of best solution
 	if (neighbor > best
 	    // SA swaps in bad solutions with this probability
-	    || probability(best.fitness, neighbor.fitness, temperature)) {
+	    || probability(problem.normal(best), problem.normal(neighbor),
+			   temperature)) {
 	  best = neighbor;
 	  // terminating condition
 	  if (best > problem.goal) return best;
