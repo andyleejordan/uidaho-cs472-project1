@@ -28,11 +28,11 @@
 #include "spherical_problem.hpp"
 
 int main() {
-  Spherical problem;
+  Schwefel problem(10000, 0.0001);
   Genetic algorithm(problem);
 
   const Individual solution = algorithm.solve();
   std::cout << solution.represent() << '\n'
-	    << problem.fitness(solution) << '\n'
-	    << problem.problem(solution) << '\n';
+	    << solution.fitness << '\n'
+	    << problem.normal(solution) << '\n';
 }
