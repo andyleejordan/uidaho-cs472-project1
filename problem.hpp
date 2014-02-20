@@ -41,6 +41,7 @@ public:
   parameter fitness(const Individual & subject) const;
   const Individual worst() const;
   virtual parameter problem(const Individual & subject) const =0;
+  const std::string represent() const;
 };
 
 #endif /* _PROBLEM_H_ */

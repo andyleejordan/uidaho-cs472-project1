@@ -62,3 +62,11 @@ const Individual Problem::potential() const {
   potential.fitness = fitness(potential);
   return potential;
 }
+
+const std::string Problem::represent() const {
+  std::string representation = name + " problem with domain ["
+    + std::to_string(domain_min) + ", " + std::to_string(domain_max)
+    + "] seeking goal of " + std::to_string(goal)
+    + " using a maximum of " + std::to_string(iterations) + " iterations.\n";
+  return representation;
+}
