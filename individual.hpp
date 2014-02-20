@@ -56,8 +56,38 @@ public:
   // Takes into account minimize flag, cannot compare unlike Individuals
   friend bool operator<(const Individual & left, const Individual & right);
   friend bool operator>(const Individual & left, const Individual & right);
-  friend bool operator<(const Individual & left, const parameter & right);
-  friend bool operator>(const Individual & left, const parameter & right);
+  template<typename T> friend bool operator<(const Individual & left, const T & right);
+  template<typename T> friend bool operator>(const Individual & left, const T & right);
+  // Individuals can be added
+  friend parameter operator+(const Individual & left, const Individual & right);
+  template<typename T> T friend operator+(const T & number, const Individual & right);
+  template<typename T> T friend operator+(const Individual & left, const T & number);
 };
+
+template<typename T> bool operator<(const Individual & left, const T & right) {
+  // switch comparison so 0 is a "higher" fitness
+  if (left.minimize) return left.fitness > right;
+  // else assume lesser fitness is in fact lesser
+  else return left.fitness < right;
+}
+
+template<typename T> bool operator>(const Individual & left, const T & right) {
+  // switch comparison so 0 is a "higher" fitness
+  if (left.minimize) return left.fitness < right;
+  // else assume greate fitness is in fact greater
+  else return left.fitness > right;
+}
+
+template<typename T> T operator+(const Individual & left, const Individual & right) {
+  return left.fitness + right.fitness;
+}
+
+template<typename T> T operator+(const T & number, const Individual & right) {
+  return number + right.fitness;
+}
+
+template<typename T> T operator+(const Individual & left, const T & number) {
+  return left.fitness + number;
+}
 
 #endif /* _INDIVIDUAL_H_ */

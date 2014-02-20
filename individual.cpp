@@ -93,17 +93,3 @@ bool operator>(const Individual & left, const Individual & right) {
   // else assume greate fitness is in fact greater
   else return left.fitness > right.fitness;
 }
-
-bool operator<(const Individual & left, const parameter & right) {
-  // switch comparison so 0 is a "higher" fitness
-  if (left.minimize) return left.fitness > right;
-  // else assume lesser fitness is in fact lesser
-  else return left.fitness < right;
-}
-
-bool operator>(const Individual & left, const parameter & right) {
-  // switch comparison so 0 is a "higher" fitness
-  if (left.minimize) return left.fitness < right;
-  // else assume greate fitness is in fact greater
-  else return left.fitness > right;
-}
