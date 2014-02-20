@@ -12,7 +12,7 @@ parameter Ackley::fitness(const Individual & subject) const {
   parameter sum_pow = 0;
   parameter sum_cos = 0;
   for (const parameter & gene : subject) {
-    sum_pow += pow(gene, 2);
+    sum_pow += std::pow(gene, 2);
     sum_cos += std::cos(2 * M_PI * gene);
   }
   parameter exp_0 = std::exp(-0.2 * std::sqrt(p_inverse * sum_pow));
