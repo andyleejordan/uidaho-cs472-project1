@@ -23,7 +23,7 @@ const Individual SimulatedAnnealing::solve() const {
     // random restart
     Individual best = problem.potential();
     // work with "lucky" values
-    if (best.fitness > problem.filter) {
+    if (best > problem.filter) {
       // actual simulated-annealing algorithm
       for (long T = problem.iterations; T > 0; --T) {
 	// convert temperature to [0, 100]
@@ -31,12 +31,12 @@ const Individual SimulatedAnnealing::solve() const {
 	// get neighbor
         const Individual neighbor = mutate(best);
 	// keep track of best solution
-	if (neighbor.fitness > best.fitness
+	if (neighbor > best
 	    // SA swaps in bad solutions with this probability
 	    || probability(best.fitness, neighbor.fitness, temperature)) {
 	  best = neighbor;
 	  // terminating condition
-	  if (best.fitness > problem.goal) return best;
+	  if (best > problem.goal) return best;
 	}
       }
       std::cout << "Exhausted fitness: " << best.fitness << "\n";

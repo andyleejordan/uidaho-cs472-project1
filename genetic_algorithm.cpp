@@ -133,9 +133,9 @@ const Individual Genetic::solve() const {
       // find generation's best member
       best = *std::max_element(generation.begin(), generation.end());
       // logging
-      log << i << ' ' << best.fitness << ' ' << problem.problem(best) << '\n';
+      log << i << ' ' << best.fitness << ' ' << problem.normal(best) << '\n';
       // terminating condition
-      if (best.fitness > problem.goal) return best;
+      if (best > problem.goal) return best;
       // selection and mutation stage
       population offspring;
       while(offspring.size() != population_size) {

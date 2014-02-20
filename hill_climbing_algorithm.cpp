@@ -12,15 +12,15 @@ const Individual HillClimbing::solve() const {
     // random restart
     Individual best = problem.potential();
     // work with "lucky" values
-    if (best.fitness > problem.filter) {
+    if (best > problem.filter) {
       // actual hill-climbing algorithm
       for (long i = 0; i < problem.iterations; ++i) {
 	const Individual neighbor = mutate(best);
 	// keep track of best solution
-	if (neighbor.fitness > best.fitness) {
+	if (neighbor > best) {
 	  best = neighbor;
 	  // terminating condition
-	  if (best.fitness > problem.goal) return best;
+	  if (best > problem.goal) return best;
 	}
       }
       std::cout << "Exhausted fitness: " << best.fitness << "\n";
