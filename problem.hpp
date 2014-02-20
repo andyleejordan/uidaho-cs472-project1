@@ -10,6 +10,7 @@
 
 class Problem {
 protected:
+  const std::string name;
   const parameter range_min;
   const parameter range_max;
   const bool minimize;
@@ -24,7 +25,8 @@ public:
   const int constant;
   const long iterations;
   // sane-ish defaults, should all be overridden
-  Problem(const parameter dn = 0,
+  Problem(const std::string & name = "Base",
+	  const parameter dn = 0,
 	  const parameter dx = 1,
 	  const parameter rn = 0,
 	  const parameter rx = 10,
@@ -39,6 +41,7 @@ public:
   parameter normal(const Individual & subject) const;
   const Individual worst() const;
   virtual parameter fitness(const Individual & subject) const =0;
+  const std::string represent() const;
 };
 
 #endif /* _PROBLEM_H_ */

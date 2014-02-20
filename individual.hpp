@@ -15,7 +15,7 @@
 extern RandomGenerator rg;
 
 namespace Parameters {
-  typedef float parameter;
+  typedef double parameter;
   typedef std::uniform_real_distribution<parameter> real_dist;
   typedef std::uniform_int_distribution<> int_dist;
   typedef std::normal_distribution<parameter> normal_dist;
@@ -26,7 +26,7 @@ using namespace Parameters;
 class Individual {
 private:
   static const int dimension = 30;
-  typedef std::array <parameter, dimension> genome;
+  typedef std::array<parameter, dimension> genome;
   genome solution;
   parameter min;
   parameter max;
