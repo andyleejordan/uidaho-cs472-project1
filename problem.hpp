@@ -10,12 +10,12 @@
 
 class Problem {
 protected:
-  const std::string name;
   const parameter range_min;
   const parameter range_max;
   const bool minimize;
   real_dist range_dist;
 public:
+  const std::string name;
   const parameter domain_min;
   const parameter domain_max;
   const parameter goal;
