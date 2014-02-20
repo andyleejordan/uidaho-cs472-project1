@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <numeric>
 
 #include "genetic_algorithm.hpp"
 #include "random_generator.hpp"
@@ -132,8 +133,9 @@ const Individual Genetic::solve() const {
     for (long i = 0; i < problem.iterations; ++i) {
       // find generation's best member
       best = *std::max_element(generation.begin(), generation.end());
+      parameter sum = std::accumulate(generation.begin(), generation.end(), 0.);
       // logging
-      log << i << ' ' << best.fitness << ' ' << problem.normal(best) << '\n';
+      log << i << ' ' << best.fitness << ' ' << sum / population_size << '\n';
       // terminating condition
       if (best > problem.goal) return best;
       // selection and mutation stage
