@@ -114,8 +114,9 @@ const Genetic::population Genetic::crossover(const Genetic::population & mates) 
 
 const Individual Genetic::solve() const {
   // setup basic logging
-  std::ofstream log("search_" + problem.name + ".log");
-  log << "Solving the " << problem.represent() << "Using a Genetic Algorithm"
+  std::ofstream log(problem.name + ".log");
+  log << "# Solving the " << problem.represent()
+      << "# Using a Genetic Algorithm"
       << " with population size " << population_size
       << ", tournament size " << tournament_size
       << ", crossover size " << crossover_size
@@ -135,7 +136,7 @@ const Individual Genetic::solve() const {
       best = *std::max_element(generation.begin(), generation.end());
       parameter sum = std::accumulate(generation.begin(), generation.end(), 0.);
       // logging
-      log << i << ' ' << best.fitness << ' ' << sum / population_size << '\n';
+      log << i << '\t' << best.fitness << '\t' << sum / population_size << '\n';
       // terminating condition
       if (best > problem.goal) return best;
       // selection and mutation stage
