@@ -4,6 +4,7 @@
  */
 
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 
 #include "genetic_algorithm.hpp"
@@ -111,6 +112,15 @@ const Genetic::population Genetic::crossover(const Genetic::population & mates) 
 }
 
 const Individual Genetic::solve() const {
+  // setup basic logging
+  std::ofstream log("search.log");
+  log << "Solving the " << problem.represent() << "Using a Genetic Algorithm"
+      << " with population size " << population_size
+      << ", tournament size " << tournament_size
+      << ", crossover size " << crossover_size
+      << ", crossover chance of " << crossover_chance
+      << ", mutation chance of " << jumping_mutation_rate
+      << ", and elitism replacement size " << elitism << "." << std::endl;
   while(true) {
     // create initial population
     population generation;
@@ -122,9 +132,10 @@ const Individual Genetic::solve() const {
     for (long i = 0; i < problem.iterations; ++i) {
       // find generation's best member
       best = *std::max_element(generation.begin(), generation.end());
+      // logging
+      log << i << ' ' << best.fitness << ' ' << problem.problem(best) << '\n';
       // terminating condition
       if (best.fitness > problem.goal) return best;
-      std::cout << problem.problem(best) << '\n';
       // selection and mutation stage
       population offspring;
       while(offspring.size() != population_size) {
@@ -141,6 +152,7 @@ const Individual Genetic::solve() const {
       for (int i = 0; i < elitism; ++i)
 	generation[population_dist(rg.engine)] = best;
     }
+    log.close();
     return best;
   }
 }
