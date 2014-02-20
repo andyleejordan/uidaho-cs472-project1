@@ -30,10 +30,15 @@ private:
   genome solution;
   parameter min;
   parameter max;
+protected:
+  bool minimize = true;
 public:
   Individual();
-  Individual(const parameter & gene);
-  Individual(const parameter & n, const parameter & x, real_dist range_dis);
+  Individual(const parameter & gene, const bool m);
+  Individual(const parameter & n,
+	     const parameter & x,
+	     const bool m,
+	     real_dist r);
   // construction wrappers (e.g. potential() / mutate()) set fitness
   parameter fitness; // raw, not normalized
   // mutate will change gene with bounds-checking
@@ -47,9 +52,12 @@ public:
   genome::size_type size() const;
   parameter & operator[](size_t pos);
   const parameter & operator[](size_t pos) const;
-  // Individual can be compared by fitness
+  // Individual can be compared by fitness to other Individual or paramter
+  // Takes into account minimize flag, cannot compare unlike Individuals
   friend bool operator<(const Individual & left, const Individual & right);
   friend bool operator>(const Individual & left, const Individual & right);
+  friend bool operator<(const Individual & left, const parameter & right);
+  friend bool operator>(const Individual & left, const parameter & right);
 };
 
 #endif /* _INDIVIDUAL_H_ */

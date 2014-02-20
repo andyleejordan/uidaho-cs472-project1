@@ -4,25 +4,31 @@
  * potential solution.
  */
 
+#include <cassert>
 #include <cmath>
 #include <cstdlib>
 
 #include "individual.hpp"
 #include "problem.hpp"
 
-Individual::Individual(): min(0), max(0), fitness(0) {
-  // zeroed Individual represents error
+Individual::Individual(): min(0), max(0), minimize(false), fitness(0) {
+  // zeroed Individual represents error, with fitness being worst possible
   for (parameter & value : solution) value = 0;
 }
 
-Individual::Individual(const parameter & gene): min(0), max(0), fitness(0) {
+Individual::Individual(const parameter & gene, const bool m): min(0), max(0),
+							      minimize(m),
+							      fitness(0) {
   // sets up Individual with fill of particular gene
   solution.fill(gene);
 }
 
 Individual::Individual(const parameter & n,
 		       const parameter & x,
-		       real_dist range_dist): min(n), max(x), fitness(0) {
+		       const bool m,
+		       real_dist range_dist): min(n), max(x),
+					      minimize(m),
+					      fitness(0) {
   // sets up random Individual for a particular problem
   for (parameter & value : solution) value = range_dist(rg.engine);
 }
@@ -71,9 +77,33 @@ const parameter & Individual::operator[](size_t pos) const {
 }
 
 bool operator<(const Individual & left, const Individual & right) {
-  return left.fitness < right.fitness;
+  // cannot compare unlike Individuals
+  assert(left.minimize == right.minimize);
+  // switch comparison so 0 is a "higher" fitness
+  if (left.minimize && right.minimize) return left.fitness > right.fitness;
+  // else assume lesser fitness is in fact lesser
+  else return left.fitness < right.fitness;
 }
 
 bool operator>(const Individual & left, const Individual & right) {
-  return left.fitness > right.fitness;
+  // cannot compare unlike Individuals
+  assert(left.minimize == right.minimize);
+  // switch comparison so 0 is a "higher" fitness
+  if (left.minimize && right.minimize) return left.fitness < right.fitness;
+  // else assume greate fitness is in fact greater
+  else return left.fitness > right.fitness;
+}
+
+bool operator<(const Individual & left, const parameter & right) {
+  // switch comparison so 0 is a "higher" fitness
+  if (left.minimize) return left.fitness > right;
+  // else assume lesser fitness is in fact lesser
+  else return left.fitness < right;
+}
+
+bool operator>(const Individual & left, const parameter & right) {
+  // switch comparison so 0 is a "higher" fitness
+  if (left.minimize) return left.fitness < right;
+  // else assume greate fitness is in fact greater
+  else return left.fitness > right;
 }
