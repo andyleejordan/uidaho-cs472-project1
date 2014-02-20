@@ -8,7 +8,8 @@
 
 #include "problem.hpp"
 
-Problem::Problem(const parameter dn,
+Problem::Problem(const std::string & n,
+		 const parameter dn,
 		 const parameter dx,
 		 const parameter rn,
 		 const parameter rx,
@@ -18,7 +19,8 @@ Problem::Problem(const parameter dn,
 		 const parameter f,
 		 const parameter d,
 		 const parameter h,
-		 const int c): range_min(rn),
+		 const int c): name(n),
+			       range_min(rn),
 			       range_max(rx),
 			       minimize(z),
 			       range_dist(dn, dx),
