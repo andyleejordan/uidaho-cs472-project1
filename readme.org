@@ -8,10 +8,26 @@
 #+EXPORT_EXCLUDE_TAGS: noexport
 
 #+BEGIN_abstract
-This assignment built on Project #2b by adding a simple Genetic
-Algorithm. This implementation in C++ used a generational population,
-with a unit Gaussian mutation function, and roulette wheel
-selection. It faired decently, but has much room for improvement.
+For Project #1 I implemented a Genetic Algorithm in C++ to solve the
+Ackley, Griewangk, Rastrigin, Rosenbrock, Schwefel, and Spherical test
+functions. With the =random= library from C++11, random number
+generation is so efficient that, for certain problems, the fitness
+evaluation is actually the bottleneck in the program (specifically
+problems which use trigonometric functions). Through testing I found
+that the best setup for the GA used a generational population,
+tournament selection, two-point crossover, and a "jumping" mutation
+sequence. The initial population of 512 members is randomly generated
+with valid solutions. To produce the replacement generation, first
+parents are selected. To do this a tournament among 4 randomly
+selected members is held, with the most fit member being chosen as a
+parent. For every two parents, a binary two-point crossover is done to
+produce two children.  For each child, the jumping mutation sequence
+performs, with a 2.5 percent chance per gene, a mutation of that gene
+to some random value in the problem's domain. Finally, 2 random
+offspring are replaced with the best member from the last
+generation. This GA finds an adequate solution to every problem except
+the Rosenbrock function (for which it stills fares well) in under a
+second.
 #+END_abstract
 
 * Assignment :noexport:
