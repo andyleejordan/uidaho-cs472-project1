@@ -28,6 +28,10 @@ offspring are replaced with the best member from the last
 generation. This GA finds an adequate solution to every problem except
 the Rosenbrock function (for which it stills fares well) in under a
 second.
+
+This code is available at:
+
+=https://github.com/andschwa/uidaho-cs472-project1=
 #+END_abstract
 
 * Assignment :noexport:
@@ -129,227 +133,326 @@ Use more random restarts, fewer neighbors
 
 Use fewer random restarts, more neighbors
 
-* Algorithms
+* Implementation
 
-Profiling my prior work revealed something I already suspected: the
-bottleneck of my program was the many calls to =rand()=. For this
-project, the program has been completely re-factored, not only to use
-C++ classes in a loosely coupled, highly cohesive manner, but also to
-take advantage of the C++11 =random= library, specifically the
-Mersenne Twister engine. All calls to =rand()= have been replaced
-with the relevant distributions, such as =uniform_real_distribution=,
-=uniform_int_distribution=, =discrete_int_distribution=, and
-=normal_distribution=. There is a singleton class object which holds
-the random number engine and the random number device object (which can
-utilize hardware-based entropy collection if available, but is
-otherwise implemented as a PRNG).
+** Structure
 
-Using Apple's XCode profiler, Instruments, I was able to minimize the
-time spent on generating random numbers from 75 percent of the running
-time to a mere 30 percent, the remaining bottleneck is now the memory
-copying of the array of parameters (in the current implement floats,
-which showed an improvement from 50 percent to 40 percent running time
-compared to doubles), which frankly cannot be "fixed". I managed to
-squeeze some more performance out by directly copying my parameter
-arrays instead of their containing =Individual= class objects.
+The main component of this program is the =Genetic= class derived from
+the =Algorithm= base class; this structure allows me to swap in the
+prior algorithms with ease (the =HillClimber= and =SimulatedAnnealing=
+classes). When instaniated, this class requires a =Problem= object,
+which is a base class representing the interface to the various test
+functions we were given. Potential solutions to a problem are
+represented by an =Individual= class.
 
-The primary data structure used is a C++11 array container, a template
-similar to a vector, but more efficient and requiring a size (the
-given dimension of thirty). Thus it is an array of thirty parameter
-types. This structure is generated, mutated, and owned by the
-aforementioned =Individual= class, which uses the
-=uniform_real_distribution= to generate random floating point numbers
-in the exact domain specified by the various problem functions. It
-has a mutate function whose purpose is to bound-check a mutation
-operating on any single given gene, and clip it to the individual's
-minimum and maximum value if needed. This class can later be derived
-to implement an individual whose parameters have varying ranges,
-along with accompanying standard deviation mutation factors.
+** Individual
 
-Fitness calculations are performed by the =Problem= class, which first
-calculates the raw fitness of the mathematical function, then
-normalizes it to the range =[0, 1]=, and ensures that the maximum
-fitness value is always one based on a minimization boolean flag
-(which flips the fitness if needed). This class owns the relevant
-attributes of any given problem: domain, range, minimization, goal,
-filter, delta, mutation chance, scaling constant(s), and number of
-iterations. It uses the =uniform_real_distribution= class to
-efficiently provide random delta values in the range of =[-delta,
-delta]=. Also provided is a =potential()= wrapper function which
-returns an instance of an =Individual= with the relevant domain
-minimum and maximum, and necessary range distribution object.
+The =Individual= class's primary data structure is a C++11 array
+container, a template similar to a vector, but more efficient and
+requiring a size (the given dimension of thirty). Thus its genome
+(potential solution) is an array of thirty parameter types, where
+parameter is a =typedef= for =double= ("parameter" could honestly be
+"chromosome", except that it is used elsewhere not as a chromosome but
+where it should still share the type). It additionally has a =fitness=
+parameter, set when created by the =Problem= class, and updated when
+mutated by the =Algorithm= class. The =Individual= class has a
+=mutate(gene, gene_i)= function whose purpose is to bound-check a
+mutation operation on any single given gene, and clip it to the
+domain's minimum and maximum value as needed. Through the use of
+templated operator overloads and =begin()= and =end()= member
+functions, an =Individual= object can be treated like an iterator (of
+its genome =array=), compared by fitness such that a greater fitness
+is defined by its minimization flag (that is, =if(minimize)= then zero
+is greater than positive (worse) fitnesses), and arithmetically added
+by fitness. This makes the implementation of the algorithms very
+clean.
 
-In this implementation, the algorithm class now owns the full mutation
-function(s), as they vary per algorithm. When changing a value, they
-make a const function call to the individual for its mutate function,
-which, as mentioned previously, checks the boundaries and performs
-clipping. The base =Algorithm= class has a mutate method which uses a
-=uniform_int_distribution= object to generate an integer in the range
-[0, 100], which it then compares to the problem's chance as a
-percentage, giving an easy, efficient probabilistic condition. It
-loops over the array of parameters, and when the condition is true,
-mutates the value of the array by a delta generated by the problem's
-=uniform_real_distribution= object.
+** Problem
 
-For reference, the hill-climbing and simulated annealing algorithms
-from the first project both run incredibly well now, with the former
-achieving a fitness of 0.998 in 1.5 seconds on the Spherical function,
-and the latter achieving a fitness of 0.9996 (a raw fitness of 6.8) on
-the Schwefel function.
+The =Problem= class holds the following data: the interval of the
+domain, the interval of the range (used for normalization), a
+minimization flag (that is, whether or not the goal is to minimize the
+problem's value), the goal itself, and the maximum number of
+iterations/generations the algorithm should run for that problem. The
+=Problem= class provides several member functions:
+=fitness(Individual)= which is a =virtual= function implemented by the
+derived classes and calculates the fitness score using the definition
+of the problem's function, =potential()= which returns an =Individual=
+object instaniated with the data it needs (the domain interval,
+minimization flag, random potential solution generated by using a
+=uniform_real_distribution= object, and fitness value for that
+potential solution), =normal(Individual)= which normalizes an
+=Individual= object's fitness score onto the interval $[0, 1]$ using
+the problem's range (where 1 is the maximum fitness, with minimization
+taken into account), =worst()= which finds the worst fitness using an
+in-place search across =iterations= number of random potential
+solutions (used to find an adequate range), and finally =represent()=
+which returns a friendly string representation of the problem,
+including its name and other parameters.
+
+We were asked to implement the following problems:
+
+*** Ackley
+
+- Domain: =[-30, 30]=
+- Approximate range: =[0, 22]=
+
+#+begin_src c++
+parameter Ackley::fitness(const Individual & subject) const {
+  parameter p_inverse = 1. / subject.size();
+  parameter sum_pow = 0;
+  parameter sum_cos = 0;
+  for (const parameter & gene : subject) {
+    sum_pow += std::pow(gene, 2);
+    sum_cos += std::cos(2 * M_PI * gene);
+   }
+  parameter exp_0 = std::exp(-0.2 * std::sqrt(p_inverse * sum_pow));
+  parameter exp_1 = std::exp(p_inverse * sum_cos);
+  return 20 + M_E - 20 * exp_0 - exp_1;
+}
+#+end_src
+
+*** Griewangk
+
+- Domain: =[-600, 600]=
+- Approximate range: =[0, 1700]=
+
+#+begin_src c++
+parameter Griewangk::fitness(const Individual & subject) const {
+  parameter sum = 0;
+  parameter product = 1;
+  for (unsigned long i = 0; i < subject.size(); ++i) {
+    sum += std::pow(subject[i], 2) / 4000.;
+    // i from 1 to p
+    product *= std::cos(subject[i] / std::sqrt(i + 1));
+  }
+  return 1 + sum - product;
+}
+#+end_src
+
+*** Rastrigin
+
+- Domain: =[-5.12, 5.12]=
+- Approximate range: =[0, 900]=
+
+#+begin_src c++
+parameter Rastrigin::fitness(const Individual & subject) const {
+  parameter sum = 0;
+  for (const parameter & gene : subject)
+    sum += std::pow(gene, 2) - 10 * std::cos(2 * M_PI * gene);
+  return sum + 10 * subject.size();
+}
+#+end_src
+
+*** Rosenbrock
+
+- Domain: =[-2.048, 2.048]=
+- Approximate range: =[0, 46000]=
+
+#+begin_src c++
+parameter Rosenbrock::fitness(const Individual & subject) const {
+  parameter sum = 0;
+  for (unsigned long i = 0; i < subject.size() - 1; ++i)
+    sum += 100 * std::pow(subject[i + 1] - std::pow(subject[i], 2), 2)
+      + std::pow(subject[i] - 1, 2);
+  return sum;
+}
+#+end_src
+
+*** Schwefel
+
+- Domain: =[-512.03, 511.97]=
+- Approximate range: =[0, 21000]=
+
+#+begin_src c++
+parameter Schwefel::fitness(const Individual & subject) const {
+  parameter sum = 0;
+  for (const parameter & gene : subject)
+    sum += gene * std::sin(std::sqrt(std::abs(gene)));
+  return 418.9829 * subject.size() + sum;
+}
+#+end_src
+
+*** Spherical
+
+- Domain: =[-5.12, 5.12]=
+- Approximate range: =[0, 500]=
+
+#+begin_src c++
+parameter Spherical::fitness(const Individual & subject) const {
+  parameter sum = 0;
+  for (const parameter value : subject) sum += std::pow(value, 2);
+  return sum;
+}
+#+end_src
+
+
 
 ** Genetic Algorithm
+
 *** Population
 
 This implementation of the genetic algorithm uses a generational
-population model, composed of 4000 individuals. They are initially
-populated with fully random values in the range =[-5.12, 5.12]= for
-the Spherical function. To be verbose, the individuals hold an array data
-structure of floating point numbers.
+population model, where a population is a =vector= composed of 512
+=Individual= objects. The first generation's members are populated
+with random values in the problem domain's interval. To create a
+new generation, an empty offspring =vector= is made, which is then
+populated until it reaches the population size. This is done in four
+stages: selection, crossover, mutation, and elitism.
 
 *** Selection
 
-To implement the roulette wheel selection mechanism, a "mating pool"
-population is made by copying the current population. This is a bad
-name, as without a crossover function, no "mating" currently takes
-place. Next an array equal in size to the population is created and
-filled with the calculated values for each member of the population
-(in the same order). The fitness could be an attribute of an
-individual, however, an array is necessary in a latter step, and so
-was the easier choice.
+This implemention of the algorithm uses tournament selection. To
+create a new parent, the best member is selected through a tournament
+among 4 randomly selected members of the previous
+generation. Tournament selection suffers from fewer problems than the
+previous roulette wheel selection, and was about as easy to implement.
 
-With the normalized fitnesses recorded, the =std::max_element=
-function is used to find the best fitness, returning its location; the
-=std::distance= function is then used to determine that element's
-index in the array, which corresponds to the location of the best
-individual in the population array. This individual is then recorded
-as the best. If its fitness beats the problem's goal, the algorithm
-is terminated and the best individual is returned to the calling
-function (=main=).
+*** Crossover
 
-The roulette selection routine was trivial to implement thanks to the
-=std::discrete_distribution= object, which can accept the front and back
-ends of an iterator, and return an integer in the range of =[0, n)=
-with the probability of each individual integer equal to the weight
-of the integer divided by the sum of all the weights.
+For every two parents selected in the previous stage, a binary
+two-point crossover operation is performed to produce new
+children. The crossover happens with only an 80 percent chance each
+time. It is implemented by choosing a random start point and random
+length, both within the size of the genome (that is, less than the
+given dimension of 30). Using the =rotate()= function, the parents'
+genomes are rotated to the left such that the chosen start point
+becomes the start of the genome. For up to the chosen length, each
+pair of genes in the parents' genes get swapped. The now recombined
+parents are returned as a pair of children.
 
-The array of fitnesses is sent as the array of weights, and the
-possible integers the distribution will return correspond to indices
-of the population/mating pool arrays. Thus, by iterating over the
-mating pool, and adding elements to it using the random numbers from
-the distribution as indices to the original population, the mating
-pool is filled with a new selection of individuals biased by fitness
-as required by the algorithm.
+Arithmetic and uniform crossover techniques were also tried, but fared
+either on par or worse than two-point, and were significantly slower.
 
 *** Mutation
 
-With a new selection made, the individuals that compose the
-mating pool are then mutated using a specific mutation function owned
-by the =GeneticAlgorithm= class. This function creates a
-=std::normal_distribution= object using a mean of 0 and standard
-deviation of 2. The values of the individual's solution are then
-mutated by random values provided by this normal, or Gaussian,
-distribution (the bounds checking is of course delegated to the
-=Individual= class). This mutation can actually be done concurrently
-in the selection process's loop, as once each selection has been
-made, it can be mutated immediately without ramifications. Finally,
-with the selection and mutation stages complete, the population is
-replaced by the mating pool, and a new generation is born.
+The prior Gaussian mutation sequence performed too poorly for my
+liking on functions with more complex fitness landscapes (such as the
+Schwefel problem). Shea Newton's suggestion of a "jumping" mutation,
+however, has proved to work much better.
+
+This jumping mutation is an example of "change a little by a
+lot". For each gene in a member's genome, there is a 2.5 percent
+chance that the gene is mutated to some new random value in the
+problem's domain. This ammounts to, on average, 0.75 genes per member
+being mutated.
+
+*** Elitism
+
+Because this is a generational algorithm, it is best to introduce some
+elitism. After the new offspring generation has been created (with the
+members having already undergone the crossover and mutation
+sequences), two random members are replaced with the best member from
+the previous population.
 
 * Results
 ** Ackley
+
+[[./logs/Ackley.png]]
+
 #+begin_src text
+  Solution:
   
-  Solution: (0.001558) (0.001558) (0.001558) (0.001558) (0.001558)
-  (0.001558) (0.001558) (0.001558) (0.001558) (0.001558) (0.001558)
-  (0.001558) (0.001558) (0.001558) (0.001558) (0.001558) (0.001558)
-  (0.001558) (0.001558) (0.001558) (0.001558) (0.001558) (0.001558)
-  (0.001558) (0.001558) (0.001558) (0.001558) (0.001558) (0.001558)
-  (0.001558)
+  (0.006996) (0.006996) (0.006996) (0.006996) (0.006996) (-0.012439)
+  (0.006996) (0.006996) (0.006996) (0.006996) (-0.012439) (0.006996)
+  (-0.012439) (0.006996) (-0.012439) (0.006996) (0.006996) (-0.012439)
+  (0.006996) (0.006996) (0.006996) (0.006996) (0.006996) (-0.012439)
+  (0.006996) (-0.012439) (-0.012439) (0.006996) (0.006996) (0.006996)
   
-  0.00636105
-  0.999711
-  ./search  0.34s user 0.01s system 97% cpu 0.365 total
-  
+  Raw fitness: 0.0392386
+  Normalized fitness: 0.998216
+  ./search  0.24s user 0.01s system 99% cpu 0.250 total
 #+end_src
 
 ** Griewangk
-#+begin_src text
 
-  Solution: (-0.220083) (0.230303) (0.230303) (0.230303) (0.230303)
-  (0.230303) (0.230303) (0.230303) (0.230303) (0.230303) (0.230303)
-  (0.230303) (0.230303) (0.230303) (0.230303) (0.230303) (0.230303)
-  (0.230303) (0.230303) (0.230303) (0.230303) (0.230303) (0.230303)
-  (0.230303) (0.230303) (0.230303) (0.230303) (0.230303) (0.230303)
-  (-0.220083)
+[[./logs/Griewangk.png]]
+
+#+begin_src text
+  Solution:
   
-  0.0990894
-  0.999942
-  ./search  0.40s user 0.01s system 98% cpu 0.420 total
+  (0.252414) (0.252414) (0.252414) (0.252414) (0.790291) (0.252414)
+  (0.252414) (0.252414) (0.252414) (0.252414) (0.252414) (0.252414)
+  (-1.247154) (-1.247154) (-1.247154) (-1.247154) (-1.247154) (0.252414)
+  (0.252414) (-1.247154) (0.252414) (0.252414) (-1.247154) (0.252414)
+  (0.252414) (-1.247154) (-1.247154) (-1.247154) (-1.247154) (-1.247154)
+  
+  Raw fitness: 0.481103
+  Normalized fitness: 0.999717
+  ./search  0.23s user 0.01s system 99% cpu 0.247 total
 #+end_src
 
 ** Rastrigin
-#+begin_src text
 
-  Solution: (-0.000283) (-0.000283) (-0.000283) (-0.000283) (-0.000283)
-  (-0.000283) (-0.000283) (-0.000283) (-0.000283) (-0.000283)
-  (-0.000283) (-0.000283) (-0.000283) (-0.000283) (-0.000283)
-  (-0.000283) (-0.000283) (-0.000283) (-0.000283) (-0.000283)
-  (-0.000283) (-0.000283) (-0.000283) (-0.000283) (-0.000283)
-  (-0.000283) (-0.000283) (-0.000283) (-0.000283) (-0.000283)
+[[./logs/Rastrigin.png]]
+
+#+begin_src text
+  Solution:
   
-  0.000475445
-  0.999999
-  ./search  0.29s user 0.01s system 97% cpu 0.311 total
+  (0.000239) (0.000239) (0.000239) (0.000239) (0.000239) (0.000239)
+  (0.011444) (0.000239) (0.010782) (0.000239) (0.000239) (0.000239)
+  (0.000239) (-0.004172) (0.000239) (-0.001574) (0.000239) (0.000239)
+  (0.000239) (0.011444) (0.000239) (0.000239) (0.000239) (0.000239)
+  (0.011444) (0.000239) (0.010782) (0.000239) (0.000239) (0.000239)
   
+  Raw fitness: 0.128233
+  Normalized fitness: 0.999858
+  ./search  0.16s user 0.01s system 88% cpu 0.192 total  
 #+end_src
 
 ** Rosenbrock
+
+[[./logs/Rosenbrock.png]]
+
 #+begin_src text
+  Solution:
   
-  Solution: (0.202049) (0.024234) (0.010743) (0.010743) (0.009295)
-  (0.009295) (0.014205) (0.009295) (0.010743) (0.011079) (0.009295)
-  (0.011079) (0.009295) (0.010743) (0.010743) (0.011079) (0.010743)
-  (0.010743) (0.010743) (0.009295) (0.009295) (0.010743) (0.010743)
-  (0.010743) (0.009295) (0.010743) (0.009295) (0.010743) (0.011079)
-  (0.009295)
+  (0.023596) (0.023596) (0.012501) (-0.000837) (0.012501) (0.012501)
+  (0.023596) (-0.000837) (0.012501) (0.012501) (0.023596) (0.012501)
+  (0.023596) (0.023596) (0.012501) (0.023596) (0.012501) (0.023596)
+  (0.012501) (0.023596) (0.023596) (0.012501) (-0.008473) (0.012501)
+  (0.023596) (0.012501) (0.023596) (0.012501) (0.023596) (-0.008473)
   
-  28.3541
-  0.999384
-  ./search  0.29s user 0.01s system 89% cpu 0.333 total
-    
+  Raw fitness: 28.952
+  Normalized fitness: 0.999371
+  ./search  0.11s user 0.01s system 95% cpu 0.129 total    
 #+end_src
 
 ** Schwefel
+
+[[./logs/Schwefel.png]]
+
 #+begin_src text
-
-  Solution: (-420.979424) (-420.979424) (-420.979424) (-420.979424)
-  (-420.979424) (-420.979424) (-420.979424) (-420.979424) (-420.979424)
-  (-420.979424) (-420.979424) (-420.979424) (-420.979424) (-420.979424)
-  (-420.979424) (-420.979424) (-420.979424) (-420.979424) (-420.979424)
-  (-420.979424) (-420.979424) (-420.979424) (-420.979424) (-420.979424)
-  (-420.979424) (-420.979424) (-420.979424) (-420.979424) (-420.979424)
-  (-420.979424)
+  Solution:
   
-  0.0008134
-  1
-  ./search  0.49s user 0.01s system 98% cpu 0.511 total
-
+  (-420.765987) (-420.765987) (-420.765987) (-420.765987) (-420.765987)
+  (-420.765987) (-420.765987) (-420.765987) (-420.765987) (-420.765987)
+  (-420.765987) (-420.765987) (-420.765987) (-420.765987) (-420.765987)
+  (-420.765987) (-420.765987) (-420.765987) (-420.765987) (-420.765987)
+  (-420.765987) (-420.765987) (-420.765987) (-420.765987) (-420.765987)
+  (-420.765987) (-420.765987) (-420.765987) (-420.765987) (-420.765987)
+  
+  Raw fitness: 0.155996
+  Normalized fitness: 0.999993
+  ./search  0.29s user 0.01s system 93% cpu 0.326 total
 #+end_src
 
 ** Spherical
+
+[[./logs/Spherical.png]]
+
 #+begin_src text
+  Solution:
   
-  Solution: (-0.000066) (-0.000066) (-0.000066) (-0.000066) (-0.000066)
-  (-0.000066) (-0.000066) (-0.000066) (-0.000066) (-0.000066)
-  (-0.000066) (-0.000066) (-0.000066) (-0.000066) (-0.000066)
-  (-0.000066) (-0.000066) (-0.000066) (-0.000066) (-0.000066)
-  (-0.000066) (-0.000066) (-0.000066) (-0.000066) (-0.000066)
-  (-0.000066) (-0.000066) (-0.000066) (-0.000066) (-0.000066)
+  (-0.064686) (0.052518) (0.006137) (0.052518) (0.006137) (0.006137)
+  (0.006137) (0.110435) (0.057621) (0.006137) (-0.064686) (0.025083)
+  (-0.064686) (0.025083) (-0.064686) (0.052518) (0.052518) (0.006137)
+  (0.052518) (0.006137) (0.006137) (0.006137) (0.057621) (0.006137)
+  (-0.064686) (0.025083) (-0.064686) (0.025083) (-0.064686) (0.052518)
   
-  1.30149e-07
-  1
-  ./search  0.21s user 0.01s system 99% cpu 0.222 total
-  
+  Raw fitness: 0.0675684
+  Normalized fitness: 0.999865
+  ./search  0.06s user 0.01s system 85% cpu 0.083 total
 #+end_src
 
 
