@@ -114,7 +114,7 @@ const Genetic::population Genetic::crossover(const Genetic::population & mates) 
 
 const Individual Genetic::solve() const {
   // setup basic logging
-  std::ofstream log(problem.name + ".log");
+  std::ofstream log("logs/" + problem.name + ".dat");
   log << "# Solving the " << problem.represent()
       << "# Using a Genetic Algorithm"
       << " with population size " << population_size
