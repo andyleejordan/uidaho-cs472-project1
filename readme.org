@@ -286,8 +286,6 @@ parameter Spherical::fitness(const Individual & subject) const {
 }
 #+end_src
 
-
-
 ** Genetic Algorithm
 
 *** Population
@@ -348,6 +346,10 @@ the previous population.
 * Results
 ** Ackley
 
+- Generations: 140
+- Running time: 0.25 seconds
+- Fitness: 0.04
+
 [[./logs/Ackley.png]]
 
 #+begin_src text
@@ -365,6 +367,10 @@ the previous population.
 #+end_src
 
 ** Griewangk
+
+- Generations: 100
+- Running time: 0.25 seconds
+- Fitness: 0.5
 
 [[./logs/Griewangk.png]]
 
@@ -384,6 +390,10 @@ the previous population.
 
 ** Rastrigin
 
+- Generations: 80
+- Running time: 0.19 seconds
+- Fitness: 0.13
+
 [[./logs/Rastrigin.png]]
 
 #+begin_src text
@@ -402,6 +412,10 @@ the previous population.
 
 ** Rosenbrock
 
+- Generations: 70
+- Running time: 0.13 seconds
+- Fitness: 28.95
+
 [[./logs/Rosenbrock.png]]
 
 #+begin_src text
@@ -419,6 +433,10 @@ the previous population.
 #+end_src
 
 ** Schwefel
+
+- Generations: 100
+- Running time: 0.33 seconds
+- Fitness: 0.16
 
 [[./logs/Schwefel.png]]
 
@@ -439,6 +457,10 @@ the previous population.
 
 ** Spherical
 
+- Generations: 50
+- Running time: 0.08 seconds
+- Fitness: 0.068
+
 [[./logs/Spherical.png]]
 
 #+begin_src text
@@ -455,5 +477,39 @@ the previous population.
   ./search  0.06s user 0.01s system 85% cpu 0.083 total
 #+end_src
 
-
 * Conclusion
+
+In general, this Genetic Algorithm performed exceptionally well. With
+the same parameters for population size, tournament size, crossover
+and mutation probability, using the same mutation and crossover
+sequences (jumping and two-point crossover respectively), this
+algorithm solves every problem except the Rosenbrock problem to a raw
+fitness less than 1. The Rosenbrock plateaus at a value of 28, which
+is still pretty good. The Schwefel problem, known for being notorious,
+is easily taken care of thanks to the jumping mutation
+sequence. Although a terminating condition exists, for these tests the
+goal was set high enough that all generations would be exhausted
+before the algorithm exited. All algorithms took less than a second to
+exhaust the set number of generations (maximum of 140, more info
+available in the results section), with most completing in a quarter
+second or less. Generally more generations further increases the
+fitness, and most can be brought much closer to zero, but these
+results are difficult to visually present.
+
+I was very happy with how this algorithm turned out. For the sake of
+improving my C++ skills, I have a list of ideas I want to implement,
+most of which are just refactoring: I want to implement proper
+namespaces for =algorithm=, =problem=, =individual=, and =random=,
+which would allow me to uncouple many member functions which do not
+require their class's member variables, and make it easier to
+reorganize my files; implement mutator and crossover delegator objects
+to make swapping out the various mutation and crossover sequences
+cleaner; a command-line interface using the Boost program options
+library, which would make running my program a bit easier; a more
+automatic Makefile using autoconf/automake/makedepends, which would
+require being more explicit with my dependencies inside my files,
+rather than relying on header inheritance; signal handling for killing
+a run early and still saving the data; unit testing to verify
+correctness; evolving mutation rate and individual ranges for each
+gene; and threads to parallelize "slower" parts of the algorithm. None
+of this is necessary, but all of it will be fun.
