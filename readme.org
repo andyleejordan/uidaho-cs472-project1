@@ -53,10 +53,10 @@ To test the GA we'll use 6 standard, benchmark, real-valued functions:
 Each of these functions is defined at [[http://www.cs.cmu.edu/afs/cs/project/jair/pub/volume24/ortizboyer05a-html/node6.html#tabla:DefFunc][here]]. (Note the first function
 labeled as Schwefel on this page is actually the double sum, which we
 are not using. We are using the Schwefel function defined immediately
-after the Rastigin function.)
+after the Rastrigin function.)
 
 Pay careful attention to the ranges of the functions. You will want to
-use those ranges both in creating intial individuals and in
+use those ranges both in creating initial individuals and in
 controlling the generation of neighbors, e.g. you don't want your GA
 'wandering' out of the search space. Note that here the functions are
 all defined with 30 dimensions, e.g. P = 30 in the function
@@ -190,7 +190,11 @@ solutions (used to find an adequate range), and finally =represent()=
 which returns a friendly string representation of the problem,
 including its name and other parameters.
 
-We were asked to implement the following problems:
+We were asked to implement the following problems defined at:
+
+=https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume24/ortizboyer05a-html/node6.html=
+
+The source of the fitness functions is included here:
 
 *** Ackley
 
@@ -261,6 +265,10 @@ parameter Rosenbrock::fitness(const Individual & subject) const {
 
 *** Schwefel
 
+Note that the first Schwefel function on the web page is Schwefel's
+double sum, the actual Schwefel function is defined after the
+Rastrigin function.
+
 - Domain: =[-512.03, 511.97]=
 - Approximate range: =[0, 21000]=
 
@@ -300,7 +308,7 @@ stages: selection, crossover, mutation, and elitism.
 
 *** Selection
 
-This implemention of the algorithm uses tournament selection. To
+This implementation of the algorithm uses tournament selection. To
 create a new parent, the best member is selected through a tournament
 among 4 randomly selected members of the previous
 generation. Tournament selection suffers from fewer problems than the
@@ -332,7 +340,7 @@ however, has proved to work much better.
 This jumping mutation is an example of "change a little by a
 lot". For each gene in a member's genome, there is a 2.5 percent
 chance that the gene is mutated to some new random value in the
-problem's domain. This ammounts to, on average, 0.75 genes per member
+problem's domain. This amounts to, on average, 0.75 genes per member
 being mutated.
 
 *** Elitism
@@ -344,6 +352,10 @@ sequences), two random members are replaced with the best member from
 the previous population.
 
 * Results
+
+The goal for each of these problems is minimization, that is, reducing
+the problem value to zero.
+
 ** Ackley
 
 - Generations: 140
@@ -415,6 +427,10 @@ the previous population.
 - Generations: 70
 - Running time: 0.13 seconds
 - Fitness: 28.95
+
+This is the only function that was not minimized close to zero;
+however, given its large range and difficult valley, this fitness
+score is still relatively good.
 
 [[./logs/Rosenbrock.png]]
 
