@@ -33,6 +33,6 @@ int main() {
 
   const Individual solution = algorithm.solve();
   std::cout << solution.represent() << '\n'
-	    << solution.fitness << '\n'
-	    << problem.normal(solution) << '\n';
+	    << "Raw fitness: " << problem.fitness(solution) << '\n'
+	    << "Normalized fitness: " << problem.normal(solution) << '\n';
 }
