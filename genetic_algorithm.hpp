@@ -17,7 +17,7 @@ private:
   static const int crossover_size = 2; // binary crossover
   static const int elitism = 2;
   const parameter crossover_chance = 0.8;
-  const parameter jumping_mutation_rate = 0.75;
+  const parameter jumping_mutation_rate = 0.025;
   char mutation_type = 'j';
   char crossover_type = 't';
   typedef std::vector<Individual> population;
