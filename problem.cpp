@@ -69,3 +69,8 @@ const std::string Problem::represent() const {
     + " using a maximum of " + std::to_string(iterations) + " iterations.\n";
   return representation;
 }
+
+bool Problem::compare(const std::string & c) const {
+  // true if string matches name or allc
+  return name.compare(c) == 0;
+}
