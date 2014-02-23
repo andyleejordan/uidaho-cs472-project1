@@ -1,6 +1,6 @@
-CC=g++-4.8
-LFLAGS=-Wall -std=c++11 -O3
-CFLAGS=$(LFLAGS) -c
+CC=g++
+LFLAGS=-Wall -std=c++11 -O3 -L/usr/local/lib/ -lboost_program_options
+CFLAGS=-Wall -std=c++11 -O3 -c
 PROGRAM=search
 OBJECTS=main.o individual.o random_generator.o \
 	algorithm.o \
@@ -13,13 +13,12 @@ OBJECTS=main.o individual.o random_generator.o \
 	rastrigin_problem.o \
 	rosenbrock_problem.o \
 	schwefel_problem.o \
-	spherical_problem.o \
+	spherical_problem.o
 
 all: $(PROGRAM)
 
 $(PROGRAM): $(OBJECTS)
-	$(CC) $(LFLAGS) -o $(PROGRAM) $(OBJECTS) \
-	/opt/boxen/homebrew/Cellar/boost/1.55.0/lib/libboost_program_options.a
+	$(CC) $(LFLAGS) $(OBJECTS) -o $(PROGRAM)
 
 main.o: main.cpp individual.hpp random_generator.hpp \
 	problem.hpp \
