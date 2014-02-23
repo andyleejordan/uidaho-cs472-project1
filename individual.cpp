@@ -34,10 +34,10 @@ Individual::Individual(const parameter & n,
 }
 
 const std::string Individual::represent() const {
-  std::string representation = "Solution:";
+  std::string representation = "Solution:\n";
   for (parameter value : solution)
     representation += " (" + std::to_string(value) + ")";
-  return representation += "\n";
+  return representation += '\n';
 }
 
 void Individual::mutate(parameter & value, const parameter value_i) const {
