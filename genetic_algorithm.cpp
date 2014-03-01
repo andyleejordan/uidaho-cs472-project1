@@ -72,12 +72,13 @@ void Genetic::arithmetic_crossover(Genetic::population & children, int_dist & pe
   const population mates = children;
   real_dist alpha_dist(-0.1, 1.1);
   for (unsigned long i = 0; i < children[0].size(); ++i) {
-    parameter alpha = alpha_dist(rg.engine);
+    parameter alpha_1 = alpha_dist(rg.engine);
+    parameter alpha_2 = alpha_dist(rg.engine);
     // recombine each child with crossover_chance probability
     if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
-      children[0][i] = alpha * mates[0][i] + (1 - alpha) * mates[1][i];
+      children[0][i] = alpha_1 * mates[0][i] + (1 - alpha_1) * mates[1][i];
     if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
-      children[1][i] = (1 - alpha) * mates[0][i] + alpha * mates[1][i];
+      children[1][i] = (1 - alpha_2) * mates[0][i] + alpha_2 * mates[1][i];
   }
 }
 
