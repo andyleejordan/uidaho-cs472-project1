@@ -20,11 +20,11 @@ using aliases::parameter;
 using individual::Individual;
 using namespace random_generator;
 
-const Genetic::population Genetic::selection(const Genetic::population & generation) const {
+const population Genetic::selection(const population & generation) const {
   // implements tournament selection, returning desired number of best parents
   population parents;
   int_dist population_dist(0, population_size - 1); // closed interval, so (-1)
-  for (int i = 0; i < crossover_size; ++i) {
+  for (int i = 0; i < recombinator->get_size(); ++i) {
     population contestants;
     // create tournament of random members drawn from generation
     for (int i = 0; i < tournament_size; ++i)
@@ -36,60 +36,6 @@ const Genetic::population Genetic::selection(const Genetic::population & generat
   return parents;
 }
 
-void Genetic::uniform_crossover(Genetic::population & children, int_dist & percent) const {
-  // uniform crossover
-  for (unsigned long i = 0; i < children[0].size(); ++i)
-    if (percent(rg.engine) < int(100 * 0.5))
-      std::swap(children[0][i], children[1][i]);
-}
-
-void Genetic::arithmetic_crossover(Genetic::population & children, int_dist & percent) const {
-  // arithmetic crossover
-  const population mates = children;
-  real_dist alpha_dist(-0.1, 1.1);
-  for (unsigned long i = 0; i < children[0].size(); ++i) {
-    parameter alpha_1 = alpha_dist(rg.engine);
-    parameter alpha_2 = alpha_dist(rg.engine);
-    // recombine each child with crossover_chance probability
-    if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
-      children[0][i] = alpha_1 * mates[0][i] + (1 - alpha_1) * mates[1][i];
-    if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance))
-      children[1][i] = (1 - alpha_2) * mates[0][i] + alpha_2 * mates[1][i];
-  }
-}
-
-void Genetic::two_point_crossover(Genetic::population & children, int_dist & percent) const {
-    // two-point crossover
-    if (crossover_chance || percent(rg.engine) < int(100 * crossover_chance)) {
-      int_dist gene_dist(0, children[0].size() - 1);
-      int start = gene_dist(rg.engine);
-      int length = gene_dist(rg.engine);
-      for (Individual & child : children)
-	std::rotate(child.begin(), child.begin() + start, child.end());
-      for (int i = 0; i < length; i++)
-	std::swap(children[0][i], children[1][i]);
-    }
-}
-
-const Genetic::population Genetic::crossover(const Genetic::population & mates) const {
-  population children = mates;
-  int_dist percent(0, 100);
-  switch(crossover_type) {
-  case 'u':
-    uniform_crossover(children, percent);
-    break;
-  case 'a':
-    arithmetic_crossover(children, percent);
-    break;
-  case 't':
-    two_point_crossover(children, percent);
-    break;
-  }
-  // update fitnesses
-  for (Individual & child : children) child.fitness = problem.fitness(child);
-  return children;
-}
-
 const Individual Genetic::solve() const {
   // setup basic logging
   std::ofstream log("logs/" + problem.name + ".dat");
@@ -97,9 +43,9 @@ const Individual Genetic::solve() const {
       << "# Using a Genetic Algorithm"
       << " with population size " << population_size
       << ", tournament size " << tournament_size
-      << ", crossover size " << crossover_size
-      << ", crossover chance of " << crossover_chance
-      << ", mutation chance of " << jumping_mutation_rate
+      << ", crossover size " << recombinator->get_size()
+      << ", crossover chance of " << recombinator->get_chance()
+      << ", mutation chance of " << 1./aliases::dimension
       << ", and elitism replacement size " << elitism << "." << std::endl;
   while(true) {
     // create initial population
@@ -123,7 +69,7 @@ const Individual Genetic::solve() const {
 	// tournament selection of parents
 	const population parents = selection(generation);
 	// crossover
-	const population children = crossover(parents);
+	const population children = recombinator->crossover(parents, problem);
 	// add mutated children to offspring
 	for (const Individual child : children) offspring.emplace_back(mutator.mutate(problem, child));
       }

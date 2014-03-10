@@ -28,16 +28,13 @@ namespace individual {
   public:
     Individual();
     Individual(const parameter & gene, const bool m);
-    Individual(const parameter & n,
-	       const parameter & x,
-	       const bool m,
-	       real_dist r);
+    Individual(const parameter & n, const parameter & x, const bool m, real_dist r);
     bool minimize = true;
     // construction wrappers (e.g. potential() / mutate()) set fitness
     parameter fitness; // raw, not normalized
     // mutate will change gene with bounds-checking
     void mutate(parameter & gene, const parameter gene_i) const;
-    const virtual std::string represent() const;
+    virtual const std::string represent() const;
     // Individual acts like genome iterator
     genome::iterator begin();
     genome::iterator end();

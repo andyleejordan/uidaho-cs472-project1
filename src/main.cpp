@@ -32,6 +32,10 @@
 #include "algorithm/mutator/mutator_creep.hpp"
 #include "algorithm/mutator/mutator_gaussian.hpp"
 #include "algorithm/mutator/mutator_jumping.hpp"
+#include "algorithm/recombinator/recombinator.hpp"
+#include "algorithm/recombinator/recombinator_arithmetic.hpp"
+#include "algorithm/recombinator/recombinator_two_point.hpp"
+#include "algorithm/recombinator/recombinator_uniform.hpp"
 
 // problems
 #include "problem/problem.hpp"
@@ -112,6 +116,14 @@ int main(int argc, char * argv[]) {
   else if (po_mutator.compare("jumping") == 0 || po_mutator.compare("Jumping") == 0)
     working_mutator = unique_ptr<const Mutator>(new mutator::Jumping());
 
+  // setup recombinator
+  shared_ptr<const Recombinator> working_recombinator;
+  if (po_recombinator.compare("arithmetic") == 0 || po_recombinator.compare("Arithmetic") == 0)
+    working_recombinator = shared_ptr<const Recombinator>(new recombinator::Arithmetic());
+  else if (po_recombinator.compare("two-point") == 0 || po_recombinator.compare("Two-Point") == 0)
+    working_recombinator = shared_ptr<const Recombinator>(new recombinator::TwoPoint());
+  else if (po_recombinator.compare("uniform") == 0 || po_recombinator.compare("Uniform") == 0)
+    working_recombinator = shared_ptr<const Recombinator>(new recombinator::Uniform());
 
   // setup each problem and run the GA on it
   unique_ptr<Problem> working_problem;
