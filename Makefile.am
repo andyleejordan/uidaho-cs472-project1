@@ -9,6 +9,9 @@ search_SOURCES = \
 	src/algorithm/mutator/mutator_creep.cpp \
 	src/algorithm/mutator/mutator_gaussian.cpp \
 	src/algorithm/mutator/mutator_jumping.cpp \
+	src/algorithm/recombinator/recombinator_arithmetic.cpp \
+	src/algorithm/recombinator/recombinator_two_point.cpp \
+	src/algorithm/recombinator/recombinator_uniform.cpp \
 	src/individual/individual.cpp \
 	src/problem/problem.cpp \
 	src/problem/ackley_problem.cpp \
