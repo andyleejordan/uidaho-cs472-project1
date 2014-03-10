@@ -6,6 +6,9 @@ search_SOURCES = \
 	src/algorithm/genetic_algorithm.cpp \
 	src/algorithm/hill_climbing_algorithm.cpp \
 	src/algorithm/simulated_annealing_algorithm.cpp \
+	src/algorithm/mutator/mutator_creep.cpp \
+	src/algorithm/mutator/mutator_gaussian.cpp \
+	src/algorithm/mutator/mutator_jumping.cpp \
 	src/individual/individual.cpp \
 	src/problem/problem.cpp \
 	src/problem/ackley_problem.cpp \
