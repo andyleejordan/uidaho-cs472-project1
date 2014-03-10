@@ -18,7 +18,7 @@ using namespace random_generator;
 
 Individual::Individual(): min(0), max(0), minimize(false), fitness(0) {
   // zeroed Individual represents error, with fitness being worst possible
-  for (parameter & value : solution) value = 0;
+  solution.fill(0);
 }
 
 Individual::Individual(const parameter & gene, const bool m): min(0), max(0),
@@ -35,7 +35,7 @@ Individual::Individual(const parameter & n,
 					      minimize(m),
 					      fitness(0) {
   // sets up random Individual for a particular problem
-  for (parameter & value : solution) value = range_dist(rg.engine);
+  solution.fill(range_dist(rg.engine));
 }
 
 const std::string Individual::represent() const {
