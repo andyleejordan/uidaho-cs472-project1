@@ -127,3 +127,4 @@ search
 /src/problem/.deps/
 /src/problem/.dirstamp
 /stamp-h1
+/Makefile
