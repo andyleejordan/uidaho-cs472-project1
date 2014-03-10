@@ -34,6 +34,18 @@ This code is available at:
 https://github.com/andschwa/uidaho-cs472-project1
 #+END_abstract
 
+* Build :noexport:
+Makes use of autotools. Necessary files:
+- configure.ac (with help from autoscan)
+- Makefile.am
+- m4/* for C++11 and Boost macros
+
+To configure and build:
+#+begin_src sh
+autoreconf -vfi
+./configure && make
+#+end_src
+
 * Assignment :noexport:
    DEADLINE: <2014-02-21 Fri>
 The goal of this project is to write a genetic algorithm (GA) for a
