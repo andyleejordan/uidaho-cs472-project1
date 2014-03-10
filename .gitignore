@@ -103,3 +103,27 @@
 # Project specific
 search
 *.tex
+/Makefile.in
+/aclocal.m4
+/autom4te.cache/
+/compile
+/config.guess
+/config.h
+/config.h.in
+/config.h.in~
+/config.status
+/config.sub
+/configure
+/configure.scan
+/depcomp
+/install-sh
+/missing
+/src/.deps/
+/src/.dirstamp
+/src/algorithm/.deps/
+/src/algorithm/.dirstamp
+/src/individual/.deps/
+/src/individual/.dirstamp
+/src/problem/.deps/
+/src/problem/.dirstamp
+/stamp-h1
