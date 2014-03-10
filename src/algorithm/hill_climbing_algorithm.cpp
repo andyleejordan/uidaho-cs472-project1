@@ -6,6 +6,11 @@
 #include <iostream>
 
 #include "hill_climbing_algorithm.hpp"
+#include "algorithm.hpp"
+#include "../individual/individual.hpp"
+
+using algorithm::HillClimbing;
+using individual::Individual;
 
 const Individual HillClimbing::solve() const {
   while(true) {

@@ -9,7 +9,12 @@
 #include <cstdlib>
 
 #include "individual.hpp"
-#include "problem.hpp"
+#include "../aliases.hpp"
+#include "../random_generator.hpp"
+
+using individual::Individual;
+using aliases::parameter;
+using namespace random_generator;
 
 Individual::Individual(): min(0), max(0), minimize(false), fitness(0) {
   // zeroed Individual represents error, with fitness being worst possible
@@ -34,7 +39,7 @@ Individual::Individual(const parameter & n,
 }
 
 const std::string Individual::represent() const {
-  std::string representation = "Solution:\n";
+  std::string representation = "Individual:\n";
   for (parameter value : solution)
     representation += " (" + std::to_string(value) + ")";
   return representation += '\n';
@@ -76,20 +81,22 @@ const parameter & Individual::operator[](size_t pos) const {
   return solution[pos];
 }
 
-bool operator<(const Individual & left, const Individual & right) {
-  // cannot compare unlike Individuals
-  assert(left.minimize == right.minimize);
-  // switch comparison so 0 is a "higher" fitness
-  if (left.minimize && right.minimize) return left.fitness > right.fitness;
-  // else assume lesser fitness is in fact lesser
-  else return left.fitness < right.fitness;
-}
+namespace individual {
+  bool operator<(const Individual & left, const Individual & right) {
+    // cannot compare unlike Individuals
+    assert(left.minimize == right.minimize);
+    // switch comparison so 0 is a "higher" fitness
+    if (left.minimize && right.minimize) return left.fitness > right.fitness;
+    // else assume lesser fitness is in fact lesser
+    else return left.fitness < right.fitness;
+  }
 
-bool operator>(const Individual & left, const Individual & right) {
-  // cannot compare unlike Individuals
-  assert(left.minimize == right.minimize);
-  // switch comparison so 0 is a "higher" fitness
-  if (left.minimize && right.minimize) return left.fitness < right.fitness;
-  // else assume greate fitness is in fact greater
-  else return left.fitness > right.fitness;
+  bool operator>(const Individual & left, const Individual & right) {
+    // cannot compare unlike Individuals
+    assert(left.minimize == right.minimize);
+    // switch comparison so 0 is a "higher" fitness
+    if (left.minimize && right.minimize) return left.fitness < right.fitness;
+    // else assume greate fitness is in fact greater
+    else return left.fitness > right.fitness;
+  }
 }

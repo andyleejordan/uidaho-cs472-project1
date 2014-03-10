@@ -17,26 +17,33 @@
 // boost
 #include <boost/program_options.hpp>
 
+// aliases
+#include "aliases.hpp"
+
 // individual
-#include "individual.hpp"
+#include "individual/individual.hpp"
 
 // algorithms
-#include "genetic_algorithm.hpp"
-#include "hill_climbing_algorithm.hpp"
-#include "simulated_annealing_algorithm.hpp"
+#include "algorithm/algorithm.hpp"
+#include "algorithm/genetic_algorithm.hpp"
+#include "algorithm/hill_climbing_algorithm.hpp"
+#include "algorithm/simulated_annealing_algorithm.hpp"
 
 // problems
-#include "ackley_problem.hpp"
-#include "griewangk_problem.hpp"
-#include "rastrigin_problem.hpp"
-#include "rosenbrock_problem.hpp"
-#include "schwefel_problem.hpp"
-#include "spherical_problem.hpp"
-
-namespace po = boost::program_options;
-using namespace std;
+#include "problem/problem.hpp"
+#include "problem/ackley_problem.hpp"
+#include "problem/griewangk_problem.hpp"
+#include "problem/rastrigin_problem.hpp"
+#include "problem/rosenbrock_problem.hpp"
+#include "problem/schwefel_problem.hpp"
+#include "problem/spherical_problem.hpp"
 
 int main(int argc, char * argv[]) {
+  namespace po = boost::program_options;
+  using namespace std;
+  using aliases::parameter;
+  using namespace algorithm;
+  using namespace problem;
   // setup program options
   string po_algorithm;
   vector<string> po_problems;

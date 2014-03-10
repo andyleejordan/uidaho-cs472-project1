@@ -4,6 +4,16 @@
  */
 
 #include "algorithm.hpp"
+#include "../aliases.hpp"
+#include "../individual/individual.hpp"
+#include "../problem/problem.hpp"
+#include "../random_generator.hpp"
+
+using algorithm::Algorithm;
+using aliases::parameter;
+using individual::Individual;
+using problem::Problem;
+using namespace random_generator;
 
 Algorithm::Algorithm(const Problem & p): problem(p) {}
 

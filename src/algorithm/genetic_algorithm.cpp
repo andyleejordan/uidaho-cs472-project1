@@ -8,8 +8,16 @@
 #include <iostream>
 #include <numeric>
 
+#include "algorithm.hpp"
 #include "genetic_algorithm.hpp"
-#include "random_generator.hpp"
+#include "../aliases.hpp"
+#include "../individual/individual.hpp"
+#include "../random_generator.hpp"
+
+using algorithm::Genetic;
+using aliases::parameter;
+using individual::Individual;
+using namespace random_generator;
 
 void Genetic::gaussian_mutate(Individual & mutant, int_dist & percent) const {
   // GA mutation sequence using a normal distribution

@@ -6,7 +6,16 @@
 #include <cmath>
 #include <iostream>
 
+#include "algorithm.hpp"
 #include "simulated_annealing_algorithm.hpp"
+#include "../aliases.hpp"
+#include "../individual/individual.hpp"
+#include "../random_generator.hpp"
+
+using algorithm::SimulatedAnnealing;
+using aliases::parameter;
+using individual::Individual;
+using namespace random_generator;
 
 bool SimulatedAnnealing::probability(const parameter energy1,
 				     const parameter energy2,

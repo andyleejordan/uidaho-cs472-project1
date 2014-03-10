@@ -8,13 +8,20 @@
 
 #include <random>
 
-class RandomGenerator {
-private:
-  std::random_device rd;
+namespace random_generator {
+  typedef std::uniform_real_distribution<double> real_dist;
+  typedef std::uniform_int_distribution<> int_dist;
+  typedef std::normal_distribution<> normal_dist;
 
-public:
-  RandomGenerator();
-  std::mt19937_64 engine;
-};
+  class RandomGenerator {
+  private:
+    std::random_device rd;
+  public:
+    RandomGenerator();
+    std::mt19937_64 engine;
+  };
+
+  extern RandomGenerator rg;
+}
 
 #endif /* _RANDOM_GENERATOR_H_ */

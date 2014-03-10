@@ -5,33 +5,27 @@
 
 #include <cassert>
 #include <cmath>
+#include <string>
 
 #include "problem.hpp"
+#include "../aliases.hpp"
+#include "../individual/individual.hpp"
+
+using namespace problem;
+using aliases::parameter;
+using individual::Individual;
 
 Problem::Problem(const std::string & n,
-		 const parameter dn,
-		 const parameter dx,
-		 const parameter rn,
-		 const parameter rx,
+		 const parameter dn, const parameter dx,
+		 const parameter rn, const parameter rx,
 		 const bool z,
 		 const long i,
-		 const parameter g,
-		 const parameter f,
-		 const parameter d,
-		 const parameter h,
-		 const int c): range_min(rn),
-			       range_max(rx),
-			       minimize(z),
-			       range_dist(dn, dx),
-			       name(n),
-			       domain_min(dn),
-			       domain_max(dx),
-			       goal(g),
-			       filter(f),
-			       delta(d),
-			       chance(h),
-			       constant(c),
-			       iterations(i) {};
+		 const parameter g, const parameter f,
+		 const parameter d, const parameter h,
+		 const int c):
+  range_min(rn), range_max(rx), minimize(z), range_dist(dn, dx),
+  name(n), domain_min(dn), domain_max(dx), goal(g),
+  filter(f), delta(d), chance(h), constant(c), iterations(i) {};
 
 parameter Problem::normal(const Individual & subject) const {
   // Scales problem value [min, max] to parameter [0, 1] with 1 being max fitness

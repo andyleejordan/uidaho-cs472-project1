@@ -6,16 +6,21 @@
 #ifndef _ALGORITHM_H_
 #define _ALGORITHM_H_
 
-#include "individual.hpp"
-#include "problem.hpp"
+#include "../individual/individual.hpp"
+#include "../problem/problem.hpp"
 
-class Algorithm {
-protected:
-  const Problem & problem;
-  const virtual Individual mutate(const Individual & subject) const;
-public:
-  Algorithm(const Problem & p);
-  const virtual Individual solve() const =0;
-};
+namespace algorithm {
+  using problem::Problem;
+  using individual::Individual;
+
+  class Algorithm {
+  protected:
+    const Problem & problem;
+    const virtual Individual mutate(const Individual & subject) const;
+  public:
+    Algorithm(const Problem & p);
+    const virtual Individual solve() const =0;
+  };
+}
 
 #endif /* _ALGORITHM_H_ */
