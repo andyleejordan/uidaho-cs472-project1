@@ -95,23 +95,29 @@ int main(int argc, char * argv[]) {
     return 1;
   }
 
-  vector<shared_ptr<Problem>> problems;
-  problems.emplace_back(shared_ptr<Problem>(new Ackley(po_iterations, po_goal)));
-  problems.emplace_back(shared_ptr<Problem>(new Griewangk(po_iterations, po_goal)));
-  problems.emplace_back(shared_ptr<Problem>(new Rastrigin(po_iterations, po_goal)));
-  problems.emplace_back(shared_ptr<Problem>(new Rosenbrock(po_iterations, po_goal)));
-  problems.emplace_back(shared_ptr<Problem>(new Schwefel(po_iterations, po_goal)));
-  problems.emplace_back(shared_ptr<Problem>(new Spherical(po_iterations, po_goal)));
+  unique_ptr<Problem> working_problem;
 
-  for (const auto problem_name : po_problems) {
-    auto problem = *find_if(problems.begin(), problems.end(),
-			    [problem_name](const shared_ptr<Problem>& it)->bool
-			    { return it->compare(problem_name); });
-    assert(problem != nullptr);
-    Genetic algorithm(*problem);
-    const Individual solution = algorithm.solve();
-    cout << problem->represent() << solution.represent()
-	 << "Raw fitness: " << solution.fitness << '\n' << endl;
+  for (const std::string name : po_problems) {
+    // Ugly replace of switch(name), better than find_if
+    if (name.compare("Ackley") == 0 || name.compare("ackley") == 0)
+      working_problem = unique_ptr<Problem>(new Ackley(po_iterations, po_goal));
+    else if (name.compare("Griewangk") == 0 || name.compare("griewangk") == 0)
+      working_problem = unique_ptr<Problem>(new Griewangk(po_iterations, po_goal));
+    else if (name.compare("Rastrigin") == 0 || name.compare("rastrigin") == 0)
+      working_problem = unique_ptr<Problem>(new Rastrigin(po_iterations, po_goal));
+    else if (name.compare("Rosenbrock") == 0 || name.compare("rosenbrock") == 0)
+      working_problem = unique_ptr<Problem>(new Rosenbrock(po_iterations, po_goal));
+    else if (name.compare("Schwefel") == 0 || name.compare("schwefel") == 0)
+      working_problem = unique_ptr<Problem>(new Schwefel(po_iterations, po_goal));
+    else if (name.compare("Spherical") == 0 || name.compare("spherical") == 0)
+      working_problem = unique_ptr<Problem>(new Spherical(po_iterations, po_goal));
+    // Run GA on problem
+    if (working_problem != nullptr) {
+      Genetic algorithm(*working_problem);
+      const Individual solution = algorithm.solve();
+      cout << working_problem->represent() << solution.represent()
+	   << "Raw fitness: " << solution.fitness << '\n' << endl;
+    }
   }
   return 0;
 }
