@@ -55,6 +55,8 @@ int main(int argc, char * argv[]) {
   // setup program options
   string po_algorithm;
   vector<string> po_problems;
+  string po_mutator;
+  string po_recombinator;
   long po_iterations;
   parameter po_goal;
   po::positional_options_description positionals;
@@ -67,10 +69,13 @@ int main(int argc, char * argv[]) {
      "choose algorithm, currently unimplemented")
     ("problem,p",
      po::value<vector<string>>(&po_problems),
-     "choose problem(s), must be Title case, defaults to all")
+     "choose problem(s), defaults to all")
     ("mutator,m",
      po::value<string>(&po_mutator)->default_value("Jumping"),
      "choose mutator, creep, gaussian, jumping")
+    ("recombinator,r",
+     po::value<string>(&po_recombinator)->default_value("Two-Point"),
+     "choose recombinator, arithmetic, two-point, uniform")
     ("iterations,i",
      po::value<long>(&po_iterations)->default_value(256),
      "set max iterations/generations")
@@ -86,6 +91,7 @@ int main(int argc, char * argv[]) {
 	   << "Algorithms: Genetic, HillClimbing, and SimulatedAnnealing\n\n"
 	   << "Problems: Ackley, Griewangk, Rastrigin, Rosenbrock, Schwefel, and Spherical\n\n"
 	   << "Mutators: Creep, Gaussian, Jumping"
+	   << "Recombinators: Arithmetic, Two-Point, Uniform"
 	   << "Logs saved to logs/<Problem>.dat\n"
 	   << "GNUPlot settings in logs/<Problem>.p\n\n"
 	   << desc << endl;
