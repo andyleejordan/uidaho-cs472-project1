@@ -20,7 +20,7 @@ namespace individual {
 
   class Individual {
   private:
-    static const int dimension = 30;
+    static const int dimension = aliases::dimension;
     typedef std::array<parameter, dimension> genome;
     genome solution;
     parameter min;

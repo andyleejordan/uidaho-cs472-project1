@@ -9,6 +9,7 @@
 namespace aliases {
   // this is biting me in the ass; probably going to replace all
   typedef double parameter;
+  const int dimension = 30;
 }
 
 #endif /* _ALIASES_H_ */
