@@ -38,7 +38,7 @@ const Individual SimulatedAnnealing::solve() const {
 	// convert temperature to [0, 100]
 	const parameter temperature = 100. * parameter(T) / problem.iterations;
 	// get neighbor
-        const Individual neighbor = mutate(best);
+        const Individual neighbor = mutator.mutate(problem, best);
 	// keep track of best solution
 	if (neighbor > best
 	    // SA swaps in bad solutions with this probability

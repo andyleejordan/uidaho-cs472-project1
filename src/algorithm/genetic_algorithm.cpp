@@ -15,42 +15,10 @@
 #include "../random_generator.hpp"
 
 using algorithm::Genetic;
+using algorithm::population;
 using aliases::parameter;
 using individual::Individual;
 using namespace random_generator;
-
-void Genetic::gaussian_mutate(Individual & mutant, int_dist & percent) const {
-  // GA mutation sequence using a normal distribution
-  normal_dist delta_dist(mean, stddev); // unit Gaussian distribution for delta
-  for (parameter & gene : mutant)
-    // short circuit for problem.chance == 1
-    if (problem.chance || percent(rg.engine) < int(100 * problem.chance))
-      mutant.mutate(gene, gene * delta_dist(rg.engine));
-}
-
-void Genetic::jumping_mutate(Individual & mutant, int_dist & percent) const {
-  // jumping sequence like snewt's
-  real_dist delta_dist(problem.domain_min, problem.domain_max);
-  for (parameter & gene : mutant)
-    if (percent(rg.engine) < int(100 * jumping_mutation_rate))
-      mutant.mutate(gene, delta_dist(rg.engine));
-}
-
-const Individual Genetic::mutate(const Individual & subject) const {
-  Individual mutant = subject; // non-const copy to mutate
-  int_dist percent(0, 100);
-  switch(mutation_type) {
-  case 'g':
-    gaussian_mutate(mutant, percent);
-    break;
-  case 'j':
-    jumping_mutate(mutant, percent);
-    break;
-  }
-  // update fitness
-  mutant.fitness = problem.fitness(mutant);
-  return mutant;
-}
 
 const Genetic::population Genetic::selection(const Genetic::population & generation) const {
   // implements tournament selection, returning desired number of best parents
@@ -157,7 +125,7 @@ const Individual Genetic::solve() const {
 	// crossover
 	const population children = crossover(parents);
 	// add mutated children to offspring
-	for (const Individual child : children) offspring.emplace_back(mutate(child));
+	for (const Individual child : children) offspring.emplace_back(mutator.mutate(problem, child));
       }
       // replace generation with offspring
       generation.swap(offspring);

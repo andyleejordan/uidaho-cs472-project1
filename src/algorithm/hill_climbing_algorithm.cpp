@@ -20,7 +20,7 @@ const Individual HillClimbing::solve() const {
     if (best > problem.filter) {
       // actual hill-climbing algorithm
       for (long i = 0; i < problem.iterations; ++i) {
-	const Individual neighbor = mutate(best);
+	const Individual neighbor = mutator.mutate(problem, best);
 	// keep track of best solution
 	if (neighbor > best) {
 	  best = neighbor;

@@ -28,6 +28,10 @@
 #include "algorithm/genetic_algorithm.hpp"
 #include "algorithm/hill_climbing_algorithm.hpp"
 #include "algorithm/simulated_annealing_algorithm.hpp"
+#include "algorithm/mutator/mutator.hpp"
+#include "algorithm/mutator/mutator_creep.hpp"
+#include "algorithm/mutator/mutator_gaussian.hpp"
+#include "algorithm/mutator/mutator_jumping.hpp"
 
 // problems
 #include "problem/problem.hpp"
@@ -60,6 +64,9 @@ int main(int argc, char * argv[]) {
     ("problem,p",
      po::value<vector<string>>(&po_problems),
      "choose problem(s), must be Title case, defaults to all")
+    ("mutator,m",
+     po::value<string>(&po_mutator)->default_value("Jumping"),
+     "choose mutator, creep, gaussian, jumping")
     ("iterations,i",
      po::value<long>(&po_iterations)->default_value(256),
      "set max iterations/generations")
@@ -74,8 +81,9 @@ int main(int argc, char * argv[]) {
 	   << "Code located at https://github.com/andschwa/uidaho-cs472-project1\n\n"
 	   << "Algorithms: Genetic, HillClimbing, and SimulatedAnnealing\n\n"
 	   << "Problems: Ackley, Griewangk, Rastrigin, Rosenbrock, Schwefel, and Spherical\n\n"
-	   << "Logs saved to logs/Problem.dat\n"
-	   << "GNUPlot settings in logs/Problem.p\n\n"
+	   << "Mutators: Creep, Gaussian, Jumping"
+	   << "Logs saved to logs/<Problem>.dat\n"
+	   << "GNUPlot settings in logs/<Problem>.p\n\n"
 	   << desc << endl;
       return 0;
     }
@@ -95,9 +103,19 @@ int main(int argc, char * argv[]) {
     return 1;
   }
 
-  unique_ptr<Problem> working_problem;
+  // setup mutator
+  unique_ptr<const Mutator> working_mutator;
+  if (po_mutator.compare("creep") == 0 || po_mutator.compare("Creep") == 0)
+    working_mutator = unique_ptr<const Mutator>(new mutator::Creep());
+  else if (po_mutator.compare("gaussian") == 0 || po_mutator.compare("Gaussian") == 0)
+    working_mutator = unique_ptr<const Mutator>(new mutator::Gaussian());
+  else if (po_mutator.compare("jumping") == 0 || po_mutator.compare("Jumping") == 0)
+    working_mutator = unique_ptr<const Mutator>(new mutator::Jumping());
 
-  for (const std::string name : po_problems) {
+
+  // setup each problem and run the GA on it
+  unique_ptr<Problem> working_problem;
+  for (const string name : po_problems) {
     // Ugly replace of switch(name), better than find_if
     if (name.compare("Ackley") == 0 || name.compare("ackley") == 0)
       working_problem = unique_ptr<Problem>(new Ackley(po_iterations, po_goal));
@@ -113,7 +131,7 @@ int main(int argc, char * argv[]) {
       working_problem = unique_ptr<Problem>(new Spherical(po_iterations, po_goal));
     // Run GA on problem
     if (working_problem != nullptr) {
-      Genetic algorithm(*working_problem);
+      Genetic algorithm(*working_problem, *working_mutator, working_recombinator);
       const Individual solution = algorithm.solve();
       cout << working_problem->represent() << solution.represent()
 	   << "Raw fitness: " << solution.fitness << '\n' << endl;

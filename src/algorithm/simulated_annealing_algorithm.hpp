@@ -18,11 +18,9 @@ namespace algorithm {
 
   class SimulatedAnnealing: private Algorithm {
   private:
-    bool probability(const parameter energy1,
-		     const parameter energy2,
-		     const parameter temperature) const;
+    bool probability(const parameter energy1, const parameter energy2, const parameter temperature) const;
   public:
-    SimulatedAnnealing(const Problem & p): Algorithm(p) {};
+    SimulatedAnnealing(const Problem & p, const Mutator & m): Algorithm(p, m) {};
     const Individual solve() const;
   };
 }

@@ -7,6 +7,7 @@
 #define _HILL_CLIMBING_ALGORITHM_H_
 
 #include "algorithm.hpp"
+#include "mutator/mutator.hpp"
 #include "../individual/individual.hpp"
 #include "../problem/problem.hpp"
 
@@ -16,7 +17,7 @@ namespace algorithm {
 
   class HillClimbing: private Algorithm {
   public:
-    HillClimbing(const Problem & p): Algorithm(p) {};
+    HillClimbing(const Problem & p, const Mutator & m): Algorithm(p, m) {};
     const Individual solve() const;
   };
 }
