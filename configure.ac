@@ -12,7 +12,7 @@ AC_CONFIG_MACRO_DIRS([m4])
 AC_PROG_CXX
 
 # Checks for libraries.
-AX_BOOST_BASE([1.55])
+AX_BOOST_BASE([1.48])
 AX_BOOST_PROGRAM_OPTIONS
 
 # Checks for header files.
